@@ -13,15 +13,4 @@ class Util {
 			return $var;
 		}
 	}
-	
-	public static function test()
-	{
-		return "";
-	}
-	
-	public static function test2()
-	{
-		return 0;
-	}
-	
 }
