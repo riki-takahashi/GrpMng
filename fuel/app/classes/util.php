@@ -1,4 +1,5 @@
 <?php
+//ユーティリティメソッド群
 class Util {
 	//引数が空だった場合、NULLに変換
 	public static function empty_to_null($var)
