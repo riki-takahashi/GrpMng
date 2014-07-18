@@ -52,7 +52,6 @@
 	</fieldset>
 <?php echo Form::close(); ?>
 <p>
-	<?php echo Html::anchor('project/view/'.$project->id, '案件詳細'); ?> |
-	<?php echo Html::anchor('project/edit/'.$project->id, '案件編集'); ?> |
+	<?php echo Html::anchor('project/edit/'.$project->id, '戻る'); ?> |
 	<?php echo Html::anchor('project', '案件TOP'); ?>
 </p>
