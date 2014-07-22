@@ -14,8 +14,6 @@ return array(
 				5 => '006_add_is_mng_flag_to_employees',
 				6 => '007_create_projectmembers',
 				7 => '008_create_sales_terms',
-				8 => '009_create_sales_targets',
-				9 => '010_create_sales_results',
 			),
 		),
 		'module' => 

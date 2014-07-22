@@ -1,10 +1,9 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
-        "This file is @generated automatically"
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "092451065bbb5ffea5a87c4c70e4b84a",
+    "hash": "54dbfdbc632a6c3777efe3aa152fd045",
     "packages": [
         {
             "name": "fuelphp/upload",
