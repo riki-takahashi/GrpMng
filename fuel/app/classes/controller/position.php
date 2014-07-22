@@ -57,7 +57,7 @@ class Controller_Position extends Controller_Template{
 			}
 		}
 
-		$this->template->title = "役職登録";
+		$this->template->title = "役職マスタ";
 		$this->template->content = View::forge('position/create');
 
 	}

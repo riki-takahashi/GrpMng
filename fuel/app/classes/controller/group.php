@@ -54,7 +54,7 @@ class Controller_Group extends Controller_Template{
 		$invalid_flags = Config::get('arrays.invalid_flag');
 		$this->template->set_global('invalid_flag', $invalid_flags, false);
 
-		$this->template->title = "グループ登録";
+		$this->template->title = "グループマスタ";
 		$this->template->content = View::forge('group/create');
 
 	}
