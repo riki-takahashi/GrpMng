@@ -1,29 +1,24 @@
-<h3>役職一覧</h3>
-<br>
+<p class="text-right">
+	<?php echo Html::anchor('position/create', '<span class="glyphicon glyphicon-plus"></span> 新規登録', array('class' => 'btn btn-primary')); ?>
+</p>
 <?php if ($positions): ?>
-<table class="table table-striped">
+<table class="table table-striped table-bordered table-hover table-condensed">
 	<thead>
-		<tr>
-			<th>役職名</th>
-			<th>並び順</th>
-			<th>&nbsp;</th>
+		<tr class="info">
+			<th class="text-center">&nbsp;</th>
+			<th class="text-center">役職名</th>
+			<th class="text-center">並び順</th>
 		</tr>
 	</thead>
 	<tbody>
 <?php foreach ($positions as $item): ?>		<tr>
 
+			<td>
+								<?php echo Html::anchor('position/edit/'.$item->id, '<span class="glyphicon glyphicon-pencil"></span> 編集', array('class' => 'btn btn-sm btn-primary')); ?>					
+								<?php echo Html::anchor('position/delete/'.$item->id, '<span class="glyphicon glyphicon-remove"></span> 削除', array('class' => 'btn btn-sm btn-danger', 'onclick' => "return confirm('削除してもよろしいですか？')")); ?>
+			</td>
 			<td><?php echo $item->position_name; ?></td>
 			<td><?php echo $item->order_no; ?></td>
-			<td>
-				<div class="btn-toolbar">
-					<div class="btn-group">
-						<?php echo Html::anchor('position/view/'.$item->id, '<i class="icon-eye-open"></i> 詳細', array('class' => 'btn btn-small')); ?>						
-						<?php echo Html::anchor('position/edit/'.$item->id, '<i class="icon-wrench"></i> 編集', array('class' => 'btn btn-small')); ?>						
-						<?php echo Html::anchor('position/delete/'.$item->id, '<i class="icon-trash icon-white"></i> 削除', array('class' => 'btn btn-small btn-danger', 'onclick' => "return confirm('削除してもよろしいですか？')")); ?>					
-					</div>
-				</div>
-
-			</td>
 		</tr>
 <?php endforeach; ?>	</tbody>
 </table>
@@ -31,7 +26,4 @@
 <?php else: ?>
 <p>データがありません</p>
 
-<?php endif; ?><p>
-	<?php echo Html::anchor('position/create', '新規登録', array('class' => 'btn btn-success')); ?>
-
-</p>
+<?php endif; ?>
