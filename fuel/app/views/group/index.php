@@ -1,4 +1,4 @@
-<p  class="text-right">
+<p class="text-right">
 	<?php echo Html::anchor('group/create', '<span class="glyphicon glyphicon-plus"></span> 新規登録', array('class' => 'btn btn-primary')); ?>
 </p>
 <?php if ($groups): ?>

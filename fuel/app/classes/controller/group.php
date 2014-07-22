@@ -13,7 +13,6 @@ class Controller_Group extends Controller_Template{
 
 		$this->template->title = "グループマスタ";
 		$this->template->content = ViewModel::forge('group/view')->set('id', $id);
-
 	}
 
 	public function action_create()
