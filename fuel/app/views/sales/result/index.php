@@ -1,5 +1,5 @@
 <p class="text-right">
-	<?php echo Html::anchor('sales/result/create', '<span class="glyphicon glyphicon-plus"></span> 新規登録', array('class' => 'btn btn-success')); ?>
+	<?php echo Html::anchor('sales/result/create', '<span class="glyphicon glyphicon-plus"></span> 新規登録', array('class' => 'btn btn-primary')); ?>
 </p>
 <?php if ($sales_results): ?>
 <table class="table table-striped table-bordered table-hover table-condensed">

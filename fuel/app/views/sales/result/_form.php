@@ -1,9 +1,9 @@
 <?php echo Form::open(array("class"=>"form-horizontal")); ?>
 	<fieldset>
 		<div class="form-group">
-			<?php echo Form::label('案件ID', 'project_id', array('class'=>'control-label')); ?>
+			<?php echo Form::label('案件名:', 'project_id', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('project_id', Input::post('project_id', isset($sales_result) ? $sales_result->project_id : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'案件ID')); ?>
+				<?php echo $sales_result->project->project_name; ?>
 		</div>
 		<div class="form-group">
 			<?php echo Form::label('売上実績名', 'sales_result_name', array('class'=>'control-label')); ?>
@@ -13,7 +13,7 @@
 		<div class="form-group">
 			<?php echo Form::label('売上日', 'sales_date', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('sales_date', Input::post('sales_date', isset($sales_result) ? $sales_result->sales_date : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'売上日')); ?>
+				<?php echo Form::input('sales_date', Input::post('sales_date', isset($sales_result) ? $sales_result->sales_date : ''), array('class' => 'col-md-4 form-control dp', 'placeholder'=>'売上日')); ?>
 		</div>
 		<div class="form-group">
 			<?php echo Form::label('売上金額', 'sales_amount', array('class'=>'control-label')); ?>

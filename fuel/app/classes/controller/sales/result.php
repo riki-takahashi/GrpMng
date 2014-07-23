@@ -71,7 +71,7 @@ class Controller_Sales_Result extends Controller_Template{
 
 		if ($val->run())
 		{
-			$sales_result->project_id = Input::post('project_id');
+			$sales_result->project_id = $project_id;
 			$sales_result->sales_result_name = Input::post('sales_result_name');
 			$sales_result->sales_date = Input::post('sales_date');
 			$sales_result->sales_amount = Input::post('sales_amount');
