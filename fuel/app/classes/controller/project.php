@@ -206,6 +206,7 @@ class Controller_Project extends Controller_Template
 		
 		$data['project'] = $project;
 		$data['member_id'] = $member_id;
+		$data['temp_id'] = self::TEMP_ID;
 
 		$this->template->title = "案件メンバー登録";
 		$this->template->content = View::forge('project/member', $data);
@@ -266,6 +267,7 @@ class Controller_Project extends Controller_Template
 		
 		$data['project'] = $project;
 		$data['member_id'] = self::TEMP_ID;
+		$data['temp_id'] = self::TEMP_ID;
 
 		$this->template->title = "案件メンバー登録";
 		$this->template->content = View::forge('project/member', $data);

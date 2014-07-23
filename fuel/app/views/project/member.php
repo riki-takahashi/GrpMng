@@ -52,7 +52,7 @@
 						<?php echo Form::button('submit', '<span class="glyphicon glyphicon-save"></span> 更新', array('class' => 'btn btn-sm btn-primary')); ?>
 						<?php echo Html::anchor('project/member/'.$project->id, '<span class="glyphicon glyphicon-refresh"></span> ｷｬﾝｾﾙ', array('class' => 'btn btn-sm btn-warning')); ?>
 					</td>
-					<?php if ($member_id == 99999) : ?>
+					<?php if ($member->id == $temp_id) : ?>
 						<td><?php echo Form::select('emp_id', null, $employees, array('class' => 'col-md-4 form-control')); ?></td>
 					<?php else : ?>
 						<td><?php echo $member->employee->emp_name; ?></td>
