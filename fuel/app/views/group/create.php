@@ -1,6 +1,3 @@
-<h3>グループ新規登録</h3>
-<br>
-
 <?php echo render('group/_form'); ?>
 
 

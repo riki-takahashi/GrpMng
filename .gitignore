@@ -1,1 +1,5 @@
 /fuel/app/logs/
+/fuel/core/
+/fuel/packages/
+/fuel/vendor/
+/nbproject/private/
