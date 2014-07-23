@@ -45,6 +45,13 @@ class Model_Project extends Model
 			'cascade_save' => false,
 			'cascade_delete' => false,
 		),
+		'results' => array(
+			'model_to' => 'Model_Sales_Result',
+			'key_from' => 'id',
+			'key_to' => 'project_id',
+			'cascade_save' => false,
+			'cascade_delete' => false,
+		),
 	);
 
 	protected static $_observers = array(

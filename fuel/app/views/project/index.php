@@ -21,6 +21,7 @@
 				<?php echo Html::anchor('project/edit/'.$item->id, '<span class="glyphicon glyphicon-pencil"></span> 編集', array('class' => 'btn btn-sm btn-primary')); ?>
 				<?php echo Html::anchor('project/delete/'.$item->id, '<span class="glyphicon glyphicon-remove"></span> 削除', array('class' => 'btn btn-sm btn-danger', 'onclick' => "return confirm('削除してもよろしいですか？')")); ?>
 				<?php echo Html::anchor('project/member/'.$item->id, '<span class="glyphicon glyphicon-user"></span> メンバー', array('class' => 'btn btn-sm btn-primary')); ?>
+				<?php echo Html::anchor('project/sales/'.$item->id, '<span class="glyphicon glyphicon-thumbs-up"></span> 売上実績', array('class' => 'btn btn-sm btn-primary')); ?>
 			</td>
 			<td><?php echo $item->project_name; ?></td>
 			<td><?php echo $item->group->group_name; ?></td>

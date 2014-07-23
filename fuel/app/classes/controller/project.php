@@ -321,5 +321,106 @@ class Controller_Project extends Controller_Template
 		$employees = Arr::assoc_to_keyval($m_employees, 'id', 'emp_name');
 		$this->template->set_global('employees', $employees, false);
 	}
+        
+        
+        
+	//売上実績
+	public function action_sales($project_id = null)
+	{
+		is_null($project_id) and Response::redirect('project');
 
+		//案件データ
+		if ( ! $project = Model_Project::find($project_id))
+		{
+			Session::set_flash('error', '該当の案件が見つかりません。 #'.$project_id);
+			Response::redirect('project');
+		}
+		
+		$data['project'] = $project;
+		//$data['project_id'] = $project_id;
+		$data['temp_id'] = self::TEMP_ID;
+
+		$this->template->title = "売上実績";
+		$this->template->content = View::forge('project/sales', $data);
+	}
+	
+	//売上実績追加
+	public function action_screate($project_id = null)
+	{
+		is_null($project_id) and Response::redirect('project');
+
+		//案件データ
+		if ( ! $project = Model_Project::find($project_id))
+		{
+			Session::set_flash('error', '該当の案件が見つかりません。 #'.$project_id);
+			Response::redirect('project');
+		}
+		
+		if (Input::method() == 'POST')
+		{
+			$val = Model_Sales_Result::validate('edit');
+
+			if ($val->run())
+			{
+				$result = Model_Sales_Result::forge(array(
+					'project_id' => $project_id,
+					//'emp_id' => Input::post('emp_id'),
+					'start_date' => Input::post('start_date'),
+					'end_date' => Input::post('end_date'),
+					'note' => Util::empty_to_null(Input::post('note')),
+				));
+				if ($result->save())
+				{
+					Session::set_flash('success', '売上実績情報を追加しました。 #' . $member->id);
+
+					Response::redirect('project/sales/'.$project->id);
+				}
+			}
+			else
+			{
+				Session::set_flash('error', $val->error());
+			}
+		}
+		else
+		{
+			//新規登録用初期データの生成
+			$result = Model_Sales_Result::forge(array(
+				'id' => self::TEMP_ID,
+				'project_id' => $project_id,
+				'start_date' => $project->start_date,
+				'end_date' => $project->end_date,
+			));
+			$project->results[] = $result;
+
+			//ドロップダウン項目の設定
+			//$this->setMemberDropDown();
+		}
+		
+		$data['project'] = $project;
+		$data['project_id'] = self::TEMP_ID;
+		$data['temp_id'] = self::TEMP_ID;
+
+		$this->template->title = "売上実績登録";
+		$this->template->content = View::forge('project/sales', $data);
+	}
+
+	//売上実績削除
+	public function action_sdelete($project_id = null, $project_id = null)
+	{
+		is_null($project_id) and Response::redirect('project');
+
+		if ($project = Model_Sales_Result::find($project_id))
+		{
+			$project->delete();
+
+			Session::set_flash('success', '売上実績情報を削除しました。 #'.$project_id);
+		}
+		else
+		{
+			Session::set_flash('error', '売上実績の削除に失敗しました。 #'.$project_id);
+		}
+
+		Response::redirect('project/sales/'.$project_id);
+	}
+        
 }

@@ -59,7 +59,7 @@ class Controller_Sales_Result extends Controller_Template{
 
 	public function action_edit($id = null)
 	{
-		is_null($id) and Response::redirect('sales/result');
+		is_null($id) and Response::redirect('project/sales/1');
 
 		if ( ! $sales_result = Model_Sales_Result::find($id))
 		{
@@ -82,7 +82,7 @@ class Controller_Sales_Result extends Controller_Template{
 			{
 				Session::set_flash('success', '売上実績を更新しました。 #' . $id);
 
-				Response::redirect('sales/result');
+				Response::redirect('sales\result/edit/'.$id);
 			}
 
 			else
@@ -133,6 +133,4 @@ class Controller_Sales_Result extends Controller_Template{
 		Response::redirect('sales/result');
 
 	}
-
-
 }
