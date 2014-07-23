@@ -21,17 +21,27 @@ class Model_Project extends Model
 	);
 
 	protected static $_belongs_to = array(
-		'group' =>	array(
+		'group' => array(
 			'model_to' => 'Model_Group',
 			'key_from' => 'group_id',
 			'key_to' => 'id',
 			'cascade_save' => false,
 			'cascade_delete' => false,
 		),
-		'employee' =>	array(
+		'employee' => array(
 			'model_to' => 'Model_Employee',
 			'key_from' => 'emp_id',
 			'key_to' => 'id',
+			'cascade_save' => false,
+			'cascade_delete' => false,
+		),
+	);
+	
+	protected static $_has_many = array(
+		'members' => array(
+			'model_to' => 'Model_Projectmember',
+			'key_from' => 'id',
+			'key_to' => 'project_id',
 			'cascade_save' => false,
 			'cascade_delete' => false,
 		),

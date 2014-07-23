@@ -1,57 +1,82 @@
-<h3>メンバー登録</h3>
-<br>
-
+<p>
+	<strong>案件名:</strong>
+	<?php echo $project->project_name; ?></p>
+<p>
+	<strong>担当グループ:</strong>
+	<?php echo $project->group->group_name; ?></p>
+<p>
+	<strong>担当者:</strong>
+	<?php echo $project->employee->emp_name; ?></p>
+<p>
+	<strong>開始日:</strong>
+	<?php echo $project->start_date; ?></p>
+<p>
+	<strong>終了日:</strong>
+	<?php echo $project->end_date; ?></p>
+<p>
+	<strong>備考:</strong>
+	<?php echo $project->note; ?></p>
+<hr>
+<p  class="text-right">
+	<?php echo Html::anchor('project/mcreate/'.$project->id, '<span class="glyphicon glyphicon-plus"></span> 新規登録', array('class' => 'btn btn-primary')); ?>
+</p>
+<?php if ($project->members): ?>
 <?php echo Form::open(array("class"=>"form-horizontal")); ?>
 	<fieldset>
-		<div class="form-group">
-			<?php echo Form::label('案件名', 'project_name', array('class'=>'control-label')); ?>
-				<?php echo Form::input('project_name', Input::post('project_name', isset($project) ? $project->project_name : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'案件名')); ?>
-		</div>
-		<div class="form-group">
-			<?php echo Form::label('担当グループ', 'group_id', array('class'=>'control-label')); ?>
-		</div>
-		<div class="form-group">
-			<?php echo Form::label('担当者', 'emp_id', array('class'=>'control-label')); ?>
-		</div>
-		<div class="form-group">
-			<?php echo Form::label('開始日', 'start_date', array('class'=>'control-label')); ?>
-				<?php echo Form::input('start_date', Input::post('start_date', isset($project) ? $project->start_date : ''), array('class' => 'col-md-4 form-control dp', 'placeholder'=>'開始日')); ?>
-		</div>
-		<div class="form-group">
-			<?php echo Form::label('終了日', 'end_date', array('class'=>'control-label')); ?>
-				<?php echo Form::input('end_date', Input::post('end_date', isset($project) ? $project->end_date : ''), array('class' => 'col-md-4 form-control dp', 'placeholder'=>'終了日')); ?>
-		</div>
-		<div class="form-group">
-			<?php echo Form::label('受注金額', 'order_amount', array('class'=>'control-label')); ?>
-				<?php echo Form::input('order_amount', Input::post('order_amount', isset($project) ? $project->order_amount : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'受注金額')); ?>
-		</div>
-		<div class="form-group">
-			<?php echo Form::label('納品日', 'delivery_date', array('class'=>'control-label')); ?>
-				<?php echo Form::input('delivery_date', Input::post('delivery_date', isset($project) ? $project->delivery_date : ''), array('class' => 'col-md-4 form-control dp', 'placeholder'=>'納品日')); ?>
-		</div>
-		<div class="form-group">
-			<?php echo Form::label('売上日', 'sales_date', array('class'=>'control-label')); ?>
-				<?php echo Form::input('sales_date', Input::post('sales_date', isset($project) ? $project->sales_date : ''), array('class' => 'col-md-4 form-control dp', 'placeholder'=>'売上日')); ?>
-		</div>
-		<div class="form-group">
-			<?php echo Form::label('エンドユーザー', 'end_user', array('class'=>'control-label')); ?>
-				<?php echo Form::input('end_user', Input::post('end_user', isset($project) ? $project->end_user : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'エンドユーザー')); ?>
-		</div>
-		<div class="form-group">
-			<?php echo Form::label('受注元', 'order_user', array('class'=>'control-label')); ?>
-				<?php echo Form::input('order_user', Input::post('order_user', isset($project) ? $project->order_user : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'受注元')); ?>
-		</div>
-		<div class="form-group">
-			<?php echo Form::label('備考', 'note', array('class'=>'control-label')); ?>
-				<?php echo Form::textarea('note', Input::post('note', isset($project) ? $project->note : ''), array('class' => 'col-md-8 form-control', 'rows' => '3', 'placeholder'=>'備考')); ?>
-		</div>
-		<div class="form-group">
-			<label class='control-label'>&nbsp;</label>
-			<?php echo Form::submit('submit', '保存', array('class' => 'btn btn-primary')); ?>
-		</div>
+		<table class="table table-striped table-bordered table-hover table-condensed">
+			<thead>
+				<tr class="info">
+					<th>&nbsp;</th>
+					<th class="text-center">社員名</th>
+					<th class="text-center">開始日</th>
+					<th class="text-center">終了日</th>
+					<th class="text-center">備考</th>
+				</tr>
+			</thead>
+			<tbody>
+		<?php foreach ($project->members as $member): ?>
+			<?php if ($member->id != $member_id) : ?>
+				<tr>
+					<td>
+						<?php echo Html::anchor('project/member/'.$project->id.'/'.$member->id, '<span class="glyphicon glyphicon-pencil"></span> 編集', array('class' => 'btn btn-sm btn-primary')); ?>
+						<?php echo Html::anchor('project/mdelete/'.$project->id.'/'.$member->id, '<span class="glyphicon glyphicon-remove"></span> 削除', array('class' => 'btn btn-sm btn-danger', 'onclick' => "return confirm('削除してもよろしいですか？')")); ?>
+					</td>
+					<td><?php echo $member->employee->emp_name; ?></td>
+					<td><?php echo $member->start_date; ?></td>
+					<td><?php echo $member->end_date; ?></td>
+					<td><?php echo $member->note; ?></td>
+				</tr>
+			<?php else : ?>
+				<tr>
+					<td>
+						<?php echo Form::button('submit', '<span class="glyphicon glyphicon-save"></span> 更新', array('class' => 'btn btn-sm btn-primary')); ?>
+						<?php echo Html::anchor('project/member/'.$project->id, '<span class="glyphicon glyphicon-refresh"></span> ｷｬﾝｾﾙ', array('class' => 'btn btn-sm btn-warning')); ?>
+					</td>
+					<?php if ($member_id == 99999) : ?>
+						<td><?php echo Form::select('emp_id', null, $employees, array('class' => 'col-md-4 form-control')); ?></td>
+					<?php else : ?>
+						<td><?php echo $member->employee->emp_name; ?></td>
+					<?php endif; ?>
+					<td>
+						<?php echo Form::input('start_date', Input::post('start_date', isset($member) ? $member->start_date : ''), array('class' => 'col-md-4 form-control dp', 'placeholder'=>'開始日')); ?>
+					</td>
+					<td>
+						<?php echo Form::input('end_date', Input::post('end_date', isset($member) ? $member->end_date : ''), array('class' => 'col-md-4 form-control dp', 'placeholder'=>'終了日')); ?>
+					</td>
+					<td>
+						<?php echo Form::input('note', Input::post('note', isset($member) ? $member->note : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'備考')); ?>
+					</td>
+				</tr>
+			<?php endif; ?>
+		<?php endforeach; ?>
+			</tbody>
+		</table>
 	</fieldset>
 <?php echo Form::close(); ?>
+<?php else: ?>
+<p>データがありません</p>
+<?php endif; ?>
 <p>
-	<?php echo Html::anchor('project/edit/'.$project->id, '戻る'); ?> |
-	<?php echo Html::anchor('project', '案件TOP'); ?>
+	<?php echo Html::anchor('project', '案件TOP'); ?> | 
+	<?php echo Html::anchor('project/edit/'.$project->id, '案件編集'); ?> 
 </p>

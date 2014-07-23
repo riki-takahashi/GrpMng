@@ -13,6 +13,16 @@ class Model_Projectmember extends \Orm\Model
 		'updated_at',
 	);
 
+	protected static $_belongs_to = array(
+		'employee' => array(
+			'model_to' => 'Model_Employee',
+			'key_from' => 'emp_id',
+			'key_to' => 'id',
+			'cascade_save' => false,
+			'cascade_delete' => false,
+		),
+	);
+	
 	protected static $_observers = array(
 		'Orm\Observer_CreatedAt' => array(
 			'events' => array('before_insert'),
@@ -24,4 +34,12 @@ class Model_Projectmember extends \Orm\Model
 		),
 	);
 
+	public static function validate($factory)
+	{
+		$val = Validation::forge($factory);
+		$val->add_field('start_date', '開始日', 'required');
+		$val->add_field('end_date', '終了日', 'required');
+
+		return $val;
+	}
 }
