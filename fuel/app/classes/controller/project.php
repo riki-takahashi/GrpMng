@@ -252,7 +252,7 @@ class Controller_Project extends Controller_Template
 		}
 		else
 		{
-			//新規登録用初期データの生成
+			//新規案件メンバー登録用初期データの生成
 			$member = Model_Projectmember::forge(array(
 				'id' => self::TEMP_ID,
 				'project_id' => $project_id,
@@ -337,7 +337,7 @@ class Controller_Project extends Controller_Template
 		}
 		
 		$data['project'] = $project;
-		//$data['project_id'] = $project_id;
+		$data['project_id'] = $project_id;
 		$data['temp_id'] = self::TEMP_ID;
 
 		$this->template->title = "売上実績";
@@ -364,14 +364,15 @@ class Controller_Project extends Controller_Template
 			{
 				$result = Model_Sales_Result::forge(array(
 					'project_id' => $project_id,
-					//'emp_id' => Input::post('emp_id'),
-					'start_date' => Input::post('start_date'),
-					'end_date' => Input::post('end_date'),
+					'sales_result_name' => Input::post('sales_result_name'),
+					'sales_date' => Input::post('sales_date'),
+					'sales_amount' => Input::post('sales_amount'),
+					'tax' => Input::post('tax'),
 					'note' => Util::empty_to_null(Input::post('note')),
 				));
 				if ($result->save())
 				{
-					Session::set_flash('success', '売上実績情報を追加しました。 #' . $member->id);
+					Session::set_flash('success', '売上実績情報を追加しました。 #' . $result->id);
 
 					Response::redirect('project/sales/'.$project->id);
 				}
@@ -383,7 +384,7 @@ class Controller_Project extends Controller_Template
 		}
 		else
 		{
-			//新規登録用初期データの生成
+			//新規売上実績登録用初期データの生成
 			$result = Model_Sales_Result::forge(array(
 				'id' => self::TEMP_ID,
 				'project_id' => $project_id,
@@ -401,7 +402,7 @@ class Controller_Project extends Controller_Template
 		$data['temp_id'] = self::TEMP_ID;
 
 		$this->template->title = "売上実績登録";
-		$this->template->content = View::forge('project/sales', $data);
+		$this->template->content = View::forge('sales/result/create', $data);
 	}
 
 	//売上実績削除

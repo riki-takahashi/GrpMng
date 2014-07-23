@@ -59,7 +59,7 @@ class Controller_Sales_Result extends Controller_Template{
 
 	public function action_edit($id = null)
 	{
-		is_null($id) and Response::redirect('project/sales/1');
+		is_null($id) and Response::redirect('project/sales');
 
 		if ( ! $sales_result = Model_Sales_Result::find($id))
 		{

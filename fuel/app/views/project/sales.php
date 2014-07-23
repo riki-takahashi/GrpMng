@@ -18,7 +18,7 @@
 	<?php echo $project->note; ?></p>
 <hr>
 <p  class="text-right">
-	<?php echo Html::anchor('project/mcreate/'.$project->id, '<span class="glyphicon glyphicon-plus"></span> 新規登録', array('class' => 'btn btn-primary')); ?>
+	<?php echo Html::anchor('project/screate/'.$project->id, '<span class="glyphicon glyphicon-plus"></span> 新規登録', array('class' => 'btn btn-primary')); ?>
 </p>
 <?php if ($project->results): ?>
 <?php echo Form::open(array("class"=>"form-horizontal")); ?>
