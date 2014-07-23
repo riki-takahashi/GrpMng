@@ -57,13 +57,13 @@ class Controller_Sales_Result extends Controller_Template{
 
 	}
 
-	public function action_edit($id = null)
+	public function action_edit($project_id = null, $result_id = null)
 	{
-		is_null($id) and Response::redirect('project/sales');
+		is_null($result_id) and Response::redirect('project/sales');
 
-		if ( ! $sales_result = Model_Sales_Result::find($id))
+		if ( ! $sales_result = Model_Sales_Result::find($result_id))
 		{
-			Session::set_flash('error', '該当の売上実績が見つかりません。 #'.$id);
+			Session::set_flash('error', '該当の売上実績が見つかりません。 #'.$result_id);
 			Response::redirect('sales/result');
 		}
 
@@ -80,14 +80,14 @@ class Controller_Sales_Result extends Controller_Template{
 
 			if ($sales_result->save())
 			{
-				Session::set_flash('success', '売上実績を更新しました。 #' . $id);
+				Session::set_flash('success', '売上実績を更新しました。 #'.$result_id);
 
-				Response::redirect('sales\result/edit/'.$id);
+				Response::redirect('project/sales/'.$project_id);
 			}
 
 			else
 			{
-				Session::set_flash('error', '売上実績の更新に失敗しました。 #' . $id);
+				Session::set_flash('error', '売上実績の更新に失敗しました。 #'.$result_id);
 			}
 		}
 

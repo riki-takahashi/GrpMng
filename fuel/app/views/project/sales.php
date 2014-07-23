@@ -38,8 +38,8 @@
 		<?php foreach ($project->results as $result): ?>
                             <tr>
                                     <td>
-                                        <?php echo Html::anchor('sales/result/edit/'.$result->id, '<span class="glyphicon glyphicon-pencil"></span> 編集', array('class' => 'btn btn-sm btn-primary')); ?>
-                                        <?php echo Html::anchor('project/sdelete/'.$result->id, '<span class="glyphicon glyphicon-remove"></span> 削除', array('class' => 'btn btn-sm btn-danger', 'onclick' => "return confirm('削除してもよろしいですか？')")); ?>
+                                        <?php echo Html::anchor('sales/result/edit/'.$project->id.'/'.$result->id, '<span class="glyphicon glyphicon-pencil"></span> 編集', array('class' => 'btn btn-sm btn-primary')); ?>
+                                        <?php echo Html::anchor('project/sdelete/'.$project->id.'/'.$result->id, '<span class="glyphicon glyphicon-remove"></span> 削除', array('class' => 'btn btn-sm btn-danger', 'onclick' => "return confirm('削除してもよろしいですか？')")); ?>
                                     </td>
                                     <td><?php echo $result->sales_result_name; ?></td>
                                     <td><?php echo $result->sales_date; ?></td>

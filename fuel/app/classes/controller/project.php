@@ -107,14 +107,14 @@ class Controller_Project extends Controller_Template
 
 			if ($project->save())
 			{
-				Session::set_flash('success', '案件情報を更新しました。 #' . $id);
+				Session::set_flash('success', '案件情報を更新しました。 #'.$id);
 
 				Response::redirect('project');
 			}
 
 			else
 			{
-				Session::set_flash('error', '案件情報の更新に失敗しました。 #' . $id);
+				Session::set_flash('error', '案件情報の更新に失敗しました。 #'.$id);
 			}
 		}
 
@@ -192,7 +192,7 @@ class Controller_Project extends Controller_Template
 
 					if ($member->save())
 					{
-						Session::set_flash('success', 'メンバー情報を更新しました。 #' . $member_id);
+						Session::set_flash('success', 'メンバー情報を更新しました。 #'.$member_id);
 
 						Response::redirect('project/member/'.$project->id);
 					}
@@ -240,7 +240,7 @@ class Controller_Project extends Controller_Template
 				));
 				if ($member->save())
 				{
-					Session::set_flash('success', 'メンバー情報を追加しました。 #' . $member->id);
+					Session::set_flash('success', 'メンバー情報を追加しました。 #'.$member->id);
 
 					Response::redirect('project/member/'.$project->id);
 				}
@@ -369,10 +369,10 @@ class Controller_Project extends Controller_Template
 					'sales_amount' => Input::post('sales_amount'),
 					'tax' => Input::post('tax'),
 					'note' => Util::empty_to_null(Input::post('note')),
-				));
+				));			if ($val->run())
 				if ($result->save())
 				{
-					Session::set_flash('success', '売上実績情報を追加しました。 #' . $result->id);
+					Session::set_flash('success', '売上実績情報を追加しました。 #'.$result->id);
 
 					Response::redirect('project/sales/'.$project->id);
 				}
@@ -406,11 +406,11 @@ class Controller_Project extends Controller_Template
 	}
 
 	//売上実績削除
-	public function action_sdelete($project_id = null, $project_id = null)
+	public function action_sdelete($project_id = null, $id = null)
 	{
 		is_null($project_id) and Response::redirect('project');
 
-		if ($project = Model_Sales_Result::find($project_id))
+		if ($project = Model_Sales_Result::find($id))
 		{
 			$project->delete();
 
