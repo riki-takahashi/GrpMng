@@ -1,9 +1,9 @@
 <?php echo Form::open(array("class"=>"form-horizontal")); ?>
 	<fieldset>
 		<div class="form-group">
-			<?php echo Form::label('案件名:', 'project_id', array('class'=>'control-label')); ?>
+			<?php echo Form::label('案件名:', 'project_name', array('class'=>'control-label')); ?>
 
-				<?php echo $sales_result->project->project_name; ?>
+				<?php echo $project_name; ?>
 		</div>
 		<div class="form-group">
 			<?php echo Form::label('売上実績名', 'sales_result_name', array('class'=>'control-label')); ?>

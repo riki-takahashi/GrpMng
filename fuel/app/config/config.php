@@ -179,6 +179,7 @@ return array(
 			'Fuel\\Core\\View',
 			'Fuel\\Core\\ViewModel',
 			'Closure',
+			'Orm\Query',
 		),
 	),
 

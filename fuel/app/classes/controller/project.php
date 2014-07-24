@@ -15,14 +15,14 @@ class Controller_Project extends Controller_Mybase
 
 	}
 
-	public function action_view($id = null)
+	public function action_view($project_id = null)
 	{
-		is_null($id) and Response::redirect('project');
+		is_null($project_id) and Response::redirect('project');
 
 		//案件データ
-		if ( ! $project = Model_Project::find($id))
+		if ( ! $project = Model_Project::find($project_id))
 		{
-			Session::set_flash('error', '該当の案件が見つかりません。 #'.$id);
+			Session::set_flash('error', '該当の案件が見つかりません。 #'.$project_id);
 			Response::redirect('project');
 		}
 		$data['project'] = $project;
@@ -79,13 +79,13 @@ class Controller_Project extends Controller_Mybase
 
 	}
 
-	public function action_edit($id = null)
+	public function action_edit($project_id = null)
 	{
-		is_null($id) and Response::redirect('project');
+		is_null($project_id) and Response::redirect('project');
 
-		if ( ! $project = Model_Project::find($id))
+		if ( ! $project = Model_Project::find($project_id))
 		{
-			Session::set_flash('error', '該当の案件が見つかりません。 #'.$id);
+			Session::set_flash('error', '該当の案件が見つかりません。 #'.$project_id);
 			Response::redirect('project');
 		}
 
@@ -107,14 +107,14 @@ class Controller_Project extends Controller_Mybase
 
 			if ($project->save())
 			{
-				Session::set_flash('success', '案件情報を更新しました。 #'.$id);
+				Session::set_flash('success', '案件情報を更新しました。 #'.$project_id);
 
 				Response::redirect('project');
 			}
 
 			else
 			{
-				Session::set_flash('error', '案件情報の更新に失敗しました。 #'.$id);
+				Session::set_flash('error', '案件情報の更新に失敗しました。 #'.$project_id);
 			}
 		}
 
@@ -147,19 +147,19 @@ class Controller_Project extends Controller_Mybase
 
 	}
 
-	public function action_delete($id = null)
+	public function action_delete($project_id = null)
 	{
-		is_null($id) and Response::redirect('project');
+		is_null($project_id) and Response::redirect('project');
 
-		if ($project = Model_Project::find($id))
+		if ($project = Model_Project::find($project_id))
 		{
 			$project->delete();
 
-			Session::set_flash('success', '案件情報を削除しました。 #'.$id);
+			Session::set_flash('success', '案件情報を削除しました。 #'.$project_id);
 		}
 		else
 		{
-			Session::set_flash('error', '案件情報の削除に失敗しました。 #'.$id);
+			Session::set_flash('error', '案件情報の削除に失敗しました。 #'.$project_id);
 		}
 
 		Response::redirect('project');
@@ -343,82 +343,21 @@ class Controller_Project extends Controller_Mybase
 		$this->template->title = "売上実績";
 		$this->template->content = View::forge('project/sales', $data);
 	}
-	
-	//売上実績追加
-	public function action_screate($project_id = null)
-	{
-		is_null($project_id) and Response::redirect('project');
-
-		//案件データ
-		if ( ! $project = Model_Project::find($project_id))
-		{
-			Session::set_flash('error', '該当の案件が見つかりません。 #'.$project_id);
-			Response::redirect('project');
-		}
-		
-		if (Input::method() == 'POST')
-		{
-			$val = Model_Sales_Result::validate('edit');
-
-			if ($val->run())
-			{
-				$result = Model_Sales_Result::forge(array(
-					'project_id' => $project_id,
-					'sales_result_name' => Input::post('sales_result_name'),
-					'sales_date' => Input::post('sales_date'),
-					'sales_amount' => Input::post('sales_amount'),
-					'tax' => Input::post('tax'),
-					'note' => Util::empty_to_null(Input::post('note')),
-				));			if ($val->run())
-				if ($result->save())
-				{
-					Session::set_flash('success', '売上実績情報を追加しました。 #'.$result->id);
-
-					Response::redirect('project/sales/'.$project->id);
-				}
-			}
-			else
-			{
-				Session::set_flash('error', $val->error());
-			}
-		}
-		else
-		{
-			//新規売上実績登録用初期データの生成
-			$result = Model_Sales_Result::forge(array(
-				'id' => self::TEMP_ID,
-				'project_id' => $project_id,
-				'start_date' => $project->start_date,
-				'end_date' => $project->end_date,
-			));
-			$project->results[] = $result;
-
-			//ドロップダウン項目の設定
-			//$this->setMemberDropDown();
-		}
-		
-		$data['project'] = $project;
-		$data['project_id'] = self::TEMP_ID;
-		$data['temp_id'] = self::TEMP_ID;
-
-		$this->template->title = "売上実績登録";
-		$this->template->content = View::forge('sales/result/create', $data);
-	}
 
 	//売上実績削除
-	public function action_sdelete($project_id = null, $id = null)
+	public function action_sdelete($project_id = null, $result_id = null)
 	{
 		is_null($project_id) and Response::redirect('project');
 
-		if ($project = Model_Sales_Result::find($id))
+		if ($project = Model_Sales_Result::find($result_id))
 		{
 			$project->delete();
 
-			Session::set_flash('success', '売上実績情報を削除しました。 #'.$project_id);
+			Session::set_flash('success', '売上実績情報を削除しました。 #'.$result_id);
 		}
 		else
 		{
-			Session::set_flash('error', '売上実績の削除に失敗しました。 #'.$project_id);
+			Session::set_flash('error', '売上実績の削除に失敗しました。 #'.$result_id);
 		}
 
 		Response::redirect('project/sales/'.$project_id);

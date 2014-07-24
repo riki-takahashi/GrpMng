@@ -8,16 +8,22 @@ class Controller_Sales_Result extends Controller_Template{
 		$this->template->content = View::forge('sales\result/index', $data);
 	}
 
-	public function action_view($id = null)
+	public function action_view($result_id = null)
 	{
-		is_null($id) and Response::redirect('sales\result/index');
+		is_null($result_id) and Response::redirect('sales\result/index');
 
 		$this->template->title = "売上一覧";
-		$this->template->content = ViewModel::forge('sales\result/view')->set('id', $id);
+		$this->template->content = ViewModel::forge('sales\result/view')->set('id', $result_id);
 	}
         
-	public function action_create()
+	public function action_create($project_id = null)
 	{
+		if ( ! $project = Model_Project::find($project_id))
+		{
+			Session::set_flash('error', '該当の案件情報が見つかりません。 #'.$project_id);
+			Response::redirect('sales/result');
+		}
+                
 		if (Input::method() == 'POST')
 		{
 			$val = Model_Sales_Result::validate('create');
@@ -26,7 +32,7 @@ class Controller_Sales_Result extends Controller_Template{
 			{
 				$sales_result = Model_Sales_Result::forge(array(
 					'id' => Input::post('id'),
-					'project_id' => Input::post('project_id'),
+					'project_id' => $project_id,
 					'sales_result_name' => Input::post('sales_result_name'),
 					'sales_date' => Input::post('sales_date'),
 					'sales_amount' => Input::post('sales_amount'),
@@ -52,8 +58,9 @@ class Controller_Sales_Result extends Controller_Template{
 			}
 		}
 
+                $data['project_name'] = $project->project_name;
 		$this->template->title = "売上実績登録";
-		$this->template->content = View::forge('sales\result/create');
+		$this->template->content = View::forge('sales\result/create', $data);
 
 	}
 
@@ -61,6 +68,12 @@ class Controller_Sales_Result extends Controller_Template{
 	{
 		is_null($result_id) and Response::redirect('project/sales');
 
+		if ( ! $project = Model_Project::find($project_id))
+		{
+			Session::set_flash('error', '該当の案件情報が見つかりません。 #'.$project_id);
+			Response::redirect('sales/result');
+		}
+                
 		if ( ! $sales_result = Model_Sales_Result::find($result_id))
 		{
 			Session::set_flash('error', '該当の売上実績が見つかりません。 #'.$result_id);
@@ -109,25 +122,26 @@ class Controller_Sales_Result extends Controller_Template{
 			$this->template->set_global('sales_result', $sales_result, false);
 		}
 
+                $data['project_name'] = $project->project_name;
 		$this->template->title = "売上実績情報";
-		$this->template->content = View::forge('sales\result/edit');
+		$this->template->content = View::forge('sales\result/edit', $data);
 
 	}
 
-	public function action_delete($id = null)
+	public function action_delete($result_id = null)
 	{
-		is_null($id) and Response::redirect('sales/result');
+		is_null($result_id) and Response::redirect('sales/result');
 
-		if ($sales_result = Model_Sales_Result::find($id))
+		if ($sales_result = Model_Sales_Result::find($result_id))
 		{
 			$sales_result->delete();
 
-			Session::set_flash('success', '売上実績を削除しました。 #'.$id);
+			Session::set_flash('success', '売上実績を削除しました。 #'.$result_id);
 		}
 
 		else
 		{
-			Session::set_flash('error', '売上実績の削除に失敗しました。 #'.$id);
+			Session::set_flash('error', '売上実績の削除に失敗しました。 #'.$result_id);
 		}
 
 		Response::redirect('sales/result');

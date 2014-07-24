@@ -52,6 +52,7 @@ class Model_Project extends Model
 			'cascade_save' => false,
 			'cascade_delete' => false,
 		),
+            
 	);
 
 	protected static $_observers = array(
