@@ -12,8 +12,6 @@ class Controller_Menu extends Controller_Mybase{
 	{
 		Auth::check() and Response::redirect('menu');
 		
-		$data = array();
-		
 		if (Input::method() == 'POST')
 		{
 			$username = Input::post('username');
@@ -25,14 +23,14 @@ class Controller_Menu extends Controller_Mybase{
 			}
 			else
 			{
-				$data['error'] = true;
+				Session::set_flash('error', 'ユーザーIDもしくはパスワードが違います。');
 			}
 		}
 		
 		$this->template->is_menu = true;
 		$this->template->is_login = true;
 		$this->template->title = "ログイン";
-		$this->template->content = View::forge('menu/login', $data);
+		$this->template->content = View::forge('menu/login');
 	}
 	
 	public function action_logout()
