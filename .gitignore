@@ -1,4 +1,5 @@
 /fuel/app/logs/
+/fuel/app/config/development/
 /fuel/core/
 /fuel/packages/
 /fuel/vendor/
