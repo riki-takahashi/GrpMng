@@ -11,6 +11,7 @@
 		</div>
 		<div class="form-group">
 			<label class='control-label'>&nbsp;</label>
-			<?php echo Form::submit('submit', '保存', array('class' => 'btn btn-primary')); ?>		</div>
+			<?php echo Form::button('submit', '<span class="glyphicon glyphicon-save"></span> 保存', array('class' => 'btn btn-primary')); ?>
+		</div>
 	</fieldset>
 <?php echo Form::close(); ?>

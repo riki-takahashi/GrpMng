@@ -1,5 +1,5 @@
 <?php
-class Controller_Project extends Controller_Template
+class Controller_Project extends Controller_Mybase
 {
 	const TEMP_ID = 99999;
 
