@@ -1,14 +1,12 @@
 <?php echo Form::open(array("class"=>"form-horizontal")); ?>
 	<fieldset>
 		<div class="form-group">
-			<?php echo Form::label('グループID', 'group_id', array('class'=>'control-label')); ?>
-
-				<?php echo Form::input('group_id', Input::post('group_id', isset($sales_target) ? $sales_target->group_id : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'グループID')); ?>
+			<?php echo Form::label('グループ', 'group_id', array('class'=>'control-label')); ?>
+				<?php echo Form::select('group_id', Input::post('group_id', isset($sales_target) ? $sales_target->group_id : ''), $groups, array('class' => 'col-md-4 form-control')); ?>
 		</div>
 		<div class="form-group">
 			<?php echo Form::label('売上期間', 'sales_term_id', array('class'=>'control-label')); ?>
-
-				<?php echo Form::input('sales_term_id', Input::post('sales_term_id', isset($sales_target) ? $sales_target->sales_term_id : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'売上期間')); ?>
+				<?php echo Form::select('sales_term_id', Input::post('sales_term_id', isset($sales_target) ? $sales_target->sales_term_id : ''), $sales_terms, array('class' => 'col-md-4 form-control')); ?>
 		</div>
 		<div class="form-group">
 			<?php echo Form::label('目標売上金額', 'target_amount', array('class'=>'control-label')); ?>

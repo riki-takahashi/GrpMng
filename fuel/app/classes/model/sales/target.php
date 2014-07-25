@@ -13,6 +13,23 @@ class Model_Sales_Target extends Model
 		'updated_at',
 	);
 
+	protected static $_belongs_to = array(
+		'group' => array(
+			'model_to' => 'Model_Group',
+			'key_from' => 'group_id',
+			'key_to' => 'id',
+			'cascade_save' => false,
+			'cascade_delete' => false,
+		),
+		'sales_term' => array(
+			'model_to' => 'Model_Sales_Term',
+			'key_from' => 'sales_term_id',
+			'key_to' => 'id',
+			'cascade_save' => false,
+			'cascade_delete' => false,
+		),
+	);
+        
 	protected static $_observers = array(
 		'Orm\Observer_CreatedAt' => array(
 			'events' => array('before_insert'),

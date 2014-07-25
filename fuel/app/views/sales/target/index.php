@@ -19,8 +19,8 @@
                                 <?php echo Html::anchor('sales/target/edit/'.$item->id, '<span class="glyphicon glyphicon-pencil"></span> 編集', array('class' => 'btn btn-sm btn-primary')); ?>
                                 <?php echo Html::anchor('sales/target/delete/'.$item->id, '<span class="glyphicon glyphicon-remove"></span> 削除', array('class' => 'btn btn-sm btn-danger', 'onclick' => "return confirm('削除してもよろしいですか？')")); ?>
 			</td>
-                        <td><?php echo $item->group_id; ?></td>
-                        <td><?php echo $item->sales_term_id; ?></td>
+                        <td><?php echo $item->group->group_name; ?></td>
+                        <td><?php echo $item->sales_term->term_name; ?></td>
                         <td><?php echo $item->target_amount; ?></td>
                         <td><?php echo $item->min_amount; ?></td>
                 </tr>

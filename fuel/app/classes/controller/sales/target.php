@@ -3,8 +3,12 @@ class Controller_Sales_target extends Controller_Template{
 
 	public function action_index()
 	{
-		$data['sales_targets'] = Model_Sales_Target::find('all');
-		$this->template->title = "売上目標情報";
+		//売上目標一覧データ
+		$data['sales_targets'] = Model_Sales_Target::find('all', array(
+			'order_by' => array('group_id' => 'asc', 'sales_term_id' => 'asc'),
+		));
+
+                $this->template->title = "売上目標一覧";
 		$this->template->content = View::forge('sales\target/index', $data);
 
 	}
@@ -42,19 +46,21 @@ class Controller_Sales_target extends Controller_Template{
 				Session::set_flash('error', $val->error());
 			}
 		}
+		//ドロップダウン項目の設定
+		$this->setDropDownList();
 
 		$this->template->title = "売上目標登録";
 		$this->template->content = View::forge('sales\target/create');
 
 	}
 
-	public function action_edit($id = null)
+	public function action_edit($sales_target_id = null)
 	{
-		is_null($id) and Response::redirect('sales/target');
+		is_null($sales_target_id) and Response::redirect('sales/target');
 
-		if ( ! $sales_target = Model_Sales_Target::find($id))
+		if ( ! $sales_target = Model_Sales_Target::find($sales_target_id))
 		{
-			Session::set_flash('error', '該当の売上目標が見つかりません。 #'.$id);
+			Session::set_flash('error', '該当の売上目標が見つかりません。 #'.$sales_target_id);
 			Response::redirect('sales/target');
 		}
 
@@ -69,14 +75,14 @@ class Controller_Sales_target extends Controller_Template{
 
 			if ($sales_target->save())
 			{
-				Session::set_flash('success', '売上目標を更新しました。 #' . $id);
+				Session::set_flash('success', '売上目標を更新しました。 #' . $sales_target_id);
 
 				Response::redirect('sales/target');
 			}
 
 			else
 			{
-				Session::set_flash('error', '売上目標の更新に失敗しました。 #' . $id);
+				Session::set_flash('error', '売上目標の更新に失敗しました。 #' . $sales_target_id);
 			}
 		}
 
@@ -95,31 +101,43 @@ class Controller_Sales_target extends Controller_Template{
 
 			$this->template->set_global('sales_target', $sales_target, false);
 		}
+		//ドロップダウン項目の設定
+		$this->setDropDownList();
 
 		$this->template->title = "売上目標情報";
 		$this->template->content = View::forge('sales\target/edit');
-
 	}
 
-	public function action_delete($id = null)
+	public function action_delete($sales_target_id = null)
 	{
-		is_null($id) and Response::redirect('sales/target');
+		is_null($sales_target_id) and Response::redirect('sales/target');
 
-		if ($sales_target = Model_Sales_Target::find($id))
+		if ($sales_target = Model_Sales_Target::find($sales_target_id))
 		{
 			$sales_target->delete();
 
-			Session::set_flash('success', '売上目標を削除しました。 #'.$id);
+			Session::set_flash('success', '売上目標を削除しました。 #'.$sales_target_id);
 		}
 
 		else
 		{
-			Session::set_flash('error', '売上目標の削除に失敗しました。 #'.$id);
+			Session::set_flash('error', '売上目標の削除に失敗しました。 #'.$sales_target_id);
 		}
 
 		Response::redirect('sales/target');
 
 	}
+	
+	private function setDropDownList()
+	{
+		//グループ一覧
+		$m_groups = Model_Group::find('all');
+		$groups = Arr::assoc_to_keyval($m_groups, 'id', 'group_name');
+		$this->template->set_global('groups', $groups, false);
 
-
+                //売上期間一覧
+		$m_sales_terms = Model_Sales_Term::find('all');
+		$sales_terms = Arr::assoc_to_keyval($m_sales_terms, 'id', 'term_name');
+		$this->template->set_global('sales_terms', $sales_terms, false);
+	}
 }
