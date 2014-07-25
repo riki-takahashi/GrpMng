@@ -21,15 +21,19 @@
 </head>
 <body>
 	<div class="container">
+	<nav class="navbar navbar-default">
 		<div class="col-md-12">
-			<h2><?php echo $title; ?></h2>
+			<span class="h3 navbar-text"><?php echo $title; ?></span>&nbsp;&nbsp;&nbsp;&nbsp;
 			<?php if (! isset($is_menu)) : ?>
-				<?php echo Html::anchor('menu', '<span class="glyphicon glyphicon-th"></span> メニュー', array('class' => 'btn btn-primary')); ?>
+				<?php echo Html::anchor('menu', '<span class="glyphicon glyphicon-th"></span> メニュー', array('class' => 'btn btn-primary navbar-btn')); ?>
 			<?php endif; ?>
 			<?php if (! isset($is_login)) : ?>
-				<?php echo Html::anchor('menu/logout', '<span class="glyphicon glyphicon-log-out"></span> ログアウト', array('class' => 'btn btn-primary')); ?>
+				<?php echo Html::anchor('menu/logout', '<span class="glyphicon glyphicon-log-out"></span> ログアウト', array('class' => 'btn btn-primary navbar-btn')); ?>
 			<?php endif; ?>
-			<hr>
+		</div>
+	</nav>
+	<hr>
+	<div class="col-md-12">
 <?php if (Session::get_flash('success')): ?>
 			<div class="alert alert-success">
 				<strong>処理完了</strong>

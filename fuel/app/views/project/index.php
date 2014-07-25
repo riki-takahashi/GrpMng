@@ -1,7 +1,8 @@
-<p  class="text-right">
+<p  class="pull-right">
 	<?php echo Html::anchor('project/create', '<span class="glyphicon glyphicon-plus"></span> 新規登録', array('class' => 'btn btn-primary')); ?>
 </p>
 <?php if ($projects): ?>
+<div class="table-responsive">
 <table class="table table-striped table-bordered table-hover table-condensed">
 	<thead>
 		<tr class="info">
@@ -33,7 +34,7 @@
 <?php endforeach; ?>
 	</tbody>
 </table>
-
+</div>
 <?php else: ?>
 <p>データがありません</p>
 <?php endif; ?>
