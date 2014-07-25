@@ -7,7 +7,7 @@ foreach ($argv as $idx => $arg) {
 		$argv[$idx] = __DIR__ . DIRECTORY_SEPARATOR . 'NetBeansSuite.php' ;
 	}
 }
-$command = 'D:\MyRoot\Tool\XAMPP\php\phpunit';
+$command = 'C:\Apps\xampp\php\phpunit';
 $args = join(' ', $argv);
 
 passthru($command . ' ' . $args);
