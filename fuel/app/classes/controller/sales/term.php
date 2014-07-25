@@ -4,18 +4,18 @@ class Controller_Sales_Term extends Controller_Template{
 	public function action_index()
 	{
 		$data['sales_terms'] = Model_Sales_Term::find('all');
-		$this->template->title = "Sales_terms";
+		$this->template->title = "売上期間";
 		$this->template->content = View::forge('sales\term/index', $data);
 
 	}
 
-	public function action_view($id = null)
+	public function action_view($term_id = null)
 	{
-		is_null($id) and Response::redirect('sales/term');
+		is_null($term_id) and Response::redirect('sales/term');
 
-		if ( ! $data['sales_term'] = Model_Sales_Term::find($id))
+		if ( ! $data['sales_term'] = Model_Sales_Term::find($term_id))
 		{
-			Session::set_flash('error', 'Could not find sales_term #'.$id);
+			Session::set_flash('error', '該当の売上期間が見つかりません。 #'.$term_id);
 			Response::redirect('sales/term');
 		}
 
@@ -41,14 +41,14 @@ class Controller_Sales_Term extends Controller_Template{
 
 				if ($sales_term and $sales_term->save())
 				{
-					Session::set_flash('success', 'Added sales_term #'.$sales_term->id.'.');
+					Session::set_flash('success', '売上期間を追加しました。 #'.$sales_term->id.'.');
 
 					Response::redirect('sales/term');
 				}
 
 				else
 				{
-					Session::set_flash('error', 'Could not save sales_term.');
+					Session::set_flash('error', '売上期間の登録に失敗しました。');
 				}
 			}
 			else
@@ -57,18 +57,18 @@ class Controller_Sales_Term extends Controller_Template{
 			}
 		}
 
-		$this->template->title = "Sales_Terms";
+		$this->template->title = "売上期間";
 		$this->template->content = View::forge('sales\term/create');
 
 	}
 
-	public function action_edit($id = null)
+	public function action_edit($term_id = null)
 	{
-		is_null($id) and Response::redirect('sales/term');
+		is_null($term_id) and Response::redirect('sales/term');
 
-		if ( ! $sales_term = Model_Sales_Term::find($id))
+		if ( ! $sales_term = Model_Sales_Term::find($term_id))
 		{
-			Session::set_flash('error', 'Could not find sales_term #'.$id);
+			Session::set_flash('error', '該当の売上期間が見つかりません。 #'.$term_id);
 			Response::redirect('sales/term');
 		}
 
@@ -83,14 +83,14 @@ class Controller_Sales_Term extends Controller_Template{
 
 			if ($sales_term->save())
 			{
-				Session::set_flash('success', 'Updated sales_term #' . $id);
+				Session::set_flash('success', '売上期間を更新しました。 #' . $term_id);
 
 				Response::redirect('sales/term');
 			}
 
 			else
 			{
-				Session::set_flash('error', 'Could not update sales_term #' . $id);
+				Session::set_flash('error', '売上期間の更新に失敗しました。 #' . $term_id);
 			}
 		}
 
@@ -109,25 +109,25 @@ class Controller_Sales_Term extends Controller_Template{
 			$this->template->set_global('sales_term', $sales_term, false);
 		}
 
-		$this->template->title = "Sales_terms";
+		$this->template->title = "売上期間";
 		$this->template->content = View::forge('sales\term/edit');
 
 	}
 
-	public function action_delete($id = null)
+	public function action_delete($term_id = null)
 	{
-		is_null($id) and Response::redirect('sales/term');
+		is_null($term_id) and Response::redirect('sales/term');
 
-		if ($sales_term = Model_Sales_Term::find($id))
+		if ($sales_term = Model_Sales_Term::find($term_id))
 		{
 			$sales_term->delete();
 
-			Session::set_flash('success', 'Deleted sales_term #'.$id);
+			Session::set_flash('success', '売上期間を削除しました。 #'.$term_id);
 		}
 
 		else
 		{
-			Session::set_flash('error', 'Could not delete sales_term #'.$id);
+			Session::set_flash('error', '売上期間の削除に失敗しました。 #'.$term_id);
 		}
 
 		Response::redirect('sales/term');

@@ -1,38 +1,33 @@
-<h2>Listing <span class='muted'>Sales_terms</span></h2>
-<br>
+<p class="text-right">
+	<?php echo Html::anchor('sales/term/create', '<span class="glyphicon glyphicon-plus"></span> 新規登録', array('class' => 'btn btn-primary')); ?>
+</p>
 <?php if ($sales_terms): ?>
-<table class="table table-striped">
+<table class="table table-striped table-bordered table-hover table-condensed">
 	<thead>
 		<tr>
-			<th>Term name</th>
-			<th>Start date</th>
-			<th>End date</th>
-			<th>Note</th>
 			<th>&nbsp;</th>
+			<th class="text-center">売上期間名</th>
+			<th class="text-center">開始日</th>
+			<th class="text-center">終了日</th>
+			<th class="text-center">備考</th>
 		</tr>
 	</thead>
 	<tbody>
 <?php foreach ($sales_terms as $item): ?>		<tr>
 
+			<td>
+                                <?php echo Html::anchor('sales/term/edit/'.$item->id, '<span class="glyphicon glyphicon-pencil"></span> 編集', array('class' => 'btn btn-sm btn-primary')); ?>
+                                <?php echo Html::anchor('sales/term/delete/'.$item->id, '<span class="glyphicon glyphicon-remove"></span> 削除', array('class' => 'btn btn-sm btn-danger', 'onclick' => "return confirm('削除してもよろしいですか？')")); ?>
+			</td>
 			<td><?php echo $item->term_name; ?></td>
 			<td><?php echo $item->start_date; ?></td>
 			<td><?php echo $item->end_date; ?></td>
 			<td><?php echo $item->note; ?></td>
-			<td>
-				<div class="btn-toolbar">
-					<div class="btn-group">
-						<?php echo Html::anchor('sales/term/view/'.$item->id, '<i class="icon-eye-open"></i> View', array('class' => 'btn btn-small')); ?>						<?php echo Html::anchor('sales/term/edit/'.$item->id, '<i class="icon-wrench"></i> Edit', array('class' => 'btn btn-small')); ?>						<?php echo Html::anchor('sales/term/delete/'.$item->id, '<i class="icon-trash icon-white"></i> Delete', array('class' => 'btn btn-small btn-danger', 'onclick' => "return confirm('Are you sure?')")); ?>					</div>
-				</div>
-
-			</td>
 		</tr>
 <?php endforeach; ?>	</tbody>
 </table>
 
 <?php else: ?>
-<p>No Sales_terms.</p>
+<p>データがありません</p>
 
-<?php endif; ?><p>
-	<?php echo Html::anchor('sales/term/create', 'Add new Sales term', array('class' => 'btn btn-success')); ?>
-
-</p>
+<?php endif; ?>

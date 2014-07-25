@@ -8,7 +8,7 @@
 		<div class="form-group">
 			<?php echo Form::label('売上実績名', 'sales_result_name', array('class'=>'control-label')); ?>
 
-				<?php echo Form::textarea('sales_result_name', Input::post('sales_result_name', isset($sales_result) ? $sales_result->sales_result_name : ''), array('class' => 'col-md-8 form-control', 'rows' => 8, 'placeholder'=>'売上実績名')); ?>
+				<?php echo Form::input('sales_result_name', Input::post('sales_result_name', isset($sales_result) ? $sales_result->sales_result_name : ''), array('class' => 'col-md-8 form-control', 'rows' => 8, 'placeholder'=>'売上実績名')); ?>
 		</div>
 		<div class="form-group">
 			<?php echo Form::label('売上日', 'sales_date', array('class'=>'control-label')); ?>

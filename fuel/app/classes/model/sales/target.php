@@ -28,7 +28,7 @@ class Model_Sales_Target extends Model
 	{
 		$val = Validation::forge($factory);
 		$val->add_field('group_id', 'グループID', 'required|valid_string[numeric]');
-		$val->add_field('sales_term_id', '売上対象期間ID', 'required|valid_string[numeric]');
+		$val->add_field('sales_term_id', '売上期間', 'required|valid_string[numeric]');
 		$val->add_field('target_amount', '目標売上金額', 'required|valid_string[numeric]');
 		$val->add_field('min_amount', '最低売上金額', 'required|valid_string[numeric]');
 

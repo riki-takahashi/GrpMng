@@ -5,9 +5,9 @@
 <table class="table table-striped table-bordered table-hover table-condensed">
 	<thead>
 		<tr class="info">
-			<th class="text-center">&nbsp;</th>
-			<th class="text-center">グループID</th>
-			<th class="text-center">売上対象期間ID</th>
+			<th>&nbsp;</th>
+			<th class="text-center">担当グループ</th>
+			<th class="text-center">売上期間</th>
 			<th class="text-center">目標売上金額</th>
 			<th class="text-center">最低売上金額</th>
 		</tr>

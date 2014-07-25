@@ -5,8 +5,8 @@
 <table class="table table-striped table-bordered table-hover table-condensed">
 	<thead>
 		<tr class="info">
-			<th class="text-center">&nbsp;</th>
-			<th class="text-center">案件ID</th>
+			<th>&nbsp;</th>
+			<th class="text-center">案件名</th>
 			<th class="text-center">売上実績名</th>
 			<th class="text-center">売上日</th>
 			<th class="text-center">売上金額</th>
