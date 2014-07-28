@@ -26,6 +26,7 @@
                 </tr>
 <?php endforeach; ?>	</tbody>
 </table>
+<?php echo Pagination::create_links(); ?>
 
 <?php else: ?>
 <p>データがありません</p>
