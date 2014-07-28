@@ -1,7 +1,8 @@
 <p class="text-right">
-	<?php echo Html::anchor('sales/target/create', '<span class="glyphicon glyphicon-plus"></span> 新規登録', array('class' => 'btn btn-primary')); ?>
+    <?php echo Html::anchor('sales/target/create', '<span class="glyphicon glyphicon-plus"></span> 新規登録', array('class' => 'btn btn-primary')); ?>
 </p>
 <?php if ($sales_targets): ?>
+<?php echo Pagination::create_links(); ?>
 <table class="table table-striped table-bordered table-hover table-condensed">
 	<thead>
 		<tr class="info">
@@ -26,7 +27,6 @@
                 </tr>
 <?php endforeach; ?>	</tbody>
 </table>
-<?php echo Pagination::create_links(); ?>
 
 <?php else: ?>
 <p>データがありません</p>

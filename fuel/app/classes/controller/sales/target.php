@@ -35,8 +35,8 @@ class Controller_Sales_target extends Controller_Template {
             'num_links' => 4,
             'per_page' => 5,
             'total_items' => $count,
-            'name' => 'bootstrap',
-            'wrapper' => '<ul class="pagination">{pagination}</ul>',
+            //'name' => 'bootstrap3',
+            //'wrapper' => '<ul class="pagination pagination-centered">{pagination}</ul>',
             'show_first' => true,
             'show_last' => true,
         );
