@@ -2,6 +2,9 @@
 
 class Controller_Sales_target extends Controller_Template {
 
+    /**
+     * beforeメソッドはTemplateを使用するために必要
+     */
     public function before() {
         parent::before(); // この行がないと、テンプレートが動作しません!
         // 何かする
@@ -16,24 +19,67 @@ class Controller_Sales_target extends Controller_Template {
 
         return $response; // after() は確実に Response オブジェクトを返すように
     }
-
-    public function action_index() {
+    
+    public function action_search($group_id = null, $sales_term_id = null) {
         //ビューに渡す配列の初期化
         $data = array();
-
-        // カテゴリ1の総数を取得する。
-        $query = Model_Sales_Target::query()->where('group_id', 1);
-        $total_items = $query->count();
-
+        
+        if (Input::method() == 'POST') {
+            $group_id = Input::post('group_id');
+            $sales_term_id = Input::post('sales_term_id');
+            
+            $this->action_index($group_id, $sales_term_id);
+            Response::redirect('sales/target/index/'.$group_id.'/'.$sales_term_id);
+        }
+        
+        //ドロップダウン項目の設定
+        $this->setDropDownList(true);
+        
+        $this->template->set_global('group_id', $group_id);
+        $this->template->set_global('sales_term_id', $sales_term_id);
+        
+        //検索条件を保持
+        $data['group_id'] = $group_id;
+        $data['sales_term_id'] = $sales_term_id;
+        
+        //テンプレートファイルにデータの引き渡し
+        $this->template->title = "売上目標検索";
+        $this->template->content = View::forge('sales\target/search', $data);
+    }
+    
+    //  $sales_target->id
+    public function action_index($group_id = null, $sales_term_id = null) {
+        
+        //ビューに渡す配列の初期化
+        $data = array();
+        
+        $query = null;
+        
+        //抽出条件指定
+        //グループ
+        if($group_id) {
+            $query = Model_Sales_Target::query()->where('group_id', $group_id);
+        }
+        
+        //売上期間
+        if ($sales_term_id) {
+            $query = Model_Sales_Target::query()->where('sales_term_id', $sales_term_id);
+        }
+        
+        //条件が指定されていなければ全件抽出
+        if ($query == null) {
+            $query = Model_Sales_Target::query();
+        }
+        
         //データ件数の取得
         $count = $query->count();
 
         //Paginationの環境設定
         $config = array(
-            'pagination_url' => 'GrpMng/sales/target/index',
-            'uri_segment' => 4,
-            'num_links' => 4,
-            'per_page' => 5,
+            'pagination_url' => '/GrpMng/sales/target/index/'.$group_id.'/'.$sales_term_id,
+            'uri_segment' => 'page',
+            'num_links' => 2,
+            'per_page' => 4,
             'total_items' => $count,
             //'name' => 'bootstrap3',
             //'wrapper' => '<ul class="pagination pagination-centered">{pagination}</ul>',
@@ -50,8 +96,10 @@ class Controller_Sales_target extends Controller_Template {
                 ->limit(Pagination::get('per_page'))
                 ->offset(Pagination::get('offset'))
                 ->get();
-
+        
         //テンプレートファイルにデータの引き渡し
+        $this->template->set_global('group_id', $group_id);
+        $this->template->set_global('sales_term_id', $sales_term_id);
         $this->template->title = "売上目標一覧";
         $this->template->content = View::forge('sales\target/index', $data);
     }
@@ -144,15 +192,21 @@ class Controller_Sales_target extends Controller_Template {
         Response::redirect('sales/target');
     }
 
-    private function setDropDownList() {
+    private function setDropDownList($add_blank = false) {
         //グループ一覧
         $m_groups = Model_Group::find('all');
         $groups = Arr::assoc_to_keyval($m_groups, 'id', 'group_name');
+        if($add_blank == true){
+            Arr::insert($groups, array(""),0);
+        }
         $this->template->set_global('groups', $groups, false);
 
         //売上期間一覧
         $m_sales_terms = Model_Sales_Term::find('all');
         $sales_terms = Arr::assoc_to_keyval($m_sales_terms, 'id', 'term_name');
+        if($add_blank == true){
+            Arr::insert($sales_terms, array(""),0);
+        }
         $this->template->set_global('sales_terms', $sales_terms, false);
     }
 
