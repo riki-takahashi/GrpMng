@@ -76,7 +76,7 @@ class Controller_Sales_target extends Controller_Template {
 
         //Paginationの環境設定
         $config = array(
-            'pagination_url' => '/GrpMng/sales/target/index/'.$group_id.'/'.$sales_term_id,
+            'pagination_url' => './'.$group_id.'/'.$sales_term_id,
             'uri_segment' => 'page',
             'num_links' => 2,
             'per_page' => 4,
