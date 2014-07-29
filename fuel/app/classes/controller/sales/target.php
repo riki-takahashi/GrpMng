@@ -29,7 +29,7 @@ class Controller_Sales_target extends Controller_Template {
             $sales_term_id = Input::post('sales_term_id');
             
             $this->action_index($group_id, $sales_term_id);
-            Response::redirect('sales/target/index/'.$group_id.'/'.$sales_term_id);
+            Response::redirect('sales/target/index/'.$group_id.'/'.$sales_term_id.'/');
         }
         
         //ドロップダウン項目の設定
@@ -76,7 +76,7 @@ class Controller_Sales_target extends Controller_Template {
 
         //Paginationの環境設定
         $config = array(
-            'pagination_url' => './'.$group_id.'/'.$sales_term_id,
+            'pagination_url' => './',
             'uri_segment' => 'page',
             'num_links' => 2,
             'per_page' => 4,
@@ -100,11 +100,12 @@ class Controller_Sales_target extends Controller_Template {
         //テンプレートファイルにデータの引き渡し
         $this->template->set_global('group_id', $group_id);
         $this->template->set_global('sales_term_id', $sales_term_id);
+        $this->template->set_global('page', Input::get('page'));
         $this->template->title = "売上目標一覧";
         $this->template->content = View::forge('sales\target/index', $data);
     }
 
-    public function action_create() {
+    public function action_create($group_id = null, $sales_term_id = null) {
         if (Input::method() == 'POST') {
             $val = Model_Sales_Target::validate('create');
 
@@ -120,7 +121,7 @@ class Controller_Sales_target extends Controller_Template {
                 if ($sales_target and $sales_target->save()) {
                     Session::set_flash('success', '売上目標を追加しました。 #' . $sales_target->id . '.');
 
-                    Response::redirect('sales/target');
+                    Response::redirect('sales/target/index/'.$group_id.'/'.$sales_term_id.'/');
                 } else {
                     Session::set_flash('error', '売上目標の登録に失敗しました。');
                 }
@@ -131,16 +132,18 @@ class Controller_Sales_target extends Controller_Template {
         //ドロップダウン項目の設定
         $this->setDropDownList();
 
+        $this->template->set_global('group_id', $group_id);
+        $this->template->set_global('sales_term_id', $sales_term_id);
         $this->template->title = "売上目標登録";
         $this->template->content = View::forge('sales\target/create');
     }
 
-    public function action_edit($sales_target_id = null) {
-        is_null($sales_target_id) and Response::redirect('sales/target');
+    public function action_edit($sales_target_id = null, $group_id = null, $sales_term_id = null, $page = null) {
+        is_null($sales_target_id) and Response::redirect('sales/target/index/'.$group_id.'/'.$sales_term_id.'/?page='.$page);
 
         if (!$sales_target = Model_Sales_Target::find($sales_target_id)) {
             Session::set_flash('error', '該当の売上目標が見つかりません。 #' . $sales_target_id);
-            Response::redirect('sales/target');
+            Response::redirect('sales/target/index/'.$group_id.'/'.$sales_term_id.'/?page='.$page);
         }
 
         $val = Model_Sales_Target::validate('edit');
@@ -154,7 +157,7 @@ class Controller_Sales_target extends Controller_Template {
             if ($sales_target->save()) {
                 Session::set_flash('success', '売上目標を更新しました。 #' . $sales_target_id);
 
-                Response::redirect('sales/target');
+                Response::redirect('sales/target/index/'.$group_id.'/'.$sales_term_id.'/?page='.$page);
             } else {
                 Session::set_flash('error', '売上目標の更新に失敗しました。 #' . $sales_target_id);
             }
@@ -174,12 +177,15 @@ class Controller_Sales_target extends Controller_Template {
         //ドロップダウン項目の設定
         $this->setDropDownList();
 
+        $this->template->set_global('group_id', $group_id);
+        $this->template->set_global('sales_term_id', $sales_term_id);
+        $this->template->set_global('page', $page);
         $this->template->title = "売上目標情報";
         $this->template->content = View::forge('sales\target/edit');
     }
 
-    public function action_delete($sales_target_id = null) {
-        is_null($sales_target_id) and Response::redirect('sales/target');
+    public function action_delete($sales_target_id = null, $group_id = null, $sales_term_id = null) {
+        is_null($sales_target_id) and Response::redirect('sales/target/index/'.$group_id.'/'.$sales_term_id.'/');
 
         if ($sales_target = Model_Sales_Target::find($sales_target_id)) {
             $sales_target->delete();
@@ -189,7 +195,7 @@ class Controller_Sales_target extends Controller_Template {
             Session::set_flash('error', '売上目標の削除に失敗しました。 #' . $sales_target_id);
         }
 
-        Response::redirect('sales/target');
+        Response::redirect('sales/target/index/'.$group_id.'/'.$sales_term_id.'/');
     }
 
     private function setDropDownList($add_blank = false) {
