@@ -53,17 +53,17 @@ class Controller_Sales_target extends Controller_Template {
         //ビューに渡す配列の初期化
         $data = array();
         
+        //検索条件構築
         $query = null;
-        
-        //抽出条件指定
+
         //グループ
-        if($group_id) {
-            $query = Model_Sales_Target::query()->where('group_id', $group_id);
+        if ($group_id != null and $group_id != 0) {
+            $query = $this->addAndCondition($query, 'group_id', $group_id);
         }
         
         //売上期間
-        if ($sales_term_id) {
-            $query = Model_Sales_Target::query()->where('sales_term_id', $sales_term_id);
+        if ($sales_term_id != null and $sales_term_id != 0) {
+            $query = $this->addAndCondition($query, 'sales_term_id', $sales_term_id);
         }
         
         //条件が指定されていなければ全件抽出
@@ -216,4 +216,16 @@ class Controller_Sales_target extends Controller_Template {
         $this->template->set_global('sales_terms', $sales_terms, false);
     }
 
+    /**
+     * Where条件の構築（サブルーチン）
+     */
+    private function addAndCondition($query = null, $key = null, $value = null) {
+        if($query == null) {
+            $query = Model_Sales_Target::query()->where($key, $value);
+        } else {
+            $query->where($key, $value);
+        }
+        
+        return $query;
+    }
 }
