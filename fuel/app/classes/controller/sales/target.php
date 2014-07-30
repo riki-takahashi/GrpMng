@@ -54,16 +54,16 @@ class Controller_Sales_target extends Controller_Template {
         $data = array();
         
         //検索条件構築
-        $query = null;
+        $query = Model_Sales_Target::query();
 
         //グループ
         if ($group_id != null and $group_id != 0) {
-            $query = $this->addAndCondition($query, 'group_id', $group_id);
+            $query = Util::addAndCondition($query, 'group_id', $group_id);
         }
         
         //売上期間
         if ($sales_term_id != null and $sales_term_id != 0) {
-            $query = $this->addAndCondition($query, 'sales_term_id', $sales_term_id);
+            $query = Util::addAndCondition($query, 'sales_term_id', $sales_term_id);
         }
         
         //条件が指定されていなければ全件抽出
@@ -203,7 +203,7 @@ class Controller_Sales_target extends Controller_Template {
         $m_groups = Model_Group::find('all');
         $groups = Arr::assoc_to_keyval($m_groups, 'id', 'group_name');
         if($add_blank == true){
-            Arr::insert($groups, array(""),0);
+            Arr::insert_assoc($groups, array(""), 0);
         }
         $this->template->set_global('groups', $groups, false);
 
@@ -211,21 +211,9 @@ class Controller_Sales_target extends Controller_Template {
         $m_sales_terms = Model_Sales_Term::find('all');
         $sales_terms = Arr::assoc_to_keyval($m_sales_terms, 'id', 'term_name');
         if($add_blank == true){
-            Arr::insert($sales_terms, array(""),0);
+            Arr::insert_assoc($sales_terms, array(""), 0);
         }
         $this->template->set_global('sales_terms', $sales_terms, false);
     }
 
-    /**
-     * Where条件の構築（サブルーチン）
-     */
-    private function addAndCondition($query = null, $key = null, $value = null) {
-        if($query == null) {
-            $query = Model_Sales_Target::query()->where($key, $value);
-        } else {
-            $query->where($key, $value);
-        }
-        
-        return $query;
-    }
 }

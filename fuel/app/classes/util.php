@@ -13,4 +13,18 @@ class Util {
 			return $var;
 		}
 	}
+        
+        /**
+         * Where条件の構築（サブルーチン）
+         */
+        public static function addAndCondition($query = null, $key = null, $value = null) {
+            if($query == null) {
+                    return;
+            }
+            
+            $query = $query->where($key, $value);
+
+            return $query;
+        }
+
 }
