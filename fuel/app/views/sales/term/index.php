@@ -20,8 +20,8 @@
                                 <?php echo Html::anchor('sales/term/delete/'.$item->id, '<span class="glyphicon glyphicon-remove"></span> 削除', array('class' => 'btn btn-sm btn-danger', 'onclick' => "return confirm('削除してもよろしいですか？')")); ?>
 			</td>
 			<td><?php echo $item->term_name; ?></td>
-			<td><?php echo $item->start_date; ?></td>
-			<td><?php echo $item->end_date; ?></td>
+                        <td><?php echo str_replace('-', '/', $item->start_date); ?></td>
+			<td><?php echo str_replace('-', '/', $item->end_date); ?></td>
 			<td><?php echo $item->note; ?></td>
 		</tr>
 <?php endforeach; ?>	</tbody>

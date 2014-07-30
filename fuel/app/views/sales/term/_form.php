@@ -10,13 +10,13 @@
 		<div class="form-group">
 			<?php echo Form::label('開始日', 'start_date', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('start_date', Input::post('start_date', isset($sales_term) ? $sales_term->start_date : ''), array('class' => 'col-md-4 form-control dp', 'placeholder'=>'開始日')); ?>
+				<?php echo Form::input('start_date', Input::post('start_date', isset($sales_term) ? str_replace('-', '/', $sales_term->start_date) : ''), array('class' => 'col-md-4 form-control dp', 'placeholder'=>'開始日')); ?>
 
 		</div>
 		<div class="form-group">
 			<?php echo Form::label('終了日', 'end_date', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('end_date', Input::post('end_date', isset($sales_term) ? $sales_term->end_date : ''), array('class' => 'col-md-4 form-control dp', 'placeholder'=>'終了日')); ?>
+				<?php echo Form::input('end_date', Input::post('end_date', isset($sales_term) ? str_replace('-', '/', $sales_term->end_date) : ''), array('class' => 'col-md-4 form-control dp', 'placeholder'=>'終了日')); ?>
 
 		</div>
 		<div class="form-group">

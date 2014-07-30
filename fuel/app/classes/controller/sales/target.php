@@ -47,7 +47,6 @@ class Controller_Sales_target extends Controller_Template {
         $this->template->content = View::forge('sales\target/search', $data);
     }
     
-    //  $sales_target->id
     public function action_index($group_id = null, $sales_term_id = null) {
         
         //ビューに渡す配列の初期化

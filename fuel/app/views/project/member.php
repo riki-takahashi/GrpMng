@@ -9,10 +9,10 @@
 	<?php echo $project->employee->emp_name; ?></p>
 <p>
 	<strong>開始日:</strong>
-	<?php echo $project->start_date; ?></p>
+	<?php echo str_replace('-', '/', $project->start_date); ?></p>
 <p>
 	<strong>終了日:</strong>
-	<?php echo $project->end_date; ?></p>
+	<?php echo str_replace('-', '/', $project->end_date); ?></p>
 <p>
 	<strong>備考:</strong>
 	<?php echo $project->note; ?></p>
@@ -42,8 +42,8 @@
 						<?php echo Html::anchor('project/mdelete/'.$project->id.'/'.$member->id, '<span class="glyphicon glyphicon-remove"></span> 削除', array('class' => 'btn btn-sm btn-danger', 'onclick' => "return confirm('削除してもよろしいですか？')")); ?>
 					</td>
 					<td><?php echo $member->employee->emp_name; ?></td>
-					<td><?php echo $member->start_date; ?></td>
-					<td><?php echo $member->end_date; ?></td>
+					<td><?php echo str_replace('-', '/', $member->start_date); ?></td>
+					<td><?php echo str_replace('-', '/', $member->end_date); ?></td>
 					<td><?php echo $member->note; ?></td>
 				</tr>
 			<?php else : ?>
@@ -58,10 +58,10 @@
 						<td><?php echo $member->employee->emp_name; ?></td>
 					<?php endif; ?>
 					<td>
-						<?php echo Form::input('start_date', Input::post('start_date', isset($member) ? $member->start_date : ''), array('class' => 'col-md-4 form-control dp', 'placeholder'=>'開始日')); ?>
+						<?php echo Form::input('start_date', Input::post('start_date', isset($member) ? str_replace('-', '/', $member->start_date) : ''), array('class' => 'col-md-4 form-control dp', 'placeholder'=>'開始日')); ?>
 					</td>
 					<td>
-						<?php echo Form::input('end_date', Input::post('end_date', isset($member) ? $member->end_date : ''), array('class' => 'col-md-4 form-control dp', 'placeholder'=>'終了日')); ?>
+						<?php echo Form::input('end_date', Input::post('end_date', isset($member) ? str_replace('-', '/', $member->end_date) : ''), array('class' => 'col-md-4 form-control dp', 'placeholder'=>'終了日')); ?>
 					</td>
 					<td>
 						<?php echo Form::input('note', Input::post('note', isset($member) ? $member->note : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'備考')); ?>

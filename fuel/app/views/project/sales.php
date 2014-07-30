@@ -9,10 +9,10 @@
 	<?php echo $project->employee->emp_name; ?></p>
 <p>
 	<strong>開始日:</strong>
-	<?php echo $project->start_date; ?></p>
+	<?php echo str_replace('-', '/', $project->start_date); ?></p>
 <p>
 	<strong>終了日:</strong>
-	<?php echo $project->end_date; ?></p>
+	<?php echo str_replace('-', '/', $project->end_date); ?></p>
 <p>
 	<strong>備考:</strong>
 	<?php echo $project->note; ?></p>
@@ -42,7 +42,7 @@
                                         <?php echo Html::anchor('project/sdelete/'.$project->id.'/'.$result->id, '<span class="glyphicon glyphicon-remove"></span> 削除', array('class' => 'btn btn-sm btn-danger', 'onclick' => "return confirm('削除してもよろしいですか？')")); ?>
                                     </td>
                                     <td><?php echo $result->sales_result_name; ?></td>
-                                    <td><?php echo $result->sales_date; ?></td>
+                                    <td><?php echo str_replace('-', '/', $result->sales_date); ?></td>
                                     <td><?php echo $result->sales_amount; ?></td>
                                     <td><?php echo $result->tax; ?></td>
                                     <td><?php echo $result->note; ?></td>

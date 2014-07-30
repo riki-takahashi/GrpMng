@@ -3,7 +3,56 @@ class Controller_Project extends Controller_Mybase
 {
 	const TEMP_ID = 99999;
 
-	public function action_index()
+        /**
+         * beforeメソッドはTemplateを使用するために必要
+         */
+        public function before() {
+            parent::before(); // この行がないと、テンプレートが動作しません!
+            // 何かする
+        }
+        
+        /**
+         * $response をパラメータとして追加し、after() を Controller_Template 互換にする
+         */
+        public function after($response) {
+            $response = parent::after($response); // あなた自身のレスポンスオブジェクトを作成する場合は必要ありません。
+            // do stuff
+
+            return $response; // after() は確実に Response オブジェクトを返すように
+        }
+        
+        public function action_search($project_name = null, $group_id = null, $emp_id = null) {
+            //ビューに渡す配列の初期化
+            $data = array();
+
+            if (Input::method() == 'POST') {
+                
+                $project_name = Input::post('project_name');
+                $group_id = Input::post('group_id');
+                $emp_id = Input::post('emp_id');
+
+                $this->action_index($project_name, $group_id, $emp_id);
+                Response::redirect('project/index/'.$group_id.'/'.$emp_id.'/');
+            }
+
+            //ドロップダウン項目の設定
+            $this->setDropDownList(true);
+
+            $this->template->set_global('project_name', $project_name);
+            $this->template->set_global('group_id', $group_id);
+            $this->template->set_global('emp_id', $emp_id);
+
+            //検索条件を保持
+            $data['project_name'] = $project_name;
+            $data['group_id'] = $group_id;
+            $data['emp_id'] = $emp_id;
+
+            //テンプレートファイルにデータの引き渡し
+            $this->template->title = "案件検索";
+            $this->template->content = View::forge('project/search', $data);
+        }
+        
+	public function action_index($project_name = null, $group_id = null)
 	{
 		//案件一覧データ
 		$data['projects'] = Model_Project::find('all', array(
@@ -256,8 +305,8 @@ class Controller_Project extends Controller_Mybase
 			$member = Model_Projectmember::forge(array(
 				'id' => self::TEMP_ID,
 				'project_id' => $project_id,
-				'start_date' => $project->start_date,
-				'end_date' => $project->end_date,
+				'start_date' => str_replace('-', '/', $project->start_date),
+				'end_date' => str_replace('-', '/', $project->end_date),
 			));
 			$project->members[] = $member;
 
@@ -292,12 +341,16 @@ class Controller_Project extends Controller_Mybase
 		Response::redirect('project/member/'.$project_id);
 	}
 	
-	private function setDropDownList()
+	private function setDropDownList($add_blank = false)
 	{
 		//グループ一覧
 		$m_groups = Model_Group::find('all');
 		$groups = Arr::assoc_to_keyval($m_groups, 'id', 'group_name');
+                if($add_blank == true){
+                    Arr::insert_assoc($groups, array(""), 0);
+                }
 		$this->template->set_global('groups', $groups, false);
+                
 		//社員一覧
 		$m_employees = Model_Employee::find('all', array(
 			'where' => array(
@@ -306,6 +359,9 @@ class Controller_Project extends Controller_Mybase
 			'order_by' => array('emp_kana' => 'asc'),
 		));
 		$employees = Arr::assoc_to_keyval($m_employees, 'id', 'emp_name');
+                if($add_blank == true){
+                    Arr::insert_assoc($employees, array(""), 0);
+                }
 		$this->template->set_global('employees', $employees, false);
 	}
 	
@@ -321,8 +377,6 @@ class Controller_Project extends Controller_Mybase
 		$employees = Arr::assoc_to_keyval($m_employees, 'id', 'emp_name');
 		$this->template->set_global('employees', $employees, false);
 	}
-        
-        
         
 	//売上実績
 	public function action_sales($project_id = null)
@@ -362,5 +416,4 @@ class Controller_Project extends Controller_Mybase
 
 		Response::redirect('project/sales/'.$project_id);
 	}
-        
 }

@@ -8,11 +8,11 @@
 		<tr class="info">
 			<th>&nbsp;</th>
 			<th class="text-center">案件名</th>
-			<th class="text-center">担当グループ</th>
-			<th class="text-center">担当者</th>
-			<th class="text-center">開始日</th>
-			<th class="text-center">終了日</th>
-			<th class="text-center">エンドユーザー</th>
+			<th class="text-center hidden-xs hidden-sm">担当グループ</th>
+			<th class="text-center hidden-xs hidden-sm">担当者</th>
+			<th class="text-center hidden-xs hidden-sm">開始日</th>
+			<th class="text-center hidden-xs hidden-sm">終了日</th>
+			<th class="text-center hidden-xs">エンドユーザー</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -25,11 +25,11 @@
 				<?php echo Html::anchor('project/sales/'.$item->id, '<span class="glyphicon glyphicon-thumbs-up"></span> 売上実績', array('class' => 'btn btn-sm btn-primary')); ?>
 			</td>
 			<td><?php echo $item->project_name; ?></td>
-			<td><?php echo $item->group->group_name; ?></td>
-			<td><?php echo $item->employee->emp_name; ?></td>
-			<td><?php echo $item->start_date; ?></td>
-			<td><?php echo $item->end_date; ?></td>
-			<td><?php echo $item->end_user; ?></td>
+			<td class="hidden-xs hidden-sm"><?php echo $item->group->group_name; ?></td>
+			<td class="hidden-xs hidden-sm"><?php echo $item->employee->emp_name; ?></td>
+			<td class="hidden-xs hidden-sm"><?php echo str_replace('-', '/', $item->start_date); ?></td>
+			<td class="hidden-xs hidden-sm"><?php echo str_replace('-', '/', $item->end_date); ?></td>
+			<td class="hidden-xs"><?php echo $item->end_user; ?></td>
 		</tr>
 <?php endforeach; ?>
 	</tbody>

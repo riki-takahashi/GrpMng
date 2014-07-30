@@ -13,7 +13,7 @@
 		<div class="form-group">
 			<?php echo Form::label('売上日', 'sales_date', array('class'=>'control-label')); ?>
 
-				<?php echo Form::input('sales_date', Input::post('sales_date', isset($sales_result) ? $sales_result->sales_date : ''), array('class' => 'col-md-4 form-control dp', 'placeholder'=>'売上日')); ?>
+				<?php echo Form::input('sales_date', Input::post('sales_date', isset($sales_result) ? str_replace('-', '/', $sales_result->sales_date) : ''), array('class' => 'col-md-4 form-control dp', 'placeholder'=>'売上日')); ?>
 		</div>
 		<div class="form-group">
 			<?php echo Form::label('売上金額', 'sales_amount', array('class'=>'control-label')); ?>
