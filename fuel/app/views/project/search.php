@@ -6,14 +6,14 @@
 	<fieldset>
             <div class="form-group">
                 <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
-                    <?php echo Form::label('案件名', 'project_name', array('class'=>'control-label')); ?>
-                            <?php echo Form::input('project_name', Input::post('project_name', isset($project) ? $project->project_name : ''), array('class' => 'form-control', 'placeholder'=>'案件名')); ?>
+                    <?php echo $fieldset->field('project_name')->set_template('{label}'); ?>
+                    <?php echo $fieldset->field('project_name')->set_template('{field}'); ?>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
-                    <?php echo Form::label('担当グループ', 'group_id', array('class'=>'control-label')); ?>
-                            <?php echo Form::select('group_id', $group_id, $groups, array('class' => 'form-control')); ?>
+                    <?php echo $fieldset->field('group_id')->set_template('{label}'); ?>
+                    <?php echo $fieldset->field('group_id')->set_template('{field}'); ?>
                 </div>
             </div>
             <div class="form-group">
@@ -69,4 +69,4 @@
                 </div>
             </div>
 	</fieldset>
-<?php echo Form::close(); ?>
+<?php echo Form::close(); 

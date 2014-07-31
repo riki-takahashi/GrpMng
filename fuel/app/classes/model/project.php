@@ -5,8 +5,23 @@ class Model_Project extends Model
 {
 	protected static $_properties = array(
 		'id',
-		'project_name',
-		'group_id',
+		'project_name' => array(
+                    'data_type' => 'varchar',
+                    'label' => '案件名',
+                    'form' => array(
+                                'type' => 'text',
+                                'class' => 'form-control',
+                                'placeholder' => '案件名',
+                            ),
+                ),
+		'group_id' => array(
+                    'data_type' => 'varchar',
+                    'label' => '担当グループ',
+                    'form' => array(
+                                'type' => 'select',
+                                'class' => 'form-control',
+                            ),
+                ),
 		'emp_id',
 		'start_date',
 		'end_date',

@@ -22,18 +22,38 @@ class Controller_Project extends Controller_Mybase
         }
         
         public function action_search($project_name = null, $group_id = null, $emp_id = null) {
+            
+            // Fieldsetの定義
+            $fieldset = Fieldset::forge();
+
+            $project = Model_Project::forge();
+            $fieldset->add_model($project);
+            $fieldset->field('group_id')->set_options($this->getGroups(true));
+            
+            
+            if (Input::method() == 'POST') {
+                // バリデーションチェック
+                $val = $fieldset->validation();
+                if ($val->run()) {
+            
+                    $project_name = Input::post('project_name');
+                    $group_id = Input::post('group_id');
+                    $emp_id = Input::post('emp_id');
+
+                    $this->action_index($project_name, $group_id, $emp_id);
+                    Response::redirect('project/index/'.$group_id.'/'.$emp_id.'/');
+                }
+                else
+                {
+                    $fieldset->repopulate();
+                }
+            }
+            
+            
+            $fieldset->repopulate();
+            
             //ビューに渡す配列の初期化
             $data = array();
-
-            if (Input::method() == 'POST') {
-                
-                $project_name = Input::post('project_name');
-                $group_id = Input::post('group_id');
-                $emp_id = Input::post('emp_id');
-
-                $this->action_index($project_name, $group_id, $emp_id);
-                Response::redirect('project/index/'.$group_id.'/'.$emp_id.'/');
-            }
 
             //ドロップダウン項目の設定
             $this->setDropDownList(true);
@@ -49,11 +69,26 @@ class Controller_Project extends Controller_Mybase
 
             //テンプレートファイルにデータの引き渡し
             $this->template->title = "案件検索";
+            $this->template->set_global('fieldset', $fieldset, false);
+            
             $this->template->content = View::forge('project/search', $data);
         }
         
 	public function action_index($project_name = null, $group_id = null)
 	{
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
 		//案件一覧データ
 		$data['projects'] = Model_Project::find('all', array(
 			'order_by' => array('start_date' => 'desc'),
@@ -340,8 +375,8 @@ class Controller_Project extends Controller_Mybase
 
 		Response::redirect('project/member/'.$project_id);
 	}
-	
-	private function setDropDownList($add_blank = false)
+
+	private function getGroups($add_blank = false)
 	{
 		//グループ一覧
 		$m_groups = Model_Group::find('all');
@@ -349,7 +384,13 @@ class Controller_Project extends Controller_Mybase
                 if($add_blank == true){
                     Arr::insert_assoc($groups, array(""), 0);
                 }
-		$this->template->set_global('groups', $groups, false);
+                return $groups;
+        }
+                
+	private function setDropDownList($add_blank = false)
+	{
+		//グループ一覧
+		$this->template->set_global('groups', $this->getGroups($add_blank), false);
                 
 		//社員一覧
 		$m_employees = Model_Employee::find('all', array(

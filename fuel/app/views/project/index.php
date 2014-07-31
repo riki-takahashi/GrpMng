@@ -2,6 +2,7 @@
 	<?php echo Html::anchor('project/create', '<span class="glyphicon glyphicon-plus"></span> 新規登録', array('class' => 'btn btn-primary')); ?>
 </p>
 <?php if ($projects): ?>
+<?php echo Pagination::create_links(); ?>
 <div class="table-responsive">
 <table class="table table-striped table-bordered table-hover table-condensed">
 	<thead>
@@ -38,3 +39,6 @@
 <?php else: ?>
 <p>データがありません</p>
 <?php endif; ?>
+<p>
+	<?php echo Html::anchor('project/search/', '検索画面に戻る'); ?>
+</p>

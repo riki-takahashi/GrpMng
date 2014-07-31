@@ -3,6 +3,7 @@
 </p>
 <?php if ($sales_targets): ?>
 <?php echo Pagination::create_links(); ?>
+<div class="table-responsive">
 <table class="table table-striped table-bordered table-hover table-condensed">
 	<thead>
 		<tr class="info">
@@ -17,8 +18,20 @@
 <?php foreach ($sales_targets as $item): ?>
                 <tr>
 			<td>
-                                <?php echo Html::anchor('sales/target/edit/'.$item->id.'/'.$group_id.'/'.$sales_term_id.'/'.$page.'/', '<span class="glyphicon glyphicon-pencil"></span> 編集', array('class' => 'btn btn-sm btn-primary')); ?>
-                                <?php echo Html::anchor('sales/target/delete/'.$item->id.'/'.$group_id.'/'.$sales_term_id.'/', '<span class="glyphicon glyphicon-remove"></span> 削除', array('class' => 'btn btn-sm btn-danger', 'onclick' => "return confirm('削除してもよろしいですか？')")); ?>
+                                <?php echo Html::anchor('sales/target/edit'
+                                        . '?'.Controller_Sales_target::SALES_TARGET_ID.'='.$item->id
+                                        . '&'.Controller_Sales_target::GROUP_ID.'='.$group_id
+                                        . '&'.Controller_Sales_target::SALES_TERM_ID.'='.$sales_term_id
+                                        . '&'.Controller_Sales_target::PAGE.'='.$page
+                                        , '<span class="glyphicon glyphicon-pencil"></span> 編集'
+                                        , array('class' => 'btn btn-sm btn-primary')); ?>
+                            
+                                <?php echo Html::anchor('sales/target/delete'
+                                        . '?'.Controller_Sales_target::SALES_TARGET_ID.'='.$item->id
+                                        . '&'.Controller_Sales_target::GROUP_ID.'='.$group_id
+                                        . '&'.Controller_Sales_target::SALES_TERM_ID.'='.$sales_term_id
+                                        , '<span class="glyphicon glyphicon-remove"></span> 削除'
+                                        , array('class' => 'btn btn-sm btn-danger', 'onclick' => "return confirm('削除してもよろしいですか？')")); ?>
 			</td>
                         <td class="hidden-xs"><?php echo $item->group->group_name; ?></td>
                         <td><?php echo $item->sales_term->term_name; ?></td>
@@ -27,10 +40,13 @@
                 </tr>
 <?php endforeach; ?>	</tbody>
 </table>
-
+</div>
 <?php else: ?>
 <p>データがありません</p>
 <?php endif; ?>
 <p>
-	<?php echo Html::anchor('sales/target/search/'.$group_id.'/'.$sales_term_id, '検索画面に戻る'); ?>
+	<?php echo Html::anchor('sales/target/search'
+                . '?'.Controller_Sales_target::GROUP_ID.'='.$group_id
+                . '&'.Controller_Sales_target::SALES_TERM_ID.'='.$sales_term_id
+                , '検索画面に戻る'); ?>
 </p>
