@@ -1,5 +1,5 @@
 <p class="text-right">
-    <?php echo Html::anchor('sales/target/create/'.$group_id.'/'.$sales_term_id.'/', '<span class="glyphicon glyphicon-plus"></span> 新規登録', array('class' => 'btn btn-primary')); ?>
+    <?php echo Html::anchor('sales/target/create/', '<span class="glyphicon glyphicon-plus"></span> 新規登録', array('class' => 'btn btn-primary')); ?>
 </p>
 <?php if ($sales_targets): ?>
 <?php echo Pagination::create_links(); ?>

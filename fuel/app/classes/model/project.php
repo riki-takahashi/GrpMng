@@ -7,7 +7,11 @@ class Model_Project extends Model
 		'id',
 		'project_name' => array(
                     'data_type' => 'varchar',
-                    'label' => '案件名',
+                    'label' => array(
+                                'label' => '案件名',
+                                'class' => 'control-label',
+                                'for' => 'form_project_name',
+                            ),
                     'form' => array(
                                 'type' => 'text',
                                 'class' => 'form-control',
@@ -16,21 +20,132 @@ class Model_Project extends Model
                 ),
 		'group_id' => array(
                     'data_type' => 'varchar',
-                    'label' => '担当グループ',
+                    'label' => array(
+                                'label' => '担当グループ',
+                                'class' => 'control-label',
+                                'for' => 'form_group_id',
+                            ),
                     'form' => array(
                                 'type' => 'select',
                                 'class' => 'form-control',
                             ),
                 ),
-		'emp_id',
-		'start_date',
-		'end_date',
-		'order_amount',
-		'delivery_date',
-		'sales_date',
-		'end_user',
-		'order_user',
-		'note',
+		'emp_id' => array(
+                    'data_type' => 'varchar',
+                    'label' => array(
+                                'label' => '担当者',
+                                'class' => 'control-label',
+                                'for' => 'form_emp_id',
+                            ),
+                    'form' => array(
+                                'type' => 'select',
+                                'class' => 'form-control',
+                            ),
+                ),
+		'start_date' => array(
+                    'data_type' => 'varchar',
+                    'label' => array(
+                                'label' => '開始日',
+                                'class' => 'control-label',
+                                'for' => 'form_start_date',
+                            ),
+                    'form' => array(
+                                'type' => 'text',
+                                'class' => 'form-control dp',
+                                'placeholder' => '開始日',
+                            ),
+                ),
+		'end_date' => array(
+                    'data_type' => 'varchar',
+                    'label' => array(
+                                'label' => '終了日',
+                                'class' => 'control-label',
+                                'for' => 'form_end_date',
+                            ),
+                    'form' => array(
+                                'type' => 'text',
+                                'class' => 'form-control dp',
+                                'placeholder' => '終了日',
+                            ),
+                ),
+		'order_amount' => array(
+                    'data_type' => 'varchar',
+                    'label' => array(
+                                'label' => '受注金額',
+                                'class' => 'control-label',
+                                'for' => 'form_order_amount',
+                            ),
+                    'form' => array(
+                                'type' => 'text',
+                                'class' => 'form-control',
+                                'placeholder' => '受注金額',
+                            ),
+                ),
+		'delivery_date' => array(
+                    'data_type' => 'varchar',
+                    'label' => array(
+                                'label' => '納品日',
+                                'class' => 'control-label',
+                                'for' => 'form_delivery_date',
+                            ),
+                    'form' => array(
+                                'type' => 'text',
+                                'class' => 'form-control dp',
+                                'placeholder' => '納品日',
+                            ),
+                ),
+		'sales_date' => array(
+                    'data_type' => 'varchar',
+                    'label' => array(
+                                'label' => '売上日',
+                                'class' => 'control-label',
+                                'for' => 'form_sales_date',
+                            ),
+                    'form' => array(
+                                'type' => 'text',
+                                'class' => 'form-control dp',
+                                'placeholder' => '売上日',
+                            ),
+                ),
+		'end_user' => array(
+                    'data_type' => 'varchar',
+                    'label' => array(
+                                'label' => 'エンドユーザー',
+                                'class' => 'control-label',
+                                'for' => 'form_end_user',
+                            ),
+                    'form' => array(
+                                'type' => 'text',
+                                'class' => 'form-control',
+                                'placeholder' => 'エンドユーザー',
+                            ),
+                ),
+		'order_user' => array(
+                    'data_type' => 'varchar',
+                    'label' => array(
+                                'label' => '受注元',
+                                'class' => 'control-label',
+                                'for' => 'form_order_user',
+                            ),
+                    'form' => array(
+                                'type' => 'text',
+                                'class' => 'form-control',
+                                'placeholder' => '受注元',
+                            ),
+                ),
+		'note' => array(
+                    'data_type' => 'varchar',
+                    'label' => array(
+                                'label' => '備考',
+                                'class' => 'control-label',
+                                'for' => 'form_note',
+                            ),
+                    'form' => array(
+                                'type' => 'text',
+                                'class' => 'form-control',
+                                'placeholder' => '備考',
+                            ),
+                ),
 		'created_at',
 		'updated_at',
 	);

@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * 売上目標情報コントローラクラス
+ * Copyright 2014 Riki System Co.,Ltd.
+ */
 class Controller_Sales_target extends Controller_Template {
 
     const GROUP_ID = 'group_id';
@@ -12,16 +15,13 @@ class Controller_Sales_target extends Controller_Template {
      */
     public function before() {
         parent::before(); // この行がないと、テンプレートが動作しません!
-        // 何かする
     }
 
     /**
      * $response をパラメータとして追加し、after() を Controller_Template 互換にする
      */
     public function after($response) {
-        $response = parent::after($response); // あなた自身のレスポンスオブジェクトを作成する場合は必要ありません。
-        // do stuff
-
+        $response = parent::after($response);
         return $response; // after() は確実に Response オブジェクトを返すように
     }
 
@@ -30,10 +30,8 @@ class Controller_Sales_target extends Controller_Template {
         $group_id = Input::get($this::GROUP_ID);
         $sales_term_id = Input::get($this::SALES_TERM_ID);
 
-        //ビューに渡す配列の初期化
-        $data = array();
-
         //検索条件構築
+        //条件が指定されていなければ全件抽出
         $query = Model_Sales_Target::query();
 
         //グループ
@@ -46,11 +44,6 @@ class Controller_Sales_target extends Controller_Template {
             $query = Util::addAndCondition($query, $this::SALES_TERM_ID, $sales_term_id);
         }
 
-        //条件が指定されていなければ全件抽出
-        if ($query == null) {
-            $query = Model_Sales_Target::query();
-        }
-
         //データ件数の取得
         $count = $query->count();
 
@@ -61,14 +54,15 @@ class Controller_Sales_target extends Controller_Template {
             'num_links' => 2,
             'per_page' => 4,
             'total_items' => $count,
-            //'name' => 'bootstrap3',
-            //'wrapper' => '<ul class="pagination pagination-centered">{pagination}</ul>',
             'show_first' => true,
             'show_last' => true,
         );
 
         //Paginationのセット
         Pagination::set_config($config);
+
+        //ビューに渡す配列の初期化
+        $data = array();
 
         //モデルSales_Targetからページネーションデータを取得
         $data['sales_targets'] = $query
@@ -135,8 +129,8 @@ class Controller_Sales_target extends Controller_Template {
                 if ($sales_target and $sales_target->save()) {
                     Session::set_flash('success', '売上目標を追加しました。 #' . $sales_target->id . '.');
                     Response::redirect('sales/target/index'
-                            . '?' . $this::GROUP_ID . '=' . Input::post($this::GROUP_ID)
-                            . '&' . $this::SALES_TERM_ID . '=' . Input::post($this::SALES_TERM_ID));
+                            .'?'.$this::GROUP_ID.'='.Input::post($this::GROUP_ID)
+                            .'&'.$this::SALES_TERM_ID.'='.Input::post($this::SALES_TERM_ID));
                 } else {
                     Session::set_flash('error', '売上目標の登録に失敗しました。');
                 }
