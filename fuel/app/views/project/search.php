@@ -53,19 +53,19 @@
             <div class="form-group">
                 <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
                     <?php echo $fieldset->field('end_user')->set_template('{label}'); ?>
-                    <?php echo Form::input('end_user', Input::post('end_user', isset($project) ? $project->end_user : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'エンドユーザー')); ?>
+                    <?php echo $fieldset->field('end_user')->set_template('{field}'); ?>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
                     <?php echo $fieldset->field('order_user')->set_template('{label}'); ?>
-                    <?php echo Form::input('order_user', Input::post('order_user', isset($project) ? $project->order_user : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'受注元')); ?>
+                    <?php echo $fieldset->field('order_user')->set_template('{field}'); ?>
                 </div>
             </div>
             <div class="form-group">
                 <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
                     <?php echo $fieldset->field('note')->set_template('{label}'); ?>
-                    <?php echo Form::textarea('note', Input::post('note', isset($project) ? $project->note : ''), array('class' => 'col-md-8 form-control', 'rows' => '3', 'placeholder'=>'備考')); ?>
+                    <?php echo $fieldset->field('note')->set_template('{field}'); ?>
                 </div>
             </div>
 	</fieldset>

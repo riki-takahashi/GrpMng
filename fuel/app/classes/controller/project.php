@@ -168,6 +168,10 @@ class Controller_Project extends Controller_Mybase {
         
         $projectsearch->sales_date_from = Input::post('sales_date_from');
         $projectsearch->sales_date_to = Input::post('sales_date_to');
+
+        $projectsearch->end_user = Input::post($this::END_USER);
+        $projectsearch->order_user = Input::post($this::ORDER_USER);
+        $projectsearch->note = Input::post($this::NOTE);
         
         Session::set($this::PROJECTSEARCH, $projectsearch);        
         
