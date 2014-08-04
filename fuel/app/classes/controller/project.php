@@ -38,17 +38,21 @@ class Controller_Project extends Controller_Mybase {
      */
     public function action_index() {
         //SESSION取得処理
-        $group_id = Session::get($this::GROUP_ID);
-        $emp_id = Session::get($this::EMP_ID);
+        $project = Session::get($this::PROJECT);
+        
+        $project_name = $project->project_name;
+        $group_id = $project->group_id;
+        $emp_id = $project->emp_id;
 
         //検索条件構築
         //条件が指定されていなければ全件抽出
         $query = Model_Project::query();
         $query = Util::addAndCondition($query, $this::GROUP_ID, $group_id); //グループ
-        $query = Util::addAndCondition($query, $this::EMP_ID, $emp_id); //売上期間
+        $query = Util::addAndCondition($query, $this::EMP_ID, $emp_id); //担当者
+
         //データ件数の取得
         $count = $query->count();
-
+        
         //Paginationの環境設定
         $config = array(
             'pagination_url' => './',
@@ -66,7 +70,7 @@ class Controller_Project extends Controller_Mybase {
         //ビューに渡す配列の初期化
         $data = array();
 
-        //モデルProjectからページネーションデータを取得
+        //案件一覧データ取得（ページネーション）
         $data['projects'] = $query
                 ->order_by(array($this::GROUP_ID => 'asc', $this::EMP_ID => 'asc', 'id' => 'asc'))
                 ->limit(Pagination::get('per_page'))
@@ -77,13 +81,6 @@ class Controller_Project extends Controller_Mybase {
         $this->template->set_global($this::GROUP_ID, $group_id);
         $this->template->set_global($this::EMP_ID, $emp_id);
         $this->template->set_global($this::PAGE, Input::get($this::PAGE));
-        $this->template->title = "売上目標一覧";
-        $this->template->content = View::forge('project/index', $data);
-
-        //案件一覧データ
-        $data['projects'] = Model_Project::find('all', array(
-                    'order_by' => array('start_date' => 'desc'),
-        ));
 
         $this->template->title = "案件一覧";
         $this->template->content = View::forge('project/index', $data);
@@ -154,9 +151,6 @@ class Controller_Project extends Controller_Mybase {
             $project_name = Input::post('project_name');
             $start_date_from = Input::post('project_name');
             $start_date_to = Input::post('project_name');
-
-            //$this->action_index($group_id, $sales_term_id);
-            //Response::redirect('project/index?group_id=' . $group_id . '&emp_id=' . $emp_id);
 
             $this->action_index();
             Response::redirect('project/index/'.$group_id.'/'.$emp_id.'/');
