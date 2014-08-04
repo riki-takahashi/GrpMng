@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 売上目標情報コントローラクラス
  * Copyright 2014 Riki System Co.,Ltd.
@@ -87,7 +88,7 @@ class Controller_Sales_target extends Controller_Template {
             $sales_term_id = Input::post($this::SALES_TERM_ID);
 
             $this->action_index($group_id, $sales_term_id);
-            Response::redirect('sales/target/index?group_id=' . $group_id . '&sales_term_id=' . $sales_term_id);
+            Response::redirect('sales/target/index?group_id='.$group_id.'&sales_term_id='.$sales_term_id);
         }
 
         //GET処理
@@ -127,7 +128,7 @@ class Controller_Sales_target extends Controller_Template {
                 ));
 
                 if ($sales_target and $sales_target->save()) {
-                    Session::set_flash('success', '売上目標を追加しました。 #' . $sales_target->id . '.');
+                    Session::set_flash('success', '売上目標を追加しました。 #'.$sales_target->id.'.');
                     Response::redirect('sales/target/index'
                             .'?'.$this::GROUP_ID.'='.Input::post($this::GROUP_ID)
                             .'&'.$this::SALES_TERM_ID.'='.Input::post($this::SALES_TERM_ID));
@@ -161,16 +162,16 @@ class Controller_Sales_target extends Controller_Template {
         $page = Input::get($this::PAGE);
 
         is_null($sales_target_id) and Response::redirect('sales/target/index'
-                        . '?' . $this::GROUP_ID . '=' . $group_id
-                        . '&' . $this::SALES_TERM_ID . '=' . $sales_term_id
-                        . '&' . $this::PAGE . '=' . $page);
+                        .'?'.$this::GROUP_ID.'='.$group_id
+                        .'&'.$this::SALES_TERM_ID.'='.$sales_term_id
+                        .'&'.$this::PAGE.'='.$page);
 
         if (!$sales_target = Model_Sales_Target::find($sales_target_id)) {
-            Session::set_flash('error', '該当の売上目標が見つかりません。 #' . $sales_target_id);
+            Session::set_flash('error', '該当の売上目標が見つかりません。 #'.$sales_target_id);
             Response::redirect('sales/target/index'
-                    . '?' . $this::GROUP_ID . '=' . $group_id
-                    . '&' . $this::SALES_TERM_ID . '=' . $sales_term_id
-                    . '&' . $this::PAGE . '=' . $page);
+                    .'?'.$this::GROUP_ID.'='.$group_id
+                    .'&'.$this::SALES_TERM_ID.'='.$sales_term_id
+                    .'&'.$this::PAGE.'='.$page);
         }
 
         $val = Model_Sales_Target::validate('edit');
@@ -182,14 +183,14 @@ class Controller_Sales_target extends Controller_Template {
             $sales_target->min_amount = Input::post('min_amount');
 
             if ($sales_target->save()) {
-                Session::set_flash('success', '売上目標を更新しました。 #' . $sales_target_id);
+                Session::set_flash('success', '売上目標を更新しました。 #'.$sales_target_id);
 
                 Response::redirect('sales/target/index'
-                        . '?' . $this::GROUP_ID . '=' . $group_id
-                        . '&' . $this::SALES_TERM_ID . '=' . $sales_term_id
-                        . '&' . $this::PAGE . '=' . $page);
+                        .'?'.$this::GROUP_ID.'='.$group_id
+                        .'&'.$this::SALES_TERM_ID.'='.$sales_term_id
+                        .'&'.$this::PAGE.'='.$page);
             } else {
-                Session::set_flash('error', '売上目標の更新に失敗しました。 #' . $sales_target_id);
+                Session::set_flash('error', '売上目標の更新に失敗しました。 #'.$sales_target_id);
             }
         } else {
             if (Input::method() == 'POST') {
@@ -222,20 +223,20 @@ class Controller_Sales_target extends Controller_Template {
         $sales_term_id = Input::get($this::SALES_TERM_ID);
 
         is_null($sales_target_id) and Response::redirect('sales/target/index'
-                        . '?' . $this::GROUP_ID . '=' . $group_id
-                        . '&' . $this::SALES_TERM_ID . '=' . $sales_term_id);
+                        .'?'.$this::GROUP_ID.'='.$group_id
+                        .'&'.$this::SALES_TERM_ID.'='.$sales_term_id);
 
         if ($sales_target = Model_Sales_Target::find($sales_target_id)) {
             $sales_target->delete();
 
-            Session::set_flash('success', '売上目標を削除しました。 #' . $sales_target_id);
+            Session::set_flash('success', '売上目標を削除しました。 #'.$sales_target_id);
         } else {
-            Session::set_flash('error', '売上目標の削除に失敗しました。 #' . $sales_target_id);
+            Session::set_flash('error', '売上目標の削除に失敗しました。 #'.$sales_target_id);
         }
 
         Response::redirect('sales/target/index'
-                . '?' . $this::GROUP_ID . '=' . $group_id
-                . '&' . $this::SALES_TERM_ID . '=' . $sales_term_id);
+                .'?'.$this::GROUP_ID.'='.$group_id
+                .'&'.$this::SALES_TERM_ID.'='.$sales_term_id);
     }
 
     private function setDropDownList($add_blank = false) {
@@ -243,7 +244,10 @@ class Controller_Sales_target extends Controller_Template {
         $m_groups = Model_Group::find('all');
         $groups = Arr::assoc_to_keyval($m_groups, 'id', 'group_name');
         if ($add_blank == true) {
-            Arr::insert_assoc($groups, array(""), 0);
+            //先頭にキーが0の空白行を追加する。
+            //PHPでは連想配列のキーが数値の場合に、勝手に通常の配列に変換されてしまうため対策しました。
+            $groups['0'] = '';
+            ksort($groups);
         }
         $this->template->set_global('groups', $groups, false);
 
@@ -251,7 +255,10 @@ class Controller_Sales_target extends Controller_Template {
         $m_sales_terms = Model_Sales_Term::find('all');
         $sales_terms = Arr::assoc_to_keyval($m_sales_terms, 'id', 'term_name');
         if ($add_blank == true) {
-            Arr::insert_assoc($sales_terms, array(""), 0);
+            //先頭にキーが0の空白行を追加する。
+            //PHPでは連想配列のキーが数値の場合に、勝手に通常の配列に変換されてしまうため対策しました。
+            $sales_terms['0'] = '';
+            ksort($sales_terms);
         }
         $this->template->set_global('sales_terms', $sales_terms, false);
     }

@@ -6,11 +6,23 @@
  */
 class Controller_Project extends Controller_Mybase {
 
-    const PROJECT = 'project';
+    const PROJECT = 'project'; //案件情報のモデル
+    const PROJECTSEARCH = 'projectsearch'; //検索条件のためのモデル
+    
     const PROJECT_NAME = 'project_name';
     const GROUP_ID = 'group_id';
     const EMP_ID = 'emp_id';
-    const PAGE = 'page';
+    
+    const START_DATE = 'start_date'; //開始日
+    const END_DATE = 'end_date'; //終了日
+    const DELIVERY_DATE = 'delivery_date'; //納品日
+    const SALES_DATE = 'sales_date'; //売上日
+    
+    const END_USER = 'end_user'; //エンドユーザー
+    const ORDER_USER = 'order_user'; //受注元
+    const NOTE = 'note'; //備考
+    
+    const PAGE = 'page'; //現在のページ
 
     /** 新規作成時の一時的なID */
     const TEMP_ID = 99999;
@@ -33,25 +45,30 @@ class Controller_Project extends Controller_Mybase {
 
     /**
      * 案件一覧
-     * @param type $project_name
-     * @param type $group_id
      */
     public function action_index() {
         //SESSION取得処理
-        $project = Session::get($this::PROJECT);
+        $projectsearch = Session::get($this::PROJECTSEARCH);
         
-        $project_name = $project->project_name;
-        $group_id = $project->group_id;
-        $emp_id = $project->emp_id;
-
         //検索条件構築
         //条件が指定されていなければ全件抽出
         $query = Model_Project::query();
-        $query = Util::addAndCondition($query, $this::GROUP_ID, $group_id); //グループ
-        $query = Util::addAndCondition($query, $this::EMP_ID, $emp_id); //担当者
-
+        
+        $query = Util::addAndCondition($query, $this::PROJECT_NAME, '%'.$projectsearch->project_name.'%', 'like'); //案件名
+        $query = Util::addAndCondition($query, $this::GROUP_ID, $projectsearch->group_id); //グループ
+        $query = Util::addAndCondition($query, $this::EMP_ID, $projectsearch->emp_id); //担当者
+        $query = Util::addAndDateCondition($query, $this::START_DATE,  $projectsearch->start_date_from, $projectsearch->start_date_to); //開始日の範囲
+        $query = Util::addAndDateCondition($query, $this::END_DATE, $projectsearch->end_date_from, $projectsearch->end_date_to); //終了日の範囲
+        $query = Util::addAndDateCondition($query, $this::DELIVERY_DATE, $projectsearch->delivery_date_from, $projectsearch->delivery_date_to); //納品日の範囲
+        $query = Util::addAndDateCondition($query, $this::SALES_DATE, $projectsearch->sales_date_from, $projectsearch->sales_date_to); //売上日の範囲
+        $query = Util::addAndCondition($query, $this::END_USER, '%'.$projectsearch->end_user.'%', 'like'); //エンドユーザー
+        $query = Util::addAndCondition($query, $this::ORDER_USER, '%'.$projectsearch->order_user.'%', 'like'); //受注元
+        $query = Util::addAndCondition($query, $this::NOTE, '%'.$projectsearch->note.'%', 'like'); //備考
+        
         //データ件数の取得
         $count = $query->count();
+        
+//Session::set_flash('success', 'データ件数とクエリー内容: '.$count.'件　　　'.$query->get_query()->__toString());        
         
         //Paginationの環境設定
         $config = array(
@@ -78,8 +95,6 @@ class Controller_Project extends Controller_Mybase {
                 ->get();
 
         //テンプレートファイルにデータの引き渡し
-        $this->template->set_global($this::GROUP_ID, $group_id);
-        $this->template->set_global($this::EMP_ID, $emp_id);
         $this->template->set_global($this::PAGE, Input::get($this::PAGE));
 
         $this->template->title = "案件一覧";
@@ -95,21 +110,23 @@ class Controller_Project extends Controller_Mybase {
         $this->setDropDownList(true);
 
         //SESSION取得処理
-        $project = Session::get($this::PROJECT);
+        $projectsearch = Session::get($this::PROJECTSEARCH);
 
         //Fieldsetの定義
         $fieldset = Fieldset::forge();
-
+        
+        //SESSION取得フラグ true:SESSIONから引継ぎ検索条件取得済
         $flg = false;
 
         //初期値設定
-        if ($project) {
+        if ($projectsearch) {
             $flg = true;
         } else {
-            $project = Model_Project::forge();
+            $projectsearch = Model_Projectsearch::forge();
         }
 
-        $fieldset->add_model($project);
+        //フォームの各項目にモデルの内容を設定
+        $fieldset->add_model($projectsearch);
 
         //担当グループドロップダウン設定（データベースから読み取り）
         $fieldset->field('group_id')->set_options($this->getGroups(true));
@@ -117,9 +134,9 @@ class Controller_Project extends Controller_Mybase {
         //担当者ドロップダウン設定（データベースから読み取り）
         $fieldset->field('emp_id')->set_options($this->getEmployees(true));
 
-        //SESSIONからの引継ぎデータがあれば、それを反映
+        //SESSIONからの引継ぎ検索条件があれば、それを反映
         if ($flg) {
-            $fieldset->populate($project);
+            $fieldset->populate($projectsearch);
         }
         $this->template->set_global('fieldset', $fieldset, false);
 
@@ -132,31 +149,39 @@ class Controller_Project extends Controller_Mybase {
      * 案件検索（POST取得処理）
      */
     public function post_search() {
-        $project_name = Input::post($this::PROJECT_NAME);
-        $group_id = Input::post($this::GROUP_ID);
-        $emp_id = Input::post($this::EMP_ID);
 
-        $project = Model_Project::forge();
-        $project->project_name = $project_name;
-        $project->group_id = $group_id;
-        $project->emp_id = $emp_id;
-
-        Session::set($this::PROJECT, $project);
-
+        $projectsearch = Model_Projectsearch::forge();
+        
+        $projectsearch->project_name = Input::post($this::PROJECT_NAME);
+        
+        $projectsearch->group_id = Input::post($this::GROUP_ID);
+        $projectsearch->emp_id = Input::post($this::EMP_ID);
+        
+        $projectsearch->start_date_from = Input::post('start_date_from');
+        $projectsearch->start_date_to = Input::post('start_date_to');
+        
+        $projectsearch->end_date_from = Input::post('end_date_from');
+        $projectsearch->end_date_to = Input::post('end_date_to');
+        
+        $projectsearch->delivery_date_from = Input::post('delivery_date_from');
+        $projectsearch->delivery_date_to = Input::post('delivery_date_to');
+        
+        $projectsearch->sales_date_from = Input::post('sales_date_from');
+        $projectsearch->sales_date_to = Input::post('sales_date_to');
+        
+        Session::set($this::PROJECTSEARCH, $projectsearch);        
+        
         // バリデーションチェック
         $fieldset = Fieldset::forge();
         $val = $fieldset->validation();
         if ($val->run()) {
-
-            $project_name = Input::post('project_name');
-            $start_date_from = Input::post('project_name');
-            $start_date_to = Input::post('project_name');
-
             $this->action_index();
-            Response::redirect('project/index/'.$group_id.'/'.$emp_id.'/');
+            Response::redirect('project/index/');
         } else {
             $fieldset->repopulate();
-        }
+            Response::redirect('project/index/');
+        }        
+        
     }
 
     /**
@@ -396,13 +421,16 @@ class Controller_Project extends Controller_Mybase {
     /**
      * グループ一覧取得
      * @param type $add_blank
-     * @return type
+     * @return type $groups
      */
     private function getGroups($add_blank = false) {
         $m_groups = Model_Group::find('all');
         $groups = Arr::assoc_to_keyval($m_groups, 'id', 'group_name');
         if ($add_blank == true) {
-            Arr::insert_assoc($groups, array(""), 0);
+            //先頭にキーが0の空白行を追加する。
+            //PHPでは連想配列のキーが数値の場合に、勝手に通常の配列に変換されてしまうため対策しました。
+            $groups['0'] = '';
+            ksort($groups);
         }
         return $groups;
     }
@@ -421,7 +449,10 @@ class Controller_Project extends Controller_Mybase {
         ));
         $employees = Arr::assoc_to_keyval($m_employees, 'id', 'emp_name');
         if ($add_blank == true) {
-            Arr::insert_assoc($employees, array(""), 0);
+            //先頭にキーが0の空白行を追加する。
+            //PHPでは連想配列のキーが数値の場合に、勝手に通常の配列に変換されてしまうため対策しました。
+            $employees['0'] = '';
+            ksort($employees);
         }
         return $employees;
     }
