@@ -45,8 +45,5 @@
 <p>データがありません</p>
 <?php endif; ?>
 <p>
-	<?php echo Html::anchor('sales/target/search'
-                . '?'.Controller_Sales_target::GROUP_ID.'='.$group_id
-                . '&'.Controller_Sales_target::SALES_TERM_ID.'='.$sales_term_id
-                , '検索画面に戻る'); ?>
+	<?php echo Html::anchor('sales/target/search', '検索画面に戻る'); ?>
 </p>

@@ -27,23 +27,16 @@ class Controller_Sales_target extends Controller_Template {
     }
 
     public function action_index() {
-        //GET処理
-        $group_id = Input::get($this::GROUP_ID);
-        $sales_term_id = Input::get($this::SALES_TERM_ID);
+        //SESSION取得処理
+        $group_id = Session::get($this::GROUP_ID);
+        $sales_term_id = Session::get($this::SALES_TERM_ID);
 
         //検索条件構築
         //条件が指定されていなければ全件抽出
         $query = Model_Sales_Target::query();
 
-        //グループ
-        if ($group_id != null and $group_id != 0) {
-            $query = Util::addAndCondition($query, $this::GROUP_ID, $group_id);
-        }
-
-        //売上期間
-        if ($sales_term_id != null and $sales_term_id != 0) {
-            $query = Util::addAndCondition($query, $this::SALES_TERM_ID, $sales_term_id);
-        }
+        $query = Util::addAndCondition($query, $this::GROUP_ID, $group_id); //グループ
+        $query = Util::addAndCondition($query, $this::SALES_TERM_ID, $sales_term_id); //売上期間
 
         //データ件数の取得
         $count = $query->count();
@@ -80,28 +73,16 @@ class Controller_Sales_target extends Controller_Template {
         $this->template->content = View::forge('sales\target/index', $data);
     }
 
-    public function action_search() {
+    public function get_search() {
 
-        //POST処理
-        if (Input::method() == 'POST') {
-            $group_id = Input::post($this::GROUP_ID);
-            $sales_term_id = Input::post($this::SALES_TERM_ID);
-
-            $this->action_index($group_id, $sales_term_id);
-            Response::redirect('sales/target/index?group_id='.$group_id.'&sales_term_id='.$sales_term_id);
-        }
-
-        //GET処理
-        $group_id = Input::get($this::GROUP_ID);
-        $sales_term_id = Input::get($this::SALES_TERM_ID);
-
+        //SESSION取得処理
+        $group_id = Session::get($this::GROUP_ID);
+        $sales_term_id = Session::get($this::SALES_TERM_ID);
+        
         //ビューに渡す配列の初期化
         $data = array();
         //ドロップダウン項目の設定
         $this->setDropDownList(true);
-
-        $this->template->set_global($this::GROUP_ID, $group_id);
-        $this->template->set_global($this::SALES_TERM_ID, $sales_term_id);
 
         //検索条件を保持
         $data[$this::GROUP_ID] = $group_id;
@@ -112,6 +93,20 @@ class Controller_Sales_target extends Controller_Template {
         $this->template->content = View::forge('sales\target/search', $data);
     }
 
+    /**
+     * 案件検索（POST取得処理）
+     */
+    public function post_search() {
+            $group_id = Input::post($this::GROUP_ID);
+            $sales_term_id = Input::post($this::SALES_TERM_ID);
+
+            //検索条件をセッションに保持
+            Session::set($this::GROUP_ID, $group_id);     
+            Session::set($this::SALES_TERM_ID, $sales_term_id);     
+            
+            Response::redirect('sales/target/index');
+    }
+    
     public function action_create($group_id = null, $sales_term_id = null) {
 
         //POST処理
