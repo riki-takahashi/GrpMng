@@ -3,6 +3,7 @@
 /**
  * 売上目標情報コントローラクラス
  * Copyright 2014 Riki System Co.,Ltd.
+ * @author i-suzuki
  */
 class Controller_Sales_target extends Controller_Template {
 
@@ -26,6 +27,9 @@ class Controller_Sales_target extends Controller_Template {
         return $response; // after() は確実に Response オブジェクトを返すように
     }
 
+    /**
+     * 案件検索（POST取得処理）
+     */
     public function action_index() {
         //SESSION取得処理
         $group_id = Session::get($this::GROUP_ID);
@@ -37,7 +41,6 @@ class Controller_Sales_target extends Controller_Template {
 
         $query = Util::addAndCondition($query, $this::GROUP_ID, $group_id); //グループ
         $query = Util::addAndCondition($query, $this::SALES_TERM_ID, $sales_term_id); //売上期間
-
         //データ件数の取得
         $count = $query->count();
 
@@ -73,12 +76,15 @@ class Controller_Sales_target extends Controller_Template {
         $this->template->content = View::forge('sales\target/index', $data);
     }
 
+    /**
+     * 案件検索（POST取得処理）
+     */
     public function get_search() {
 
         //SESSION取得処理
         $group_id = Session::get($this::GROUP_ID);
         $sales_term_id = Session::get($this::SALES_TERM_ID);
-        
+
         //ビューに渡す配列の初期化
         $data = array();
         //ドロップダウン項目の設定
@@ -97,16 +103,21 @@ class Controller_Sales_target extends Controller_Template {
      * 案件検索（POST取得処理）
      */
     public function post_search() {
-            $group_id = Input::post($this::GROUP_ID);
-            $sales_term_id = Input::post($this::SALES_TERM_ID);
+        $group_id = Input::post($this::GROUP_ID);
+        $sales_term_id = Input::post($this::SALES_TERM_ID);
 
-            //検索条件をセッションに保持
-            Session::set($this::GROUP_ID, $group_id);     
-            Session::set($this::SALES_TERM_ID, $sales_term_id);     
-            
-            Response::redirect('sales/target/index');
+        //検索条件をセッションに保持
+        Session::set($this::GROUP_ID, $group_id);
+        Session::set($this::SALES_TERM_ID, $sales_term_id);
+
+        Response::redirect('sales/target/index');
     }
-    
+
+    /**
+     * 新規登録
+     * @param type $group_id
+     * @param type $sales_term_id
+     */
     public function action_create($group_id = null, $sales_term_id = null) {
 
         //POST処理
@@ -148,6 +159,9 @@ class Controller_Sales_target extends Controller_Template {
         $this->template->content = View::forge('sales\target/create');
     }
 
+    /**
+     * 編集
+     */
     public function action_edit() {
 
         //GET処理
@@ -210,6 +224,9 @@ class Controller_Sales_target extends Controller_Template {
         $this->template->content = View::forge('sales\target/edit');
     }
 
+    /**
+     * 削除
+     */
     public function action_delete() {
 
         //GET処理
@@ -234,6 +251,10 @@ class Controller_Sales_target extends Controller_Template {
                 .'&'.$this::SALES_TERM_ID.'='.$sales_term_id);
     }
 
+    /**
+     * ドロップダウンリスト設定
+     * @param type $add_blank
+     */
     private function setDropDownList($add_blank = false) {
         //グループ一覧
         $m_groups = Model_Group::find('all');
