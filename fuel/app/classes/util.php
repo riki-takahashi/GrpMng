@@ -27,7 +27,7 @@ class Util {
     public static function addAndCondition($query = null, $key = null, $value = null, $condition = '=') {
         //指定された項目名と値でWHERE文を組み立て返します。
         //$valueに %foo% が入った場合に 0と等価と判定されてしまったため、厳密な比較をすることにしました。
-        if ($query === null or $value === null or $value === '0' or $value === '%%') {
+        if ($query == null or $value == null or $value === '0' or $value == '%%') {
             return $query;
         }
         $query = $query->where($key, $condition, $value);
