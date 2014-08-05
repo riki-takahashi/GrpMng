@@ -36,6 +36,7 @@ class Controller_Menu extends Controller_Mybase{
 	public function action_logout()
 	{
 		Auth::logout();
+                Session::destroy();
 		Response::redirect('menu/login');
 	}
 	

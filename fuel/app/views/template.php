@@ -28,7 +28,7 @@
 				<?php echo Html::anchor('menu', '<span class="glyphicon glyphicon-th"></span> メニュー', array('class' => 'btn btn-primary navbar-btn')); ?>
 			<?php endif; ?>
 			<?php if (! isset($is_login)) : ?>
-				<?php echo Html::anchor('menu/logout', '<span class="glyphicon glyphicon-log-out"></span> ログアウト', array('class' => 'btn btn-primary navbar-btn')); ?>
+				<?php echo Html::anchor('menu/logout', '<span class="glyphicon glyphicon-log-out"></span> ログアウト', array('class' => 'btn btn-primary navbar-btn', 'onclick' => "return confirm('ログアウトしてもよろしいですか？')")); ?>
 			<?php endif; ?>
 		</div>
 	</nav>
