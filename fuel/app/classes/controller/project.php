@@ -47,7 +47,7 @@ class Controller_Project extends Controller_Mybase {
      * 案件一覧
      */
     public function action_index() {
-        //SESSION取得処理
+        //SESSION取得
         $projectsearch = Session::get($this::PROJECTSEARCH);
         
         //検索条件構築
@@ -109,7 +109,7 @@ class Controller_Project extends Controller_Mybase {
         //ドロップダウン項目の設定
         $this->setDropDownList(true);
 
-        //SESSION取得処理
+        //SESSION取得
         $projectsearch = Session::get($this::PROJECTSEARCH);
 
         //Fieldsetの定義

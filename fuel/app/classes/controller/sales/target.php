@@ -31,7 +31,7 @@ class Controller_Sales_target extends Controller_Template {
      * 案件検索（POST取得処理）
      */
     public function action_index() {
-        //SESSION取得処理
+        //SESSION取得
         $group_id = Session::get($this::GROUP_ID);
         $sales_term_id = Session::get($this::SALES_TERM_ID);
 
@@ -81,7 +81,7 @@ class Controller_Sales_target extends Controller_Template {
      */
     public function get_search() {
 
-        //SESSION取得処理
+        //SESSION取得
         $group_id = Session::get($this::GROUP_ID);
         $sales_term_id = Session::get($this::SALES_TERM_ID);
 
