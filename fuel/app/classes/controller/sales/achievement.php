@@ -52,13 +52,13 @@ class Controller_Sales_Achievement extends Controller_Template {
             $sales_total['1'] = Array('title' => '', 'list' => $this->make_sum_for_all($sales_term_id));
         }
 
-//        if ($aggregate_unit_id == '2') {
-//            $sales_total['1'] = Array('title' => '', 'list' => $this->make_sum_for_group($sales_term_id));
-//        }
-//
-//        if ($aggregate_unit_id == '3') {
-//            $sales_total = $this->make_sum_for_employee($sales_term_id);
-//        }
+        if ($aggregate_unit_id == '2') {
+            $sales_total['1'] = Array('title' => '', 'list' => $this->make_sum_for_group($sales_term_id));
+        }
+
+        if ($aggregate_unit_id == '3') {
+            $sales_total = $this->make_sum_for_employee($sales_term_id);
+        }
 
         //ビューに渡す配列の初期化
         $data['sales_total'] = $sales_total;
@@ -79,13 +79,7 @@ class Controller_Sales_Achievement extends Controller_Template {
     private function make_sum_for_all($sales_term_id = null) {
 
         //結果の初期化
-        $sales_total = array('row_title' => '全体');
-        
-foreach ($sales_total as $key => $value) {
-    echo "$key: $value";	// "0: 1", "1: 3", "2: 5"
-}
-
-
+        $sales_total = array('row_title' => '全体', 'target_amount_sum' => '', 'sales_amount_sum' => '', 'order_amount_sum' => '', 'min_amount_sum' => '');
 
         //対象期間を取得
         $queryA = DB::select('id', 'start_date', 'end_date')
@@ -110,11 +104,11 @@ foreach ($sales_total as $key => $value) {
                     ->execute()
                     ->as_array();
 
-//            //１件あれば反映する
-//            foreach ($sales_targets as $sales_target) {
-//                $sales_total['target_amount_sum'] = $sales_target['target_amount_sum'];
-//                $sales_total['min_amount_sum'] = $sales_target['min_amount_sum'];
-//            }
+            //１件あれば反映する
+            foreach ($sales_targets as $sales_target) {
+                $sales_total['target_amount_sum'] = $sales_target['target_amount_sum'];
+                $sales_total['min_amount_sum'] = $sales_target['min_amount_sum'];
+            }
 
             //実績金額
             $queryC = DB::select(array(DB::expr('sum(sales_amount)'), 'sales_amount_sum'))
@@ -125,10 +119,10 @@ foreach ($sales_total as $key => $value) {
                     ->execute()
                     ->as_array();
 
-//            //１件あれば反映する
-//            foreach ($sales_results as $sales_result) {
-//                $sales_total['sales_amount_sum'] = $sales_result['sales_amount_sum'];
-//            }
+            //１件あれば反映する
+            foreach ($sales_results as $sales_result) {
+                $sales_total['sales_amount_sum'] = $sales_result['sales_amount_sum'];
+            }
 
             //見込金額
             $queryD = DB::select(array(DB::expr('sum(order_amount)'), 'order_amount_sum'))
@@ -139,13 +133,13 @@ foreach ($sales_total as $key => $value) {
                     ->execute()
                     ->as_array();
 
-//            //１件あれば反映する
-//            foreach ($projects as $project) {
-//                $sales_total['order_amount_sum'] = $project['order_amount_sum'];
-//            }
+            //１件あれば反映する
+            foreach ($projects as $project) {
+                $sales_total['order_amount_sum'] = $project['order_amount_sum'];
+            }
         }
 
-        return $sales_total;
+        return array('0' => $sales_total);
     }
 
     /**
@@ -195,6 +189,16 @@ foreach ($sales_total as $key => $value) {
                 ->execute()
                 ->as_array();
 
+        //小計行追加
+        $row_sum = array('row_title' => '小計', 'target_amount_sum' => 0, 'sales_amount_sum' => 0, 'order_amount_sum' => 0, 'min_amount_sum' => 0);
+        foreach($sales_total as $total){
+            $row_sum['target_amount_sum'] += $total['target_amount_sum'];
+            $row_sum['sales_amount_sum'] += $total['sales_amount_sum'];
+            $row_sum['order_amount_sum'] += $total['order_amount_sum'];
+            $row_sum['min_amount_sum'] += $total['min_amount_sum'];
+        }
+        $sales_total[] = $row_sum;
+        
         return $sales_total;
     }
 
@@ -227,7 +231,7 @@ foreach ($sales_total as $key => $value) {
                     ->join(array('employees', 'H'), 'LEFT OUTER')
                     ->on('H.id', '=', 'C.emp_id')
                     ->where('A.id', $sales_term_id)
-                    ->group_by('C.id', 'C.group_id');
+                    ->group_by('C.id');
 
             //売上実績情報
             $queryD = DB::select(DB::expr('project_id, max(sales_date) as sales_date_max, sum(sales_amount) as sales_amount_sum'))
@@ -253,10 +257,22 @@ foreach ($sales_total as $key => $value) {
                     ->order_by('T1.id', 'asc')
                     ->order_by('T1.group_id', 'asc');
 
+            //Session::set_flash('success', 'クエリー内容: '.$queryT1->__toString());        
+            
             $tabledata = $query
                     ->execute()
                     ->as_array();
 
+            //小計行追加
+            $row_sum = array('row_title' => '小計', 'target_amount_sum' => 0, 'sales_amount_sum' => 0, 'order_amount_sum' => 0, 'min_amount_sum' => 0);
+            foreach($tabledata as $each_row){
+                $row_sum['target_amount_sum'] += $each_row['target_amount_sum'];
+                $row_sum['sales_amount_sum'] += $each_row['sales_amount_sum'];
+                $row_sum['order_amount_sum'] += $each_row['order_amount_sum'];
+                $row_sum['min_amount_sum'] += $each_row['min_amount_sum'];
+            }
+            $tabledata[] = $row_sum;
+            
             //グループ毎にデータを取得、設定
             $sales_total[$group['id']] = Array('title' => $group["group_name"], 'list' => $tabledata);
         }
