@@ -35,8 +35,8 @@
 			</td>
                         <td class="hidden-xs"><?php echo $item->group->group_name; ?></td>
                         <td><?php echo $item->sales_term->term_name; ?></td>
-                        <td class="hidden-xs hidden-sm"><?php echo $item->target_amount; ?></td>
-                        <td class="hidden-xs hidden-sm"><?php echo $item->min_amount; ?></td>
+                        <td class="text-right hidden-xs hidden-sm"><?php echo number_format($item->target_amount); ?></td>
+                        <td class="text-right hidden-xs hidden-sm"><?php echo number_format($item->min_amount); ?></td>
                 </tr>
 <?php endforeach; ?>	</tbody>
 </table>

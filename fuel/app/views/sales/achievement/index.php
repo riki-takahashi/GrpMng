@@ -1,5 +1,11 @@
 <?php if (isset($sales_total)): ?>
-<div style="text-align: left;float: left;">売上対象期間：　<?php echo $term_name; ?></div>
+    <?php if (isset($pdf_out_flg)): ?>
+    <div style="text-align: right;">出力日時：　
+    <?php echo Date::forge()->format("%Y/%m/%d　%H : %M"); ?>
+    </div><br><br>
+    <?php endif; ?>
+
+<div style="text-align: left;">売上対象期間：　<?php echo $term_name; ?></div>
 <br>
 <br>
 <div class="table-responsive">
@@ -36,6 +42,11 @@
 <?php else: ?>
 <p>データがありません</p>
 <?php endif; ?>
+<?php if (!isset($pdf_out_flg)): ?>
 <p>
 	<?php echo Html::anchor('sales/achievement/search', '検索画面に戻る'); ?>
 </p>
+<p>
+	<?php echo Html::anchor('sales/achievement/assign_pdf?'.Controller_Sales_Achievement::AGGREGATE_UNIT_ID.'='.$aggregate_unit_id.'&'.Controller_Sales_Achievement::SALES_TERM_ID.'='.$sales_term_id.'&pdf_out_flg=true', 'PDF出力', array('target'=>'_blank')); ?>
+</p>
+<?php endif;

@@ -7,8 +7,9 @@
  */
 class Controller_Sales_Achievement extends Controller_Template {
 
-    const AGGREGATE_UNIT_ID = 'aggregate_unit_id'; //集計単位
-    const SALES_TERM_ID = 'sales_term_id';
+    const AGGREGATE_UNIT_ID = 'aggregate_unit_id'; //集計単位ID
+    const SALES_TERM_ID = 'sales_term_id'; //売上期間ID
+    const PDF_OUT_FLG = 'pdf_out_flg'; //PDF出力フラグ
 
     /**
      * beforeメソッドはTemplateを使用するために必要
@@ -30,9 +31,10 @@ class Controller_Sales_Achievement extends Controller_Template {
      */
     public function action_index() {
 
-        //SESSION取得
-        $aggregate_unit_id = Session::get($this::AGGREGATE_UNIT_ID); //集計単位
-        $sales_term_id = Session::get($this::SALES_TERM_ID); //売上期間ID
+        //GET取得
+        $aggregate_unit_id = Input::get($this::AGGREGATE_UNIT_ID); //集計単位ID
+        $sales_term_id = Input::get($this::SALES_TERM_ID); //売上期間ID
+        $pdf_out_flg = Input::get($this::PDF_OUT_FLG); //PDF出力フラグ
         
         $data = array();
 
@@ -64,9 +66,10 @@ class Controller_Sales_Achievement extends Controller_Template {
         $data['sales_total'] = $sales_total;
 
         //テンプレートファイルにデータの引き渡し
-        $this->template->set_global($this::AGGREGATE_UNIT_ID, $aggregate_unit_id); //集計単位
-        //$this->template->set_global($this::SALES_TERM_ID, $sales_term_id);
+        $this->template->set_global($this::AGGREGATE_UNIT_ID, $aggregate_unit_id); //集計単位ID
+        $this->template->set_global($this::SALES_TERM_ID, $sales_term_id); //売上期間ID
         $this->template->set_global('term_name', $sales_term->term_name); //売上期間名
+        $this->template->set_global($this::PDF_OUT_FLG, $pdf_out_flg); //PDF出力フラグ
         $this->template->title = "売上集計";
         $this->template->content = View::forge('sales\achievement/index', $data); //ビュー生成
     }
@@ -283,19 +286,19 @@ class Controller_Sales_Achievement extends Controller_Template {
     public function get_search() {
 
         //SESSION取得処理
-        $aggregate_unit_id = Session::get($this::AGGREGATE_UNIT_ID); //集計単位
+        $aggregate_unit_id = Session::get($this::AGGREGATE_UNIT_ID); //集計単位ID
         $sales_term_id = Session::get($this::SALES_TERM_ID); //売上期間ID
         //ビューに渡す配列の初期化
         $data = array();
         //ドロップダウン項目の設定
         $this->setDropDownList(true);
 
-        $this->template->set_global($this::AGGREGATE_UNIT_ID, $aggregate_unit_id);
-        $this->template->set_global($this::SALES_TERM_ID, $sales_term_id);
+        $this->template->set_global($this::AGGREGATE_UNIT_ID, $aggregate_unit_id); //集計単位ID
+        $this->template->set_global($this::SALES_TERM_ID, $sales_term_id); //売上期間ID
 
         //検索条件を保持
-        $data[$this::AGGREGATE_UNIT_ID] = $aggregate_unit_id;
-        $data[$this::SALES_TERM_ID] = $sales_term_id;
+        $data[$this::AGGREGATE_UNIT_ID] = $aggregate_unit_id; //集計単位ID
+        $data[$this::SALES_TERM_ID] = $sales_term_id; //売上期間ID
 
         //テンプレートファイルにデータの引き渡し
         $this->template->title = "売上集計";
@@ -306,13 +309,13 @@ class Controller_Sales_Achievement extends Controller_Template {
      * 案件検索（POST取得処理）
      */
     public function post_search() {
-        $aggregate_unit_id = Input::post($this::AGGREGATE_UNIT_ID); //集計単位
-        $sales_term_id = Input::post($this::SALES_TERM_ID); //売上期間
+        $aggregate_unit_id = Input::post($this::AGGREGATE_UNIT_ID); //集計単位ID
+        $sales_term_id = Input::post($this::SALES_TERM_ID); //売上期間ID
         //検索条件をセッションに保持
-        Session::set($this::AGGREGATE_UNIT_ID, $aggregate_unit_id);
-        Session::set($this::SALES_TERM_ID, $sales_term_id);
+        Session::set($this::AGGREGATE_UNIT_ID, $aggregate_unit_id); //集計単位ID
+        Session::set($this::SALES_TERM_ID, $sales_term_id); //売上期間ID
 
-        Response::redirect('sales/achievement/index');
+        Response::redirect('sales/achievement/index?aggregate_unit_id='.$aggregate_unit_id.'&sales_term_id='.$sales_term_id);
     }
 
     /**
@@ -343,5 +346,24 @@ class Controller_Sales_Achievement extends Controller_Template {
         }
         $this->template->set_global('sales_terms', $sales_terms, false);
     }
+    
+    /*
+     * 売上集計結果PDF出力
+     */
+    public function action_assign_pdf() {
+        
+        //GET取得
+        $aggregate_unit_id = Input::get($this::AGGREGATE_UNIT_ID); //集計単位ID
+        $sales_term_id = Input::get($this::SALES_TERM_ID); //売上期間ID
+        $pdf_out_flg = Input::get($this::PDF_OUT_FLG); //PDF出力フラグ
 
+        ini_set('memory_limit', '256M');
+        //Package::load("mpdf/mpdf.php");
+        $html = file_get_contents('http://127.0.0.1/GrpMng/sales/achievement/index?'.$this::AGGREGATE_UNIT_ID.'='.$aggregate_unit_id.'&'.$this::SALES_TERM_ID.'='.$sales_term_id.'&'.$this::PDF_OUT_FLG.'='.$pdf_out_flg);
+        $mpdf=new mPDF('ja', 'A4');
+        $mpdf->WriteHTML($html);
+        $mpdf->Output('売上集計結果.pdf', 'I');
+        exit();
+    }
+    
 }
