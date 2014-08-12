@@ -358,12 +358,10 @@ class Controller_Sales_Achievement extends Controller_Template {
         $pdf_out_flg = Input::get($this::PDF_OUT_FLG); //PDF出力フラグ
 
         ini_set('memory_limit', '256M');
-        //Package::load("mpdf/mpdf.php");
-        $html = file_get_contents('http://127.0.0.1/GrpMng/sales/achievement/index?'.$this::AGGREGATE_UNIT_ID.'='.$aggregate_unit_id.'&'.$this::SALES_TERM_ID.'='.$sales_term_id.'&'.$this::PDF_OUT_FLG.'='.$pdf_out_flg);
-        $mpdf=new mPDF('ja', 'A4');
+        $html = file_get_contents(Uri::base(false).'sales/achievement/index?'.$this::AGGREGATE_UNIT_ID.'='.$aggregate_unit_id.'&'.$this::SALES_TERM_ID.'='.$sales_term_id.'&'.$this::PDF_OUT_FLG.'='.$pdf_out_flg);
+        $mpdf = new mPDF('ja', 'A4');
         $mpdf->WriteHTML($html);
         $mpdf->Output('売上集計結果.pdf', 'I');
-        exit();
     }
     
 }
