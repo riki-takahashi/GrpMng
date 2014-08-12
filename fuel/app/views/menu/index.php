@@ -1,7 +1,7 @@
 <dl>
 	<dt>案件管理</dt>
 	<dd><?php echo Html::anchor('project/search', '案件情報'); ?></dd>
-	<dd><?php echo Html::anchor('assign', '社員アサイン状況'); ?></dd>
+	<dd><?php echo Html::anchor('project/assign', '社員アサイン状況'); ?></dd>
 	<br>
 	<dt>売上管理</dt>
 	<dd><?php echo Html::anchor('sales/term', '売上期間情報'); ?></dd>

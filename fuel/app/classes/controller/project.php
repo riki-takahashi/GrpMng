@@ -526,5 +526,20 @@ class Controller_Project extends Controller_Mybase {
 
         Response::redirect('project/sales/'.$project_id);
     }
+    
+    /**
+     * 社員アサイン状況（ガントチャート）
+     */
+    public function action_assign() {
 
+        Asset::css(array('prettify.css', 'style.css'), array(), 'css_for_chart', false);
+        Asset::js(array('bootstrap-popover.js', 'bootstrap-tooltip.js', 'jquery.fn.gantt.js', 'prettify.js'), array(), 'js_for_chart', false);
+        
+
+        //テンプレートファイルにデータの引き渡し
+        $this->template->set_global($this::PAGE, Input::get($this::PAGE));
+
+        $this->template->title = "社員アサイン状況";
+        $this->template->content = View::forge('project\ganttchart/index');
+    }
 }
