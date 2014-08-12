@@ -1,6 +1,10 @@
 /fuel/app/logs/
 /fuel/app/config/development/
 /fuel/core/
-/fuel/packages/
+/fuel/packages/auth
+/fuel/packages/email
+/fuel/packages/oil
+/fuel/packages/orm
+/fuel/packages/parser
 /fuel/vendor/
 /nbproject/private/
