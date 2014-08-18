@@ -1,6 +1,39 @@
 <?php if (true): ?>
 
     <style type="text/css">
+        body {
+                font-family: Helvetica, Arial, sans-serif;
+                font-size: 13px;
+                padding: 0 0 50px 0;
+        }
+        .contain {
+                width: 800px;
+                margin: 0 auto;
+        }
+        h1 {
+                margin: 40px 0 20px 0;
+        }
+        h2 {
+                font-size: 1.5em;
+                padding-bottom: 3px;
+                border-bottom: 1px solid #DDD;
+                margin-top: 50px;
+                margin-bottom: 25px;
+        }
+        table th:first-child {
+                width: 150px;
+        }
+        /* Bootstrap 3.x re-reset */
+        .fn-gantt *,
+        .fn-gantt *:after,
+        .fn-gantt *:before {
+          -webkit-box-sizing: content-box;
+             -moz-box-sizing: content-box;
+                  box-sizing: content-box;
+        }
+    </style>
+
+    <style type="text/css">
             .contain {
                     width: 1000px;
                     margin: 0 auto;
@@ -20,91 +53,34 @@
 
 			$(".gantt").gantt({
 				source: [{
-					name: "項目01",
-					desc: "項目01の01",
+					name: "鈴木逸雄",
+					desc: "JR東海",
 					values: [{
-						from: "/Date(1320192000000)/",
-						to: "/Date(1322401600000)/",
-						label: "項目01の説明01のラベル", 
+						from: "/Date('2013/07/01')/",
+						to: "/Date('2013/08/31')/",
+						label: "項目1", 
 						customClass: "ganttRed",
 
 					}]
-				},{
-					name: " ",
-					desc: "項目01の02",
+				},
+                                {
+					name: "",
+					desc: "日本アキュムレータ",
 					values: [{
-						from: "/Date(1322611200000)/",
-						to: "/Date(1323502400000)/",
-						label: "項目01の説明02のラベル", 
-						customClass: "ganttRed"
+						from: "/Date('2013/09/01')/",
+						to: "/Date('2014/04/30')/",
+						label: "項目1", 
+						customClass: "ganttRed",
+
 					}]
-				},{
-					name: "項目02",
-					desc: "項目02の01",
-					values: [{
-						from: "/Date(1323802400000)/",
-						to: "/Date(1325685200000)/",
-						label: "項目02の説明01のラベル", 
-						customClass: "ganttGreen"
-					}]
-				},{
-					name: " ",
-					desc: "項目02の02",
-					values: [{
-						from: "/Date(1325685200000)/",
-						to: "/Date(1325695200000)/",
-						label: "項目02の説明02のラベル", 
-						customClass: "ganttBlue"
-					}]
-				},{
-					name: "項目03",
-					desc: "項目03の01",
-					values: [{
-						from: "/Date(1326785200000)/",
-						to: "/Date(1325785200000)/",
-						label: "項目03の説明01のラベル", 
-						customClass: "ganttGreen"
-					}]
-				},{
-					name: " ",
-					desc: "項目03の02",
-					values: [{
-						from: "/Date(1328785200000)/",
-						to: "/Date(1328905200000)/",
-						label: "項目03の説明02のラベル", 
-						customClass: "ganttBlue"
-					}]
-				},{
-					name: "項目04",
-					desc: "項目04の01",
-					values: [{
-						from: "/Date(1330011200000)/",
-						to: "/Date(1336611200000)/",
-						label: "項目04の説明01のラベル", 
-						customClass: "ganttOrange"
-					}]
-				},{
-					name: " ",
-					desc: "項目04の02",
-					values: [{
-						from: "/Date(1336611200000)/",
-						to: "/Date(1336911200000)/",
-						label: "項目04の説明02のラベル", 
-						customClass: "ganttRed"
-					}]
-				}],
+				}            
+                                ],
 				navigate: "scroll",
 				scale: "weeks",
 				maxScale: "months",
 				minScale: "days",
                                 months: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
-				itemsPerPage: 4,
-				onItemClick: function(data) {
-					alert("チャートのクリックイベント");
-				},
-				onAddClick: function(dt, rowId) {
-					alert("チャート外のクリックイベント");
-				}
+				itemsPerPage: 4
 			});
 
 			$(".gantt").popover({
