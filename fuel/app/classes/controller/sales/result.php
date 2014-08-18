@@ -44,7 +44,7 @@ class Controller_Sales_Result extends Controller_Template{
 				{
 					Session::set_flash('success', '売上実績を追加しました。 #'.$sales_result->id.'.');
 
-					Response::redirect('sales/result');
+					Response::redirect('project/sales/'.$project_id); //保存後のリダイレクト先
 				}
 
 				else
