@@ -53,8 +53,8 @@
 
 			$(".gantt").gantt({
 				source: [{
-					name: "鈴木逸雄",
-					desc: "JR東海",
+					name: "さんぷる",
+					desc: "サンプル１",
 					values: [{
 						from: "/Date('2013/07/01')/",
 						to: "/Date('2013/08/31')/",
@@ -65,11 +65,11 @@
 				},
                                 {
 					name: "",
-					desc: "日本アキュムレータ",
+					desc: "サンプル２",
 					values: [{
 						from: "/Date('2013/09/01')/",
 						to: "/Date('2014/04/30')/",
-						label: "項目1", 
+						label: "項目2", 
 						customClass: "ganttRed",
 
 					}]
