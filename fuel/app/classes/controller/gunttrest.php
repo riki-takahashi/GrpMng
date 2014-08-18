@@ -5,42 +5,61 @@ class Controller_Gunttrest extends Controller_Rest
     {
 
         $query = DB::select(DB::expr("            
-            G.group_name 'name'
-          , E.emp_name 'desc'
-          , A.start_date 'from'
-          , A.end_date 'to'
-          , P.project_name 'label'
 
-          from group_employee D
+          A.emp_id
+        , E.emp_name 'name'
+        , A.start_date 'from'
+        , A.end_date 'to'
+        , P.project_name 'label'
 
-          left outer join groups G
-          on D.group_id = G.id
+        from projectmembers A
 
-          left outer join employees E
-          on D.emp_id = E.id
+        left outer join employees E
+        on A.emp_id = E.id
 
-          left outer join projectmembers A
-          on E.id = A.emp_id
+        left outer join projects P
+        on A.project_id = P.id
 
-          left outer join projects P
-          on A.project_id = P.id
+        order by A.emp_id, A.start_date, A.project_id
 
-          order by D.group_id, D.emp_id
         "));
 
         $results = $query
             ->execute()
             ->as_array();
             
+        // 初期化
+        $json = array(); //最終的に出力される全体のデータ
+        $person = array(); //メンバー１人のデータ
+        //$toPrevious = null; //To前回処理値
+        $value = array(); //1案件毎のデータ
+        $empIdPrevious = ''; //社員IDの前回処理値
+        
         foreach ($results as $result) {
-            $persons['name'] = $result['name'];
-            $persons['desc'] = $result['desc'];
-            $persons["values"][0]["from"] = "/Date('".$result['from']."')/";
-            $persons["values"][0]["to"] = "/Date('".$result['to']."')/";
-            $persons["values"][0]["label"] = $result['label'];
-            $persons["values"][0]["customClass"] = "ganttRed";
-            $json[] = $persons;
+            if ($empIdPrevious == ''){
+                $empIdPrevious = $result['emp_id'];
+            }
+            if ($empIdPrevious != $result['emp_id']){
+                $json[] = $person; //メンバー１人分を出力に追加
+                $person = array(); // メンバー１人のデータを初期化
+            }
+            $empIdPrevious = $result['emp_id']; //社員IDの現在値を退避
+            
+            $person['name'] = $result['name'];
+            $person['desc'] = '';
+            
+            $value["from"] = "/Date('".$result['from']."')/";
+            $value["to"] = "/Date('".$result['to']."')/";
+            //$toPrevious = Date::forge($result['to']);
+            $value["label"] = $result['label'];
+            $value["customClass"] = "ganttRed";
+            $person["values"][] = $value; //1案件分を追加
+            
+            $value = array(); //1案件毎のデータを初期化
         }
+        
+        //最終行の処理
+        $json[] = $person; //メンバー１人分を出力に追加
 
         $this->response($json);
 
