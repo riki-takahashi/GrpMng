@@ -263,7 +263,6 @@ return array(
 		 'packages'  => array(
 			'orm',
 			'auth',
-			'mpdf',
 		 ),
 
 		/**

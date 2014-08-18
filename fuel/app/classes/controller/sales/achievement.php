@@ -357,8 +357,15 @@ class Controller_Sales_Achievement extends Controller_Template {
         $sales_term_id = Input::get($this::SALES_TERM_ID); //売上期間ID
         $pdf_out_flg = Input::get($this::PDF_OUT_FLG); //PDF出力フラグ
 
-        ini_set('memory_limit', '256M');
-        $html = file_get_contents(Uri::base(false).'sales/achievement/index?'.$this::AGGREGATE_UNIT_ID.'='.$aggregate_unit_id.'&'.$this::SALES_TERM_ID.'='.$sales_term_id.'&'.$this::PDF_OUT_FLG.'='.$pdf_out_flg);
+        //ini_set('memory_limit', '256M'); //実行時にメモリ不足になるなら、左記のコメントを削除して有効にする。
+        $html = file_get_contents(Uri::base(false)
+                .'sales/achievement/index?'
+                .$this::AGGREGATE_UNIT_ID.'='.$aggregate_unit_id
+                .'&'.$this::SALES_TERM_ID.'='.$sales_term_id
+                .'&'.$this::PDF_OUT_FLG.'='.$pdf_out_flg);
+        
+        //mPDFはFuelPFPのフレームワークを意識したつくりになっていないため、BootstrapのAutoLoaderを使用しないでインクルードする。
+        require_once(APPPATH.'../packages/mpdf/mpdf.php');
         $mpdf = new mPDF('ja', 'A4');
         $mpdf->WriteHTML($html);
         $mpdf->Output('売上集計結果.pdf', 'I');
