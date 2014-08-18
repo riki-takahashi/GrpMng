@@ -333,7 +333,7 @@ class Controller_Project extends Controller_Mybase {
                     if ($member->save()) {
                         Session::set_flash('success', 'メンバー情報を更新しました。 #'.$member_id);
 
-                        Response::redirect('project/member/'.$project->id);
+                        Response::redirect('project/member/'.$project_id);
                     }
                 }
             } else {

@@ -309,8 +309,25 @@ class Controller_Sales_Achievement extends Controller_Template {
      * 案件検索（POST取得処理）
      */
     public function post_search() {
+        //POST取得
         $aggregate_unit_id = Input::post($this::AGGREGATE_UNIT_ID); //集計単位ID
         $sales_term_id = Input::post($this::SALES_TERM_ID); //売上期間ID
+
+        $data = array();
+        
+        //ドロップダウン項目の設定
+        $this->setDropDownList(true);
+
+        $this->template->set_global($this::AGGREGATE_UNIT_ID, $aggregate_unit_id); //集計単位ID
+        $this->template->set_global($this::SALES_TERM_ID, $sales_term_id); //売上期間ID
+        
+        if ($aggregate_unit_id == 0 or $sales_term_id == 0){
+            Session::set_flash('error', '売上期間と集計単位を入力してください。');
+            $this->template->title = "売上集計";
+            $this->template->content = View::forge('sales\achievement/search', $data); //ビュー生成
+            return;
+        }
+
         //検索条件をセッションに保持
         Session::set($this::AGGREGATE_UNIT_ID, $aggregate_unit_id); //集計単位ID
         Session::set($this::SALES_TERM_ID, $sales_term_id); //売上期間ID
