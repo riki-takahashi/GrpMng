@@ -52,41 +52,13 @@
 			"use strict";
 
 			$(".gantt").gantt({
-				source: [{
-					name: "さんぷる",
-					desc: "サンプル１",
-					values: [{
-						from: "/Date('2013/07/01')/",
-						to: "/Date('2013/08/31')/",
-						label: "項目1", 
-						customClass: "ganttRed",
-
-					}]
-				},
-                                {
-					name: "",
-					desc: "サンプル２",
-					values: [{
-						from: "/Date('2013/09/01')/",
-						to: "/Date('2014/04/30')/",
-						label: "項目2", 
-						customClass: "ganttRed",
-
-					}]
-				}            
-                                ],
+                                source: "../Gunttrest/guntt.json",
 				navigate: "scroll",
 				scale: "weeks",
 				maxScale: "months",
 				minScale: "days",
                                 months: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
-				itemsPerPage: 4
-			});
-
-			$(".gantt").popover({
-				selector: ".bar",
-				title: "ポップアップ",
-				content: "これは別のプラグインで生成する"
+				itemsPerPage: 10
 			});
 
 			prettyPrint();
