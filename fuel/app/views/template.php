@@ -27,7 +27,7 @@
 <body>
 	<div class="container">
 	<nav class="navbar navbar-default">
-		<div class="col-md-12">
+		<div class="col-md-12" style="vertical-align: top; text-align: right;">
 			<span class="h3 navbar-text"><?php echo $title; ?></span>&nbsp;&nbsp;&nbsp;&nbsp;
 			<?php if (! isset($is_menu)) : ?>
 				<?php echo Html::anchor('menu', '<span class="glyphicon glyphicon-th"></span> メニュー', array('class' => 'btn btn-primary navbar-btn')); ?>

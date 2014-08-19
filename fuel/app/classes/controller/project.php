@@ -531,10 +531,9 @@ class Controller_Project extends Controller_Mybase {
      * 社員アサイン状況（ガントチャート）
      */
     public function action_assign() {
-
-        Asset::css(array('prettify.css', 'style.css'), array(), 'css_for_chart', false);
-        Asset::js(array('bootstrap-popover.js', 'bootstrap-tooltip.js', 'jquery.fn.gantt.js', 'prettify.js'), array(), 'js_for_chart', false);
-        
+        //ガントチャート描画のために必要なコンポーネントをこのタイミングで追加する
+        Asset::css(array('jquery.fn.gantt.css'), array(), 'css_for_chart', false);
+        Asset::js(array('jquery.fn.gantt.js'), array(), 'js_for_chart', false);
 
         //テンプレートファイルにデータの引き渡し
         $this->template->set_global($this::PAGE, Input::get($this::PAGE));

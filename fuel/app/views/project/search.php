@@ -5,65 +5,65 @@
 </p>
 	<fieldset>
             <div class="form-group">
-                <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
+                <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
                     <?php echo $fieldset->field('project_name')->set_template('{label}'); ?>
                     <?php echo $fieldset->field('project_name')->set_template('{field}'); ?>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
+                <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
                     <?php echo $fieldset->field('group_id')->set_template('{label}'); ?>
                     <?php echo $fieldset->field('group_id')->set_template('{field}'); ?>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
+                <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
                     <?php echo $fieldset->field('emp_id')->set_template('{label}'); ?>
                     <?php echo $fieldset->field('emp_id')->set_template('{field}'); ?>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
+                <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
                     <?php echo $fieldset->field('start_date_from')->set_template('{label}'); ?>
                     <?php echo $fieldset->field('start_date_from')->set_template('{field}'); ?>
                     <?php echo $fieldset->field('start_date_to')->set_template('{field}'); ?>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
+                <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
                     <?php echo $fieldset->field('end_date_from')->set_template('{label}'); ?>
                     <?php echo $fieldset->field('end_date_from')->set_template('{field}'); ?>
                     <?php echo $fieldset->field('end_date_to')->set_template('{field}'); ?>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
+                <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
                     <?php echo $fieldset->field('delivery_date_from')->set_template('{label}'); ?>
                     <?php echo $fieldset->field('delivery_date_from')->set_template('{field}'); ?>
                     <?php echo $fieldset->field('delivery_date_to')->set_template('{field}'); ?>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
+                <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
                     <?php echo $fieldset->field('sales_date_from')->set_template('{label}'); ?>
                     <?php echo $fieldset->field('sales_date_from')->set_template('{field}'); ?>
                     <?php echo $fieldset->field('sales_date_to')->set_template('{field}'); ?>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
+                <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
                     <?php echo $fieldset->field('end_user')->set_template('{label}'); ?>
                     <?php echo $fieldset->field('end_user')->set_template('{field}'); ?>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
+                <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
                     <?php echo $fieldset->field('order_user')->set_template('{label}'); ?>
                     <?php echo $fieldset->field('order_user')->set_template('{field}'); ?>
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
+                <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
                     <?php echo $fieldset->field('note')->set_template('{label}'); ?>
                     <?php echo $fieldset->field('note')->set_template('{field}'); ?>
                 </div>

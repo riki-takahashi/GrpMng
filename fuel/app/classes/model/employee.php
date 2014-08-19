@@ -53,7 +53,7 @@ class Model_Employee extends Model
 		$val->add_field('emp_name', '社員名', 'required');
 		$val->add_field('emp_kana', '社員名カナ', 'required');
 		$val->add_field('position_id', '役職', 'required|valid_string[numeric]');
-		$val->add_field('mail_address', 'メールアドレス', 'required');
+		$val->add_field('mail_address', 'メールアドレス', 'required|valid_email');
 		$val->add_field('invalid_flag', '無効フラグ', 'required|max_length[1]');
 		$val->add_field('is_mng_flag', '物件担当権限', 'required|max_length[1]');
 

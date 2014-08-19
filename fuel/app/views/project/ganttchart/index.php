@@ -44,13 +44,9 @@
         <div class="gantt"></div>
     </div>
 
-
-
     <script>
 		$(function() {
-
 			"use strict";
-
 			$(".gantt").gantt({
                             source: "../Gunttrest/guntt.json",
                             navigate: "scroll",
@@ -64,11 +60,7 @@
                             }
                                 
 			});
-
-			prettyPrint();
-
 		});
-
     </script>
     
 <?php else: ?>
