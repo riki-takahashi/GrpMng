@@ -27,13 +27,13 @@
 <body>
 	<div class="container">
 	<nav class="navbar navbar-default">
-		<div class="col-md-12" style="vertical-align: top; text-align: right;">
-			<span class="h3 navbar-text"><?php echo $title; ?></span>&nbsp;&nbsp;&nbsp;&nbsp;
+		<div class="col-md-12"  style="display:table;">
+                    <span class="h3 navbar-text" style="text-align: left; vertical-align: middle;"><?php echo $title; ?></span>
 			<?php if (! isset($is_menu)) : ?>
-				<?php echo Html::anchor('menu', '<span class="glyphicon glyphicon-th"></span> メニュー', array('class' => 'btn btn-primary navbar-btn')); ?>
+				<?php echo Html::anchor('menu', '<span class="glyphicon glyphicon-th"></span> メニュー', array('class' => 'btn btn-primary navbar-btn', 'style' => 'vertical-align: middle;')); ?>
 			<?php endif; ?>
 			<?php if (! isset($is_login)) : ?>
-				<?php echo Html::anchor('menu/logout', '<span class="glyphicon glyphicon-log-out"></span> ログアウト', array('class' => 'btn btn-primary navbar-btn', 'onclick' => "return confirm('ログアウトしてもよろしいですか？')")); ?>
+				<?php echo Html::anchor('menu/logout', '<span class="glyphicon glyphicon-log-out"></span> ログアウト', array('class' => 'btn btn-primary navbar-btn', 'style' => 'vertical-align: middle;', 'onclick' => "return confirm('ログアウトしてもよろしいですか？')")); ?>
 			<?php endif; ?>
 		</div>
 	</nav>
