@@ -27,11 +27,15 @@ class Model_Sales_Term extends Model
 	public static function validate($factory)
 	{
 		$val = Validation::forge($factory);
+                $val->add_callable('ExtraValidationRule');
+                
 		$val->add_field('term_name', '売上期間名', 'required');
 		$val->add_field('start_date', '開始日', 'required');
-		$val->add_field('end_date', '終了日', 'required');
+                
+		$val->add_field('end_date', '終了日', 'required')
+                    ->add_rule('enddaterule', 'start_date');
 
 		return $val;
 	}
-
+     
 }

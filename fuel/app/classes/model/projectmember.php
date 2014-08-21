@@ -37,8 +37,12 @@ class Model_Projectmember extends \Orm\Model
 	public static function validate($factory)
 	{
 		$val = Validation::forge($factory);
+                $val->add_callable('ExtraValidationRule');
+                
 		$val->add_field('start_date', '開始日', 'required');
-		$val->add_field('end_date', '終了日', 'required');
+                
+		$val->add_field('end_date', '終了日', 'required')
+                    ->add_rule('enddaterule', 'start_date');
 
 		return $val;
 	}

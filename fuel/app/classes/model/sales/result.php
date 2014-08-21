@@ -43,7 +43,6 @@ class Model_Sales_Result extends Model
 		$val->add_field('sales_date', '売上日', 'required');
 		$val->add_field('sales_amount', '売上金額', 'required|valid_string[numeric]');
 		$val->add_field('tax', '消費税', 'required|valid_string[numeric]');
-		//$val->add_field('note', '備考', 'required');
 
 		return $val;
 	}
