@@ -5,7 +5,7 @@ class Controller_Sales_Term extends Controller_Template{
 	{
 		$data['sales_terms'] = Model_Sales_Term::find('all');
 		$this->template->title = "売上期間";
-		$this->template->content = View::forge('sales\term/index', $data);
+		$this->template->content = View::forge('sales/term/index', $data);
 
 	}
 
@@ -20,7 +20,7 @@ class Controller_Sales_Term extends Controller_Template{
 		}
 
 		$this->template->title = "Sales_term";
-		$this->template->content = View::forge('sales\term/view', $data);
+		$this->template->content = View::forge('sales/term/view', $data);
 
 	}
 
@@ -58,7 +58,7 @@ class Controller_Sales_Term extends Controller_Template{
 		}
 
 		$this->template->title = "売上期間";
-		$this->template->content = View::forge('sales\term/create');
+		$this->template->content = View::forge('sales/term/create');
 
 	}
 
@@ -93,7 +93,6 @@ class Controller_Sales_Term extends Controller_Template{
 				Session::set_flash('error', '売上期間の更新に失敗しました。 #' . $term_id);
 			}
 		}
-
 		else
 		{
 			if (Input::method() == 'POST')
@@ -110,7 +109,7 @@ class Controller_Sales_Term extends Controller_Template{
 		}
 
 		$this->template->title = "売上期間";
-		$this->template->content = View::forge('sales\term/edit');
+		$this->template->content = View::forge('sales/term/edit');
 
 	}
 
@@ -118,15 +117,21 @@ class Controller_Sales_Term extends Controller_Template{
 	{
 		is_null($term_id) and Response::redirect('sales/term');
 
-		if ($sales_term = Model_Sales_Term::find($term_id))
+                $sales_term = Model_Sales_Term::find($term_id);
+		if ($sales_term)
 		{
+                        $val = Model_Sales_Term::validate('delete');
+                        if ($val->run())
+                        {
+                                //
+                        }
+                    
 			$sales_term->delete();
 
 			Session::set_flash('success', '売上期間を削除しました。 #'.$term_id);
 		}
-
-		else
-		{
+                else
+                {
 			Session::set_flash('error', '売上期間の削除に失敗しました。 #'.$term_id);
 		}
 

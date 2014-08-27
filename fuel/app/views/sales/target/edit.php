@@ -1,4 +1,4 @@
-<?php echo render('sales\target/_form', $__data); ?>
+<?php echo render('sales/target/_form', $__data); ?>
 <p>
 	<?php echo Html::anchor('sales/target/index'
                 . '?' . Controller_Sales_target::GROUP_ID . '=' . $group_id

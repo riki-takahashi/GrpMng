@@ -73,7 +73,7 @@ class Controller_Sales_target extends Controller_Template {
         $this->template->set_global($this::SALES_TERM_ID, $sales_term_id);
         $this->template->set_global($this::PAGE, Input::get($this::PAGE));
         $this->template->title = "売上目標一覧";
-        $this->template->content = View::forge('sales\target/index', $data);
+        $this->template->content = View::forge('sales/target/index', $data);
     }
 
     /**
@@ -96,7 +96,7 @@ class Controller_Sales_target extends Controller_Template {
 
         //テンプレートファイルにデータの引き渡し
         $this->template->title = "売上目標検索";
-        $this->template->content = View::forge('sales\target/search', $data);
+        $this->template->content = View::forge('sales/target/search', $data);
     }
 
     /**
@@ -156,7 +156,7 @@ class Controller_Sales_target extends Controller_Template {
         $this->template->set_global($this::GROUP_ID, $group_id);
         $this->template->set_global($this::SALES_TERM_ID, $sales_term_id);
         $this->template->title = "売上目標登録";
-        $this->template->content = View::forge('sales\target/create');
+        $this->template->content = View::forge('sales/target/create');
     }
 
     /**
@@ -221,7 +221,7 @@ class Controller_Sales_target extends Controller_Template {
         $this->template->set_global($this::SALES_TERM_ID, $sales_term_id);
         $this->template->set_global($this::PAGE, $page);
         $this->template->title = "売上目標情報";
-        $this->template->content = View::forge('sales\target/edit');
+        $this->template->content = View::forge('sales/target/edit');
     }
 
     /**

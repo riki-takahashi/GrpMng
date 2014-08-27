@@ -41,7 +41,7 @@ class Controller_Sales_Achievement extends Controller_Template {
         if ($aggregate_unit_id == 0 or $sales_term_id == 0){
             Session::set_flash('error', '売上期間と集計単位を入力してください。');
             $this->template->title = "売上集計";
-            $this->template->content = View::forge('sales\achievement/index', $data); //ビュー生成
+            $this->template->content = View::forge('sales/achievement/index', $data); //ビュー生成
             return;
         }
         
@@ -71,7 +71,7 @@ class Controller_Sales_Achievement extends Controller_Template {
         $this->template->set_global('term_name', $sales_term->term_name); //売上期間名
         $this->template->set_global($this::PDF_OUT_FLG, $pdf_out_flg); //PDF出力フラグ
         $this->template->title = "売上集計";
-        $this->template->content = View::forge('sales\achievement/index', $data); //ビュー生成
+        $this->template->content = View::forge('sales/achievement/index', $data); //ビュー生成
     }
 
     /**
@@ -302,7 +302,7 @@ class Controller_Sales_Achievement extends Controller_Template {
 
         //テンプレートファイルにデータの引き渡し
         $this->template->title = "売上集計";
-        $this->template->content = View::forge('sales\achievement/search', $data);
+        $this->template->content = View::forge('sales/achievement/search', $data);
     }
 
     /**
@@ -324,7 +324,7 @@ class Controller_Sales_Achievement extends Controller_Template {
         if ($aggregate_unit_id == 0 or $sales_term_id == 0){
             Session::set_flash('error', '売上期間と集計単位を入力してください。');
             $this->template->title = "売上集計";
-            $this->template->content = View::forge('sales\achievement/search', $data); //ビュー生成
+            $this->template->content = View::forge('sales/achievement/search', $data); //ビュー生成
             return;
         }
 

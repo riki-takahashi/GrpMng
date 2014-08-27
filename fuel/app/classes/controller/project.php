@@ -539,6 +539,6 @@ class Controller_Project extends Controller_Mybase {
         $this->template->set_global($this::PAGE, Input::get($this::PAGE));
 
         $this->template->title = "社員アサイン状況";
-        $this->template->content = View::forge('project\ganttchart/index');
+        $this->template->content = View::forge('project/ganttchart/index');
     }
 }

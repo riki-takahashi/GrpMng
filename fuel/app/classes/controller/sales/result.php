@@ -5,15 +5,15 @@ class Controller_Sales_Result extends Controller_Template{
 	{
 		$data['sales_results'] = Model_Sales_Result::find('all');
 		$this->template->title = "売上実績情報";
-		$this->template->content = View::forge('sales\result/index', $data);
+		$this->template->content = View::forge('sales/result/index', $data);
 	}
 
 	public function action_view($result_id = null)
 	{
-		is_null($result_id) and Response::redirect('sales\result/index');
+		is_null($result_id) and Response::redirect('sales/result/index');
 
 		$this->template->title = "売上一覧";
-		$this->template->content = ViewModel::forge('sales\result/view')->set('id', $result_id);
+		$this->template->content = ViewModel::forge('sales/result/view')->set('id', $result_id);
 	}
         
 	public function action_create($project_id = null)
@@ -60,7 +60,7 @@ class Controller_Sales_Result extends Controller_Template{
 
                 $data['project_name'] = $project->project_name;
 		$this->template->title = "売上実績登録";
-		$this->template->content = View::forge('sales\result/create', $data);
+		$this->template->content = View::forge('sales/result/create', $data);
 
 	}
 
@@ -124,7 +124,7 @@ class Controller_Sales_Result extends Controller_Template{
 
                 $data['project_name'] = $project->project_name;
 		$this->template->title = "売上実績情報";
-		$this->template->content = View::forge('sales\result/edit', $data);
+		$this->template->content = View::forge('sales/result/edit', $data);
 
 	}
 
