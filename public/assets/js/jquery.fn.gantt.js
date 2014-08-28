@@ -40,7 +40,7 @@
             useCookie: false,
             maxScale: "months",
             minScale: "hours",
-            waitText: "Please wait...",
+            waitText: "しばらくお待ちください...",
             onItemClick: function (data) { return; },
             onAddClick: function (data) { return; },
             onRender: function() { return; },
@@ -1469,7 +1469,7 @@
                 var minDate = null;
                 $.each(element.data, function (i, entry) {
                     $.each(entry.values, function (i, date) {
-                        minDate = minDate > tools.dateDeserialize(date.from) || minDate === null ? tools.dateDeserialize(date.from) : minDate;
+                        minDate = (minDate > tools.dateDeserialize(date.from) || minDate === null) ? tools.dateDeserialize(date.from) : minDate;
                     });
                 });
                 minDate = minDate || new Date();

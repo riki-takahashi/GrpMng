@@ -1,4 +1,8 @@
 <?php
+/**
+ * GunttrestクラスでRESTのサービスを提供する。
+ * ガントチャートの画面では、このサービスを呼び出してデータを取得し描画する。
+ */
 class Controller_Gunttrest extends Controller_Rest
 {
     public function get_guntt()
@@ -63,8 +67,8 @@ class Controller_Gunttrest extends Controller_Rest
             $toPrevious = Date::forge($result['to']); //Toの現在値を次回のために退避(To前回処理値)
             
             $person['desc'] = '';
-            $value['from'] = "/Date('".$result['from']."')/";
-            $value['to'] = "/Date('".$result['to']."')/";
+            $value['from'] = "/Date(".str_replace("-", "/", $result['from']).")/";
+            $value['to'] = "/Date(".str_replace("-", "/", $result['to']).")/";
             $value['label'] = $result['label'];
             $value['customClass'] = 'ganttRed';
             $value['dataObj'] = $result['project_id'];

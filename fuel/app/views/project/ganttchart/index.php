@@ -7,7 +7,8 @@
                 padding: 0 0 50px 0;
         }
         .contain {
-                width: 800px;
+                width: 100%;
+                height: 100%;
                 margin: 0 auto;
         }
         h1 {
@@ -21,7 +22,7 @@
                 margin-bottom: 25px;
         }
         table th:first-child {
-                width: 150px;
+                width: 15%;
         }
         /* Bootstrap 3.x re-reset */
         .fn-gantt *,
@@ -33,15 +34,31 @@
         }
     </style>
 
-    <style type="text/css">
-            .contain {
-                    width: 1000px;
-                    margin: 0 auto;
-            }
-    </style>
-
     <div class="contain">
-        <div class="gantt"></div>
+        <div  type="image/svg+xml" class="gantt"></div>
+        
+<object id="gazo" type="image/svg+xml" data="a.svg">
+        <svg id="svgelem" xmlns="http://www.w3.org/2000/svg">
+            <circle id="redcircle" cx="50" cy="50" r="50" fill="red" />
+        </svg>
+</object>
+        
+        
+<svg id="left-arrow"
+  viewBox="0 0 64 64"
+  version="1.1"
+  xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(32), rotate(-45, 32, 32)">
+    <g fill="none"
+      stroke="#fff"
+      stroke-width="8">
+      <line x1="0" y1="4" x2="24" y2="4"/>
+      <line x1="4" y1="0" x2="4" y2="24"/>
+    </g>
+  </g>
+</svg>        
+        
+        
     </div>
 
     <script>
