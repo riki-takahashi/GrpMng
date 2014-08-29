@@ -205,10 +205,8 @@ class Model_Project extends Model
 		$val->add_field('group_id', '担当グループ', 'required|valid_string[numeric]');
 		$val->add_field('emp_id', '担当者', 'required|valid_string[numeric]');
 		$val->add_field('start_date', '開始日', 'required');
-                
 		$val->add_field('end_date', '終了日', 'required')
                     ->add_rule('enddaterule', 'start_date');
-                
 		$val->add_field('order_amount', '受注金額', 'valid_string[numeric]');
 
 		return $val;
