@@ -1,6 +1,14 @@
 <?php
+/**
+ * 売上実績コントローラクラス
+ * Copyright 2014 Riki System Co.,Ltd.
+ * @author i-suzuki
+ */
 class Controller_Sales_Result extends Controller_Template{
 
+        /**
+         * 初期表示
+         */
 	public function action_index()
 	{
 		$data['sales_results'] = Model_Sales_Result::find('all');
@@ -8,6 +16,10 @@ class Controller_Sales_Result extends Controller_Template{
 		$this->template->content = View::forge('sales/result/index', $data);
 	}
 
+        /**
+         * ビュー表示（使用していない）
+         * @param type $result_id
+         */
 	public function action_view($result_id = null)
 	{
 		is_null($result_id) and Response::redirect('sales/result/index');
@@ -16,6 +28,10 @@ class Controller_Sales_Result extends Controller_Template{
 		$this->template->content = ViewModel::forge('sales/result/view')->set('id', $result_id);
 	}
         
+        /**
+         * 新規作成
+         * @param type $project_id
+         */
 	public function action_create($project_id = null)
 	{
 		if ( ! $project = Model_Project::find($project_id))
@@ -64,6 +80,11 @@ class Controller_Sales_Result extends Controller_Template{
 
 	}
 
+        /**
+         * 編集
+         * @param type $project_id
+         * @param type $result_id
+         */
 	public function action_edit($project_id = null, $result_id = null)
 	{
 		is_null($result_id) and Response::redirect('project/sales');
@@ -128,6 +149,10 @@ class Controller_Sales_Result extends Controller_Template{
 
 	}
 
+        /**
+         * 削除
+         * @param type $result_id
+         */
 	public function action_delete($result_id = null)
 	{
 		is_null($result_id) and Response::redirect('sales/result');

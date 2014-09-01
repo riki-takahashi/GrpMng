@@ -1,7 +1,15 @@
 <?php
-
+/**
+ * 案件メンバーモデルクラス
+ * Copyright 2014 Riki System Co.,Ltd.
+ * @author i-suzuki
+ */
 class Model_Projectmember extends \Orm\Model
 {
+        /**
+         * 項目ID
+         * @var type 
+         */
 	protected static $_properties = array(
 		'id',
 		'project_id',
@@ -13,6 +21,11 @@ class Model_Projectmember extends \Orm\Model
 		'updated_at',
 	);
 
+        /**
+         * 案件メンバーは社員マスタを参照している
+         * 　ORM側でオブジェクト間のリレーション定義
+         * @var type 
+         */
 	protected static $_belongs_to = array(
 		'employee' => array(
 			'model_to' => 'Model_Employee',
@@ -23,6 +36,10 @@ class Model_Projectmember extends \Orm\Model
 		),
 	);
 	
+        /**
+         * タイムスタンプの自動更新を有効化
+         * @var type 
+         */
 	protected static $_observers = array(
 		'Orm\Observer_CreatedAt' => array(
 			'events' => array('before_insert'),
@@ -34,6 +51,11 @@ class Model_Projectmember extends \Orm\Model
 		),
 	);
 
+        /**
+         * バリデーションルール設定
+         * @param type $factory
+         * @return type
+         */
 	public static function validate($factory)
 	{
 		$val = Validation::forge($factory);

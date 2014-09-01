@@ -1,6 +1,14 @@
 <?php
+/**
+ * 役職マスタコントローラクラス
+ * Copyright 2014 Riki System Co.,Ltd.
+ * @author i-suzuki
+ */
 class Controller_Position extends Controller_Mybase{
 
+        /**
+         * 初期表示
+         */
 	public function action_index()
 	{
 		$data['positions'] = Model_Position::find('all', array(
@@ -11,6 +19,10 @@ class Controller_Position extends Controller_Mybase{
 
 	}
 
+        /**
+         * ビュー表示（使用していない）
+         * @param type $id
+         */
 	public function action_view($id = null)
 	{
 		is_null($id) and Response::redirect('position');
@@ -26,6 +38,9 @@ class Controller_Position extends Controller_Mybase{
 
 	}
 
+        /**
+         * 新規作成
+         */
 	public function action_create()
 	{
 		if (Input::method() == 'POST')
@@ -62,6 +77,10 @@ class Controller_Position extends Controller_Mybase{
 
 	}
 
+        /**
+         * 編集
+         * @param type $id
+         */
 	public function action_edit($id = null)
 	{
 		is_null($id) and Response::redirect('position');
@@ -110,6 +129,10 @@ class Controller_Position extends Controller_Mybase{
 
 	}
 
+        /**
+         * 削除
+         * @param type $id
+         */
 	public function action_delete($id = null)
 	{
 		is_null($id) and Response::redirect('position');
@@ -129,6 +152,4 @@ class Controller_Position extends Controller_Mybase{
 		Response::redirect('position');
 
 	}
-
-
 }

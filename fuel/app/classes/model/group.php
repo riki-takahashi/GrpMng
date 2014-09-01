@@ -1,8 +1,16 @@
 <?php
 use Orm\Model;
-
+/**
+ * グループマスタモデルクラス
+ * Copyright 2014 Riki System Co.,Ltd.
+ * @author i-suzuki
+ */
 class Model_Group extends Model
 {
+        /**
+         * 項目ID
+         * @var type 
+         */
 	protected static $_properties = array(
 		'id',
 		'group_name',
@@ -12,7 +20,12 @@ class Model_Group extends Model
 		'created_at',
 		'updated_at',
 	);
-
+        
+        /**
+         * グループマスタは社員マスタを参照している
+         * 　ORM側でオブジェクト間のリレーション定義
+         * @var type 
+         */
 	protected static $_belongs_to = array(
 		'employee' =>	array(
 			'model_to' => 'Model_Employee',
@@ -22,6 +35,10 @@ class Model_Group extends Model
 			'cascade_delete' => false,
 	));
 
+        /**
+         * タイムスタンプの自動更新を有効化
+         * @var type 
+         */
 	protected static $_observers = array(
 		'Orm\Observer_CreatedAt' => array(
 			'events' => array('before_insert'),
@@ -33,6 +50,11 @@ class Model_Group extends Model
 		),
 	);
 
+        /**
+         * バリデーションルール設定
+         * @param type $factory
+         * @return type
+         */
 	public static function validate($factory)
 	{
 		$val = Validation::forge($factory);

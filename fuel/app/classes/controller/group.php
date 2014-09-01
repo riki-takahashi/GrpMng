@@ -1,12 +1,24 @@
 <?php
+/**
+ * グループマスタコントローラクラス
+ * Copyright 2014 Riki System Co.,Ltd.
+ * @author i-suzuki
+ */
 class Controller_Group extends Controller_Mybase{
 
+        /**
+         * 初期表示
+         */
 	public function action_index()
 	{
 		$this->template->title = "グループマスタ";
 		$this->template->content = ViewModel::forge('group/index');
 	}
 
+        /**
+         * ビュー表示（使用していない）
+         * @param type $id
+         */
 	public function action_view($id = null)
 	{
 		is_null($id) and Response::redirect('group');
@@ -16,6 +28,9 @@ class Controller_Group extends Controller_Mybase{
 
 	}
 
+        /**
+         * 新規作成
+         */
 	public function action_create()
 	{
 		if (Input::method() == 'POST')
@@ -60,6 +75,10 @@ class Controller_Group extends Controller_Mybase{
 
 	}
 
+        /**
+         * 編集
+         * @param type $id
+         */
 	public function action_edit($id = null)
 	{
 		is_null($id) and Response::redirect('group');
@@ -118,6 +137,10 @@ class Controller_Group extends Controller_Mybase{
 
 	}
 
+        /**
+         * 削除
+         * @param type $id
+         */
 	public function action_delete($id = null)
 	{
 		is_null($id) and Response::redirect('group');
@@ -137,6 +160,4 @@ class Controller_Group extends Controller_Mybase{
 		Response::redirect('group');
 
 	}
-
-
 }

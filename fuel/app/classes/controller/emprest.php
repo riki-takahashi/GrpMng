@@ -1,4 +1,9 @@
 <?php
+/**
+ * 
+ * 使用していない
+ * 
+ */
 class Controller_Emprest extends Controller_Rest
 {
 	public function get_emp()

@@ -1,6 +1,14 @@
 <?php
+/**
+ * メニューコントローラクラス
+ * Copyright 2014 Riki System Co.,Ltd.
+ * @author takahashi
+ */
 class Controller_Menu extends Controller_Mybase{
 
+        /**
+         * 初期表示
+         */
 	public function action_index()
 	{
 		$this->template->is_menu = true;
@@ -8,6 +16,9 @@ class Controller_Menu extends Controller_Mybase{
 		$this->template->content = View::forge('menu/index');
 	}
 	
+        /**
+         * ログイン
+         */
 	public function action_login()
 	{
 		Auth::check() and Response::redirect('menu');
@@ -33,6 +44,9 @@ class Controller_Menu extends Controller_Mybase{
 		$this->template->content = View::forge('menu/login');
 	}
 	
+        /**
+         * ログアウト
+         */
 	public function action_logout()
 	{
 		Auth::logout();

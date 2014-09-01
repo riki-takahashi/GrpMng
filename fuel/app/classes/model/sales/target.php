@@ -1,8 +1,16 @@
 <?php
 use Orm\Model;
-
+/**
+ * 売上目標モデルクラス
+ * Copyright 2014 Riki System Co.,Ltd.
+ * @author i-suzuki
+ */
 class Model_Sales_Target extends Model
 {
+        /**
+         * 項目ID
+         * @var type 
+         */
 	protected static $_properties = array(
 		'id',
 		'group_id',
@@ -13,6 +21,12 @@ class Model_Sales_Target extends Model
 		'updated_at',
 	);
 
+        /**
+         * 売上目標情報はグループマスタを参照している
+         * また売上目標情報は売上対象期間情報を参照している
+         * 　ORM側でオブジェクト間のリレーション定義
+         * @var type 
+         */
 	protected static $_belongs_to = array(
 		'group' => array(
 			'model_to' => 'Model_Group',
@@ -30,6 +44,10 @@ class Model_Sales_Target extends Model
 		),
 	);
         
+        /**
+         * タイムスタンプの自動更新を有効化
+         * @var type 
+         */
 	protected static $_observers = array(
 		'Orm\Observer_CreatedAt' => array(
 			'events' => array('before_insert'),
@@ -41,6 +59,11 @@ class Model_Sales_Target extends Model
 		),
 	);
 
+        /**
+         * バリデーションルール設定
+         * @param type $factory
+         * @return type
+         */
 	public static function validate($factory)
 	{
 		$val = Validation::forge($factory);

@@ -1,6 +1,7 @@
 <?php
 /**
  * バリデーションチェックの拡張用共通クラス
+ * Copyright 2014 Riki System Co.,Ltd.
  * @author i-suzuki
  */
 class ExtraValidationRule {
@@ -16,7 +17,7 @@ class ExtraValidationRule {
     {
         Validation::active()->set_message('enddaterule', ':label：「:value」は開始日以降の日付を入力してください。');
         
-        //こうあるべきだという条件を判定して返す。
+        //こうあるべきという条件判定を返す。
         return $value >= Validation::active()->input($field_start_date);
     }
 
@@ -33,10 +34,10 @@ class ExtraValidationRule {
         
         //入力パラメータで指定されたテーブルのフィールドに該当するデータを抽出
         $result = DB::select($field)
-        ->where($field, '=', $value)
-        ->from($table)->execute();
+            ->where($field, '=', $value)
+            ->from($table)->execute();
 
-        //こうあるべきだという条件を判定して返す。
+        //こうあるべきという条件判定を返す。
         return ! ($result->count() > 0);        
     }
     

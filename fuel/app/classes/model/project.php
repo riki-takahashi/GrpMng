@@ -1,8 +1,17 @@
 <?php
 use Orm\Model;
-
+/**
+ * 案件モデルクラス
+ * 　画面にFieldSetを使用しているため、関連情報をモデル内に定義しています。
+ * Copyright 2014 Riki System Co.,Ltd.
+ * @author i-suzuki
+ */
 class Model_Project extends Model
 {
+        /**
+         * 項目ID
+         * @var type 
+         */
 	protected static $_properties = array(
 		'id',
 		'project_name' => array(
@@ -150,6 +159,12 @@ class Model_Project extends Model
 		'updated_at',
 	);
 
+        /**
+         * 案件マスタはグループマスタを参照している
+         * また案件マスタは社員マスタを参照している
+         * 　ORM側でオブジェクト間のリレーション定義
+         * @var type 
+         */
 	protected static $_belongs_to = array(
 		'group' => array(
 			'model_to' => 'Model_Group',
@@ -167,6 +182,12 @@ class Model_Project extends Model
 		),
 	);
 	
+        /**
+         * 案件マスタは案件メンバーから参照されている
+         * また案件マスタは売上実績から参照されている
+         * 　ORM側でオブジェクト間のリレーション定義
+         * @var type 
+         */
 	protected static $_has_many = array(
 		'members' => array(
 			'model_to' => 'Model_Projectmember',
@@ -185,6 +206,10 @@ class Model_Project extends Model
             
 	);
 
+        /**
+         * タイムスタンプの自動更新を有効化
+         * @var type 
+         */
 	protected static $_observers = array(
 		'Orm\Observer_CreatedAt' => array(
 			'events' => array('before_insert'),
@@ -196,6 +221,11 @@ class Model_Project extends Model
 		),
 	);
 
+        /**
+         * バリデーションチェックルール設定
+         * @param type $factory
+         * @return type
+         */
 	public static function validate($factory)
 	{
 		$val = Validation::forge($factory);

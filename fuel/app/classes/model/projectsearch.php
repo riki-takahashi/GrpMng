@@ -1,8 +1,17 @@
 <?php
 use Orm\Model;
-
+/**
+ * 検索画面用モデルクラス
+ * 　画面にFieldSetを使用しているため、関連情報をモデル内に定義しています。
+ * Copyright 2014 Riki System Co.,Ltd.
+ * @author i-suzuki
+ */
 class Model_Projectsearch extends Model
 {
+        /**
+         * 項目ID
+         * @var type 
+         */
 	protected static $_properties = array(
 		'id',
 		'project_name' => array(
@@ -202,6 +211,12 @@ class Model_Projectsearch extends Model
 		'updated_at',
 	);
 
+        /**
+         * 案件マスタ検索条件のグループはグループマスタを参照している
+         * また案件マスタ検索条件の担当者は社員マスタを参照している
+         * 　ORM側でオブジェクト間のリレーション定義
+         * @var type 
+         */
 	protected static $_belongs_to = array(
 		'group' => array(
 			'model_to' => 'Model_Group',

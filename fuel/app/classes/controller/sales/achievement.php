@@ -1,7 +1,6 @@
 <?php
-
 /**
- * 売上集計（売上達成状況）コントローラクラス
+ * 売上集計コントローラクラス
  * Copyright 2014 Riki System Co.,Ltd.
  * @author i-suzuki
  */
@@ -20,6 +19,8 @@ class Controller_Sales_Achievement extends Controller_Template {
 
     /**
      * $response をパラメータとして追加し、after() を Controller_Template 互換にする
+     * @param type $response
+     * @return type
      */
     public function after($response) {
         $response = parent::after($response);
@@ -283,6 +284,9 @@ class Controller_Sales_Achievement extends Controller_Template {
         return $sales_total;
     }
 
+    /**
+     * セッションから検索条件を取得
+     */
     public function get_search() {
 
         //SESSION取得処理

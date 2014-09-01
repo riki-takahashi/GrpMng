@@ -1,8 +1,16 @@
 <?php
 use Orm\Model;
-
+/**
+ * 売上期間モデルクラス
+ * Copyright 2014 Riki System Co.,Ltd.
+ * @author i-suzuki
+ */
 class Model_Sales_Term extends Model
 {
+        /**
+         * 項目ID
+         * @var type 
+         */
 	protected static $_properties = array(
 		'id',
 		'term_name',
@@ -13,6 +21,10 @@ class Model_Sales_Term extends Model
 		'updated_at',
 	);
 
+        /**
+         * タイムスタンプの自動更新を有効化
+         * @var type 
+         */
 	protected static $_observers = array(
 		'Orm\Observer_CreatedAt' => array(
 			'events' => array('before_insert'),
@@ -24,6 +36,11 @@ class Model_Sales_Term extends Model
 		),
 	);
 
+        /**
+         * バリデーションルール設定
+         * @param type $factory
+         * @return type
+         */
 	public static function validate($factory)
 	{
             $val = Validation::forge($factory);

@@ -1,8 +1,8 @@
 <?php
-
 /**
- * 案件情報コントローラクラス
+ * 案件マスタコントローラクラス
  * Copyright 2014 Riki System Co.,Ltd.
+ * @author i-suzuki
  */
 class Controller_Project extends Controller_Mybase {
 
@@ -37,6 +37,8 @@ class Controller_Project extends Controller_Mybase {
     /**
      * テンプレート使用のための後処理
      * $response をパラメータとして追加し、after() を Controller_Template 互換にする
+     * @param type $response
+     * @return type
      */
     public function after($response) {
         $response = parent::after($response);
@@ -44,7 +46,7 @@ class Controller_Project extends Controller_Mybase {
     }
 
     /**
-     * 案件一覧
+     * 初期表示（案件一覧）
      */
     public function action_index() {
         //SESSION取得
@@ -189,7 +191,7 @@ class Controller_Project extends Controller_Mybase {
     }
 
     /**
-     * 案件情報新規追加
+     * 新規追加（案件情報）
      */
     public function action_create() {
         if (Input::method() == 'POST') {
@@ -229,7 +231,7 @@ class Controller_Project extends Controller_Mybase {
     }
 
     /**
-     * 案件情報編集
+     * 編集（案件情報）
      * @param type $project_id
      */
     public function action_edit($project_id = null) {
@@ -289,7 +291,7 @@ class Controller_Project extends Controller_Mybase {
     }
 
     /**
-     * 案件情報削除
+     * 削除（案件情報）
      * @param type $project_id
      */
     public function action_delete($project_id = null) {
@@ -307,7 +309,7 @@ class Controller_Project extends Controller_Mybase {
     }
 
     /**
-     * 案件メンバー
+     * 案件メンバー更新
      * @param type $project_id
      * @param type $member_id
      */
@@ -391,7 +393,7 @@ class Controller_Project extends Controller_Mybase {
             ));
             $project->members[] = $member;
 
-            //ドロップダウン項目の設定
+            //ドロップダウン項目（社員一覧）の設定
             $this->setMemberDropDown();
         }
 
@@ -423,7 +425,7 @@ class Controller_Project extends Controller_Mybase {
     }
 
     /**
-     * グループ一覧取得
+     * ドロップダウンリスト用のグループ一覧データ取得
      * @param type $add_blank
      * @return type $groups
      */
@@ -440,7 +442,7 @@ class Controller_Project extends Controller_Mybase {
     }
 
     /**
-     * 物件担当一覧取得
+     * ドロップダウンリスト用の物件担当一覧データ取得
      * @param type $add_blank
      * @return type
      */
@@ -488,7 +490,7 @@ class Controller_Project extends Controller_Mybase {
     }
 
     /**
-     * 売上実績 
+     * 売上実績画面へ遷移
      * @param type $project_id
      */
     public function action_sales($project_id = null) {
@@ -528,7 +530,7 @@ class Controller_Project extends Controller_Mybase {
     }
     
     /**
-     * 社員アサイン状況（ガントチャート）
+     * 社員アサイン状況（ガントチャート）画面へ遷移（新しいタブを作成する）
      */
     public function action_assign() {
         //ガントチャート描画のために必要なコンポーネントをこのタイミングで追加する

@@ -1,10 +1,18 @@
 <?php
 /**
- * GunttrestクラスでRESTのサービスを提供する。
- * ガントチャートの画面では、このサービスを呼び出してデータを取得し描画する。
+ * 社員アサイン状況コントローラクラス
+ * 　GunttrestクラスでRESTのサービスを提供する。
+ * 　ガントチャートの画面では、このサービスを呼び出してデータを取得し描画する。
+ * 　このコントローラはRESTのため『.JSON』でリクエストされたらJSON形式で出力データを返す
+ * 　また『.XML』でリクエストされたらXML形式で出力データを返す
+ * Copyright 2014 Riki System Co.,Ltd.
+ * @author i-suzuki
  */
 class Controller_Gunttrest extends Controller_Rest
 {
+    /**
+     * ガントチャート用のデータ取得
+     */
     public function get_guntt()
     {
 
@@ -29,6 +37,7 @@ class Controller_Gunttrest extends Controller_Rest
 
         "));
 
+        //クエリーの実行
         $results = $query
             ->execute()
             ->as_array();
@@ -79,7 +88,7 @@ class Controller_Gunttrest extends Controller_Rest
         //最終行の処理
         $json[] = $person; //メンバー１人分を出力に追加
         
-        //このコントローラはRESTのため『.JSON』でリクエストされたらJSON形式で出力データを返す
+        //出力データを返す
         $this->response($json);
 
     }

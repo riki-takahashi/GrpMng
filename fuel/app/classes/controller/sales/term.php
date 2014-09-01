@@ -1,9 +1,14 @@
 <?php
 /**
  * 売上期間コントローラ
+ * Copyright 2014 Riki System Co.,Ltd.
+ * @author i-suzuki
  */
 class Controller_Sales_Term extends Controller_Template{
 
+        /**
+         * 初期表示
+         */
 	public function action_index()
 	{
 		$data['sales_terms'] = Model_Sales_Term::find('all');
@@ -12,6 +17,10 @@ class Controller_Sales_Term extends Controller_Template{
 
 	}
 
+        /**
+         * ビュー表示（使用していません）
+         * @param type $term_id
+         */
 	public function action_view($term_id = null)
 	{
 		is_null($term_id) and Response::redirect('sales/term');
@@ -27,6 +36,9 @@ class Controller_Sales_Term extends Controller_Template{
 
 	}
 
+        /**
+         * 新規作成
+         */
 	public function action_create()
 	{
 		if (Input::method() == 'POST')
@@ -65,6 +77,10 @@ class Controller_Sales_Term extends Controller_Template{
 
 	}
 
+        /**
+         * 編集
+         * @param type $term_id
+         */
 	public function action_edit($term_id = null)
 	{
 		is_null($term_id) and Response::redirect('sales/term');
@@ -79,6 +95,7 @@ class Controller_Sales_Term extends Controller_Template{
 
 		if ($val->run())
 		{
+                        //バリデーションチェックOKの場合
 			$sales_term->term_name = Input::post('term_name');
 			$sales_term->start_date = Input::post('start_date');
 			$sales_term->end_date = Input::post('end_date');
@@ -98,6 +115,7 @@ class Controller_Sales_Term extends Controller_Template{
 		}
 		else
 		{
+                        //バリデーションチェックNGの場合
 			if (Input::method() == 'POST')
 			{
 				$sales_term->term_name = $val->validated('term_name');
@@ -108,7 +126,7 @@ class Controller_Sales_Term extends Controller_Template{
 				Session::set_flash('error', $val->error());
 			}
 
-                        //
+                        //edit.php画面を初期表示するためのデータをセット
 			$this->template->set_global('sales_term', $sales_term, false);
 		}
 
@@ -118,7 +136,7 @@ class Controller_Sales_Term extends Controller_Template{
 	}
 
         /**
-         * 
+         * 削除
          * @param type $term_id
          */
 	public function action_delete($term_id = null)
@@ -128,6 +146,7 @@ class Controller_Sales_Term extends Controller_Template{
             $sales_term = Model_Sales_Term::find($term_id);
             if ($val->run(array('id' => $term_id)))
             {
+                //バリデーションチェックOKの場合
                 if ($sales_term)
                 {
                     $sales_term->delete();
@@ -140,8 +159,8 @@ class Controller_Sales_Term extends Controller_Template{
             }
             else
             {
+                //バリデーションチェックNGの場合
                 Session::set_flash('error', $val->error());
-                $this->template->set_global('sales_term', $sales_term, false);
             }
 
             $data['sales_terms'] = Model_Sales_Term::find('all');

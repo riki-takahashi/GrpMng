@@ -1,8 +1,16 @@
 <?php
 use Orm\Model;
-
+/**
+ * 役職マスタモデルクラス
+ * Copyright 2014 Riki System Co.,Ltd.
+ * @author i-suzuki
+ */
 class Model_Position extends Model
 {
+        /**
+         * 項目ID
+         * @var type 
+         */
 	protected static $_properties = array(
 		'id',
 		'position_name',
@@ -11,6 +19,11 @@ class Model_Position extends Model
 		'updated_at',
 	);
 
+        /**
+         * 役職マスタは社員マスタを参照している
+         * 　ORM側でオブジェクト間のリレーション定義
+         * @var type 
+         */
 	protected static $_belongs_to = array(
 		'position' =>	array(
 			'model_to' => 'Model_Employee',
@@ -20,6 +33,10 @@ class Model_Position extends Model
 			'cascade_delete' => false,
 	));
 
+        /**
+         * タイムスタンプの自動更新を有効化
+         * @var type 
+         */
 	protected static $_observers = array(
 		'Orm\Observer_CreatedAt' => array(
 			'events' => array('before_insert'),
@@ -31,6 +48,11 @@ class Model_Position extends Model
 		),
 	);
 
+        /**
+         * バリデーションルール設定
+         * @param type $factory
+         * @return type
+         */
 	public static function validate($factory)
 	{
 		$val = Validation::forge($factory);

@@ -1,7 +1,6 @@
 <?php
-
 /**
- * 売上目標情報コントローラクラス
+ * 売上目標コントローラクラス
  * Copyright 2014 Riki System Co.,Ltd.
  * @author i-suzuki
  */

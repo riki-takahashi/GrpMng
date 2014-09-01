@@ -1,12 +1,24 @@
 <?php
+/**
+ * 社員マスタコントローラクラス
+ * Copyright 2014 Riki System Co.,Ltd.
+ * @author i-suzuki 
+ */
 class Controller_Employee extends Controller_Mybase{
-
+        
+        /**
+         * 初期表示
+         */
 	public function action_index()
 	{
 		$this->template->title = "社員マスタ";
 		$this->template->content = ViewModel::forge('employee/index');
 	}
-
+        
+        /**
+         * ビュー表示（使用していません）
+         * @param type $id
+         */
 	public function action_view($id = null)
 	{
 		is_null($id) and Response::redirect('employee');
@@ -15,6 +27,9 @@ class Controller_Employee extends Controller_Mybase{
 		$this->template->content = ViewModel::forge('employee/view')->set('id', $id);
 	}
 
+        /**
+         * 新規作成
+         */
 	public function action_create()
 	{
 		if (Input::method() == 'POST')
@@ -74,6 +89,10 @@ class Controller_Employee extends Controller_Mybase{
 		$this->template->content = View::forge('employee/create');
 	}
 
+        /**
+         * 編集
+         * @param type $id
+         */
 	public function action_edit($id = null)
 	{
 		is_null($id) and Response::redirect('employee');
@@ -149,6 +168,10 @@ class Controller_Employee extends Controller_Mybase{
 		$this->template->content = View::forge('employee/edit');
 	}
 
+        /**
+         * 削除
+         * @param type $id
+         */
 	public function action_delete($id = null)
 	{
 		is_null($id) and Response::redirect('employee');
@@ -169,6 +192,9 @@ class Controller_Employee extends Controller_Mybase{
 
 	}
 
+        /**
+         * 各ドロップダウンリスト設定
+         */
 	private function setDropDownList()
 	{
 		Config::load('arrays', true);

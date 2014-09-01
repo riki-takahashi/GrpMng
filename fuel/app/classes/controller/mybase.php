@@ -1,4 +1,9 @@
 <?php
+/**
+ * ログイン認証コントローラクラス
+ * Copyright 2014 Riki System Co.,Ltd.
+ * @author takahashi
+ */
 class Controller_Mybase extends Controller_Template{
 	
 	public function before()
