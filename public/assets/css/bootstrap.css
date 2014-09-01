@@ -5963,6 +5963,13 @@ button.close {
 }
 @-ms-viewport {
   width: device-width;
+  initial-scale: 1;
+  zoom: 1;
+}
+@viewport {
+  width: device-width;
+  initial-scale: 1;
+  zoom: 1;
 }
 .visible-xs,
 .visible-sm,
