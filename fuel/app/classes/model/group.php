@@ -57,13 +57,27 @@ class Model_Group extends Model
          */
 	public static function validate($factory)
 	{
-		$val = Validation::forge($factory);
-		$val->add_field('group_name', 'グループ名', 'required');
-		$val->add_field('group_kana', 'グループ名カナ', 'required');
-		$val->add_field('main_emp_id', '代表者', 'required|valid_string[numeric]');
-		$val->add_field('invalid_flag', '無効フラグ', 'required|max_length[1]');
+            $val = Validation::forge($factory);
+            $val->add_callable('ExtraValidationRule');
+            
+            switch($factory)
+            {
+                case 'create':
+                case 'edit':
+                    $val->add_field('group_name', 'グループ名', 'required');
+                    $val->add_field('group_kana', 'グループ名カナ', 'required');
+                    $val->add_field('main_emp_id', '代表者', 'required|valid_string[numeric]');
+                    $val->add_field('invalid_flag', '無効フラグ', 'required|max_length[1]');
+                    break;
+                case 'delete':
+                    $val->add_field('id', 'グループ', 'required')
+                        ->add_rule('isexists', 'sales_targets', 'group_id', '売上目標情報') //売上目標情報と参照整合性チェック
+                        ->add_rule('isexists', 'group_employee', 'group_id', 'グループ所属社員マスタ') //グループ所属社員マスタと参照整合性チェック
+                        ->add_rule('isexists', 'projects', 'group_id', '案件情報'); //案件情報と参照整合性チェック
+                    break;
+            }
 
-		return $val;
+            return $val;
 	}
 
 }

@@ -28,9 +28,9 @@ class ExtraValidationRule {
      * @param type $field
      * @return bool true:正常　false:異常
      */
-    public static function _validation_isexists($value, $table, $field)
+    public static function _validation_isexists($value, $table, $field, $aaa)
     {
-        Validation::active()->set_message('isexists', 'その :label は既に売上目標に登録されているため、削除できません。');
+        Validation::active()->set_message('isexists', 'その :label は『 :param:3 』に登録されているため、削除できません。');
         
         //入力パラメータで指定されたテーブルのフィールドに該当するデータを抽出
         $result = DB::select($field)

@@ -295,17 +295,25 @@ class Controller_Project extends Controller_Mybase {
      * @param type $project_id
      */
     public function action_delete($project_id = null) {
-        is_null($project_id) and Response::redirect('project');
-
-        if ($project = Model_Project::find($project_id)) {
-            $project->delete();
-
-            Session::set_flash('success', '案件情報を削除しました。 #'.$project_id);
-        } else {
-            Session::set_flash('error', '案件情報の削除に失敗しました。 #'.$project_id);
+        $val = Model_Project::validate('delete');
+        if ($val->run(array('id' => $project_id)))
+        {
+            $project = Model_Project::find($project_id);
+            if ($project) {
+                $project->delete();
+                Session::set_flash('success', '案件情報を削除しました。 #'.$project_id);
+            } else {
+                Session::set_flash('error', '案件情報の削除に失敗しました。 #'.$project_id);
+            }
+        }
+        else
+        {
+            //バリデーションチェックNGの場合
+            Session::set_flash('error', $val->error());
         }
 
-        Response::redirect('project');
+        //再表示
+        $this -> action_index();
     }
 
     /**

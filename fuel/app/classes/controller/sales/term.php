@@ -143,10 +143,10 @@ class Controller_Sales_Term extends Controller_Template{
 	{
             //バリデーションチェックのメッセージはバリデーションクラス内に定義してあるためここではメッセージ不要。
             $val = Model_Sales_Term::validate('delete');
-            $sales_term = Model_Sales_Term::find($term_id);
             if ($val->run(array('id' => $term_id)))
             {
                 //バリデーションチェックOKの場合
+                $sales_term = Model_Sales_Term::find($term_id);
                 if ($sales_term)
                 {
                     $sales_term->delete();

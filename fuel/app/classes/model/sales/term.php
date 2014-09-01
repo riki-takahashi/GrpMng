@@ -57,7 +57,7 @@ class Model_Sales_Term extends Model
                     break;
                 case 'delete':
                     $val->add_field('id', '売上期間', 'required')
-                        ->add_rule('isexists', 'sales_targets', 'sales_term_id'); //参照整合性チェック
+                        ->add_rule('isexists', 'sales_targets', 'sales_term_id', '売上目標情報'); //売上目標情報と参照整合性チェック
                     break;
             }
 

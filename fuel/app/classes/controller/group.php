@@ -139,25 +139,32 @@ class Controller_Group extends Controller_Mybase{
 
         /**
          * 削除
-         * @param type $id
+         * @param type $group_id
          */
-	public function action_delete($id = null)
+	public function action_delete($group_id = null)
 	{
-		is_null($id) and Response::redirect('group');
+            $val = Model_Group::validate('delete');
+            if ($val->run(array('id' => $group_id)))
+            {
+                //バリデーションチェックOKの場合
+                $group = Model_Group::find($group_id);
+                if ($group)
+                {
+                    $group->delete();
+                    Session::set_flash('success', 'グループを削除しました。 #'.$group_id);
+                }
+                else
+                {
+                    Session::set_flash('error', 'グループの削除に失敗しました。 #'.$group_id);
+                }
+            }
+            else
+            {
+                //バリデーションチェックNGの場合
+                Session::set_flash('error', $val->error());
+            }
 
-		if ($group = Model_Group::find($id))
-		{
-			$group->delete();
-
-			Session::set_flash('success', 'グループを削除しました。 #'.$id);
-		}
-
-		else
-		{
-			Session::set_flash('error', 'グループの削除に失敗しました。 #'.$id);
-		}
-
-		Response::redirect('group');
-
+            $this->template->title = "グループマスタ";
+            $this->template->content = ViewModel::forge('group/index');
 	}
 }

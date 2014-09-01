@@ -228,18 +228,28 @@ class Model_Project extends Model
          */
 	public static function validate($factory)
 	{
-		$val = Validation::forge($factory);
-                $val->add_callable('ExtraValidationRule');
-                
-		$val->add_field('project_name', '案件名', 'required');
-		$val->add_field('group_id', '担当グループ', 'required|valid_string[numeric]');
-		$val->add_field('emp_id', '担当者', 'required|valid_string[numeric]');
-		$val->add_field('start_date', '開始日', 'required');
-		$val->add_field('end_date', '終了日', 'required')
-                    ->add_rule('enddaterule', 'start_date');
-		$val->add_field('order_amount', '受注金額', 'valid_string[numeric]');
+            $val = Validation::forge($factory);
+            $val->add_callable('ExtraValidationRule');
+            
+            switch($factory)
+            {
+                case 'create':
+                case 'edit':
+                    $val->add_field('project_name', '案件名', 'required');
+                    $val->add_field('group_id', '担当グループ', 'required|valid_string[numeric]');
+                    $val->add_field('emp_id', '担当者', 'required|valid_string[numeric]');
+                    $val->add_field('start_date', '開始日', 'required');
+                    $val->add_field('end_date', '終了日', 'required')
+                        ->add_rule('enddaterule', 'start_date');
+                    $val->add_field('order_amount', '受注金額', 'valid_string[numeric]');
+                    break;
+                case 'delete':
+                    $val->add_field('id', '案件', 'required')
+                        ->add_rule('isexists', 'sales_results', 'project_id', '売上実績情報'); //売上実績情報と参照整合性チェック
+                    break;
+            }
 
-		return $val;
+            return $val;
 	}
 
 }
