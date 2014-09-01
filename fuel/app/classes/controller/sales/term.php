@@ -123,14 +123,11 @@ class Controller_Sales_Term extends Controller_Template{
          */
 	public function action_delete($term_id = null)
 	{
-            //
-            //is_null($term_id) and Response::redirect('sales/term');
-
             //バリデーションチェックのメッセージはバリデーションクラス内に定義してあるためここではメッセージ不要。
             $val = Model_Sales_Term::validate('delete');
+            $sales_term = Model_Sales_Term::find($term_id);
             if ($val->run(array('id' => $term_id)))
             {
-                $sales_term = Model_Sales_Term::find($term_id);
                 if ($sales_term)
                 {
                     $sales_term->delete();
@@ -138,15 +135,17 @@ class Controller_Sales_Term extends Controller_Template{
                 }
                 else
                 {
-                        Session::set_flash('error', '売上期間の削除に失敗しました。 #'.$term_id);
+                    Session::set_flash('error', '売上期間の削除に失敗しました。 #'.$term_id);
                 }                    
             }
             else
             {
                 Session::set_flash('error', $val->error());
-                //$this->template->set_global('sales_term', $sales_term, false);
+                $this->template->set_global('sales_term', $sales_term, false);
             }
 
-            Response::redirect('sales/term');
+            $data['sales_terms'] = Model_Sales_Term::find('all');
+            $this->template->title = "売上期間";
+            $this->template->content = View::forge('sales/term/index', $data);
 	}
 }
