@@ -47,6 +47,6 @@
 	<?php echo Html::anchor('sales/achievement/search', '検索画面に戻る'); ?>
 </p>
 <p>
-	<?php echo Html::anchor('sales/achievement/assign_pdf?'.Controller_Sales_Achievement::AGGREGATE_UNIT_ID.'='.$aggregate_unit_id.'&'.Controller_Sales_Achievement::SALES_TERM_ID.'='.$sales_term_id.'&pdf_out_flg=true', 'PDF出力', array('target'=>'_blank')); ?>
+	<?php echo Html::anchor('sales/achievement/pdf?'.Controller_Sales_Achievement::AGGREGATE_UNIT_ID.'='.$aggregate_unit_id.'&'.Controller_Sales_Achievement::SALES_TERM_ID.'='.$sales_term_id.'&pdf_out_flg=true', 'PDF出力', array('target'=>'_blank')); ?>
 </p>
 <?php endif;

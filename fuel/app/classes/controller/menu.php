@@ -21,7 +21,7 @@ class Controller_Menu extends Controller_Mybase{
          */
 	public function action_login()
 	{
-		Auth::check() and Response::redirect('menu');
+		Auth::check() and Response::redirect('menu/index/');
 		
 		if (Input::method() == 'POST')
 		{
@@ -30,7 +30,7 @@ class Controller_Menu extends Controller_Mybase{
 			
 			if (Auth::login($username, $password))
 			{
-				Response::redirect('menu');
+				Response::redirect('menu/index/');
 			}
 			else
 			{
@@ -51,7 +51,7 @@ class Controller_Menu extends Controller_Mybase{
 	{
 		Auth::logout();
                 Session::destroy();
-		Response::redirect('menu/login');
+		Response::redirect('menu/login/');
 	}
 	
 }

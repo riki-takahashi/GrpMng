@@ -7,7 +7,7 @@ class View_Employee_View extends ViewModel
 		if ( ! $employee = Model_Employee::find($this->id))
 		{
 			Session::set_flash('error', '該当の社員が見つかりません。 #'.$this->id);
-			Response::redirect('employee');
+			Response::redirect('employee/index/');
 		}
 		$this->employee = $employee;
 

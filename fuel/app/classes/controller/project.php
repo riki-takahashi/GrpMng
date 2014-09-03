@@ -6,6 +6,9 @@
  */
 class Controller_Project extends Controller_Mybase {
 
+    const LINE_PER_PAGE = 5; //ページネーション設定：１ページあたりの行数
+    const PAGE = 'page'; //現在のページ
+    
     const PROJECT = 'project'; //案件情報のモデル
     const PROJECTSEARCH = 'projectsearch'; //検索条件のためのモデル
     
@@ -22,8 +25,6 @@ class Controller_Project extends Controller_Mybase {
     const ORDER_USER = 'order_user'; //受注元
     const NOTE = 'note'; //備考
     
-    const PAGE = 'page'; //現在のページ
-
     /** 新規作成時の一時的なID */
     const TEMP_ID = 99999;
 
@@ -80,7 +81,7 @@ class Controller_Project extends Controller_Mybase {
             'pagination_url' => './',
             'uri_segment' => $this::PAGE,
             'num_links' => 2,
-            'per_page' => 4,
+            'per_page' => $this::LINE_PER_PAGE,
             'total_items' => $count,
             'show_first' => true,
             'show_last' => true,
@@ -217,8 +218,8 @@ class Controller_Project extends Controller_Mybase {
 
                 if ($project and $project->save()) {
                     Session::set_flash('success', '案件を追加しました。 #'.$project->id.'.');
-
-                    Response::redirect('project');
+                    //新規作成後のページネーション選択でメニューに戻ってしまう動きを修正。/indexを追加。
+                    Response::redirect('project/index/');
                 } else {
                     Session::set_flash('error', '案件情報の登録に失敗しました。');
                 }
@@ -238,11 +239,11 @@ class Controller_Project extends Controller_Mybase {
      * @param type $project_id
      */
     public function action_edit($project_id = null) {
-        is_null($project_id) and Response::redirect('project');
+        is_null($project_id) and Response::redirect('project/index/');
 
         if (!$project = Model_Project::find($project_id)) {
             Session::set_flash('error', '該当の案件が見つかりません。 #'.$project_id);
-            Response::redirect('project');
+            Response::redirect('project/index/');
         }
 
         $val = Model_Project::validate('edit');
@@ -263,7 +264,7 @@ class Controller_Project extends Controller_Mybase {
             if ($project->save()) {
                 Session::set_flash('success', '案件情報を更新しました。 #'.$project_id);
 
-                Response::redirect('project');
+                Response::redirect('project/index/');
             } else {
                 Session::set_flash('error', '案件情報の更新に失敗しました。 #'.$project_id);
             }
@@ -325,12 +326,12 @@ class Controller_Project extends Controller_Mybase {
      * @param type $member_id
      */
     public function action_member($project_id = null, $member_id = null) {
-        is_null($project_id) and Response::redirect('project');
+        is_null($project_id) and Response::redirect('project/index/');
 
         //案件データ
         if (!$project = Model_Project::find($project_id)) {
             Session::set_flash('error', '該当の案件が見つかりません。 #'.$project_id);
-            Response::redirect('project');
+            Response::redirect('project/index/');
         }
 
         if (Input::method() == 'POST') {
@@ -368,12 +369,12 @@ class Controller_Project extends Controller_Mybase {
      * @param type $project_id
      */
     public function action_mcreate($project_id = null) {
-        is_null($project_id) and Response::redirect('project');
+        is_null($project_id) and Response::redirect('project/index/');
 
         //案件データ
         if (!$project = Model_Project::find($project_id)) {
             Session::set_flash('error', '該当の案件が見つかりません。 #'.$project_id);
-            Response::redirect('project');
+            Response::redirect('project/index/');
         }
 
         if (Input::method() == 'POST') {
@@ -423,7 +424,7 @@ class Controller_Project extends Controller_Mybase {
      * @param type $member_id
      */
     public function action_mdelete($project_id = null, $member_id = null) {
-        is_null($member_id) and Response::redirect('project');
+        is_null($member_id) and Response::redirect('project/index/');
 
         if ($member = Model_Projectmember::find($member_id)) {
             $member->delete();
@@ -506,12 +507,12 @@ class Controller_Project extends Controller_Mybase {
      * @param type $project_id
      */
     public function action_sales($project_id = null) {
-        is_null($project_id) and Response::redirect('project');
+        is_null($project_id) and Response::redirect('project/index/');
 
         //案件データ
         if (!$project = Model_Project::find($project_id)) {
             Session::set_flash('error', '該当の案件が見つかりません。 #'.$project_id);
-            Response::redirect('project');
+            Response::redirect('project/index/');
         }
 
         $data['project'] = $project;
@@ -528,7 +529,7 @@ class Controller_Project extends Controller_Mybase {
      * @param type $result_id
      */
     public function action_sdelete($project_id = null, $result_id = null) {
-        is_null($project_id) and Response::redirect('project');
+        is_null($project_id) and Response::redirect('project/index/');
 
         if ($project = Model_Sales_Result::find($result_id)) {
             $project->delete();

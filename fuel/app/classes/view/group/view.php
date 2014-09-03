@@ -7,7 +7,7 @@ class View_Group_View extends ViewModel
 		if ( ! $group = Model_Group::find($this->id))
 		{
 			Session::set_flash('error', '該当のグループが見つかりません。 #'.$this->id);
-			Response::redirect('group');
+			Response::redirect('group/index/');
 		}
 		$this->group = $group;
 		//無効フラグリストデータ

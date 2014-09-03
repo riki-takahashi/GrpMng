@@ -37,7 +37,7 @@ class Controller_Sales_Result extends Controller_Template{
 		if ( ! $project = Model_Project::find($project_id))
 		{
 			Session::set_flash('error', '該当の案件情報が見つかりません。 #'.$project_id);
-			Response::redirect('sales/result');
+			Response::redirect('sales/result/');
 		}
                 
 		if (Input::method() == 'POST')
@@ -87,18 +87,18 @@ class Controller_Sales_Result extends Controller_Template{
          */
 	public function action_edit($project_id = null, $result_id = null)
 	{
-		is_null($result_id) and Response::redirect('project/sales');
+		is_null($result_id) and Response::redirect('project/sales/');
 
 		if ( ! $project = Model_Project::find($project_id))
 		{
 			Session::set_flash('error', '該当の案件情報が見つかりません。 #'.$project_id);
-			Response::redirect('sales/result');
+			Response::redirect('sales/result/');
 		}
                 
 		if ( ! $sales_result = Model_Sales_Result::find($result_id))
 		{
 			Session::set_flash('error', '該当の売上実績が見つかりません。 #'.$result_id);
-			Response::redirect('sales/result');
+			Response::redirect('sales/result/');
 		}
 
 		$val = Model_Sales_Result::validate('edit');
@@ -155,7 +155,7 @@ class Controller_Sales_Result extends Controller_Template{
          */
 	public function action_delete($result_id = null)
 	{
-		is_null($result_id) and Response::redirect('sales/result');
+		is_null($result_id) and Response::redirect('sales/result/');
 
 		if ($sales_result = Model_Sales_Result::find($result_id))
 		{
@@ -169,7 +169,7 @@ class Controller_Sales_Result extends Controller_Template{
 			Session::set_flash('error', '売上実績の削除に失敗しました。 #'.$result_id);
 		}
 
-		Response::redirect('sales/result');
+		Response::redirect('sales/result/');
 
 	}
 }

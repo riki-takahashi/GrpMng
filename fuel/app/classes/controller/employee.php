@@ -21,7 +21,7 @@ class Controller_Employee extends Controller_Mybase{
          */
 	public function action_view($id = null)
 	{
-		is_null($id) and Response::redirect('employee');
+		is_null($id) and Response::redirect('employee/index/');
 
 		$this->template->title = "社員マスタ";
 		$this->template->content = ViewModel::forge('employee/view')->set('id', $id);
@@ -63,7 +63,7 @@ class Controller_Employee extends Controller_Mybase{
 				{
 					Session::set_flash('success', '社員マスタを追加しました。 #'.$employee->id.'.');
 
-					Response::redirect('employee');
+					Response::redirect('employee/index/');
 				}
 
 				else
@@ -95,7 +95,7 @@ class Controller_Employee extends Controller_Mybase{
          */
 	public function action_edit($id = null)
 	{
-		is_null($id) and Response::redirect('employee');
+		is_null($id) and Response::redirect('employee/index/');
 
 		if ( ! $employee = Model_Employee::find($id))
 		{
@@ -129,7 +129,7 @@ class Controller_Employee extends Controller_Mybase{
 			{
 				Session::set_flash('success', '社員マスタを更新しました。 #' . $id);
 
-				Response::redirect('employee');
+				Response::redirect('employee/index/');
 			}
 			else
 			{
@@ -174,7 +174,7 @@ class Controller_Employee extends Controller_Mybase{
          */
 	public function action_delete($id = null)
 	{
-		is_null($id) and Response::redirect('employee');
+		is_null($id) and Response::redirect('employee/index/');
 
 		if ($employee = Model_Employee::find($id))
 		{
@@ -216,4 +216,33 @@ class Controller_Employee extends Controller_Mybase{
 		$this->template->set_global('is_mng_flag', $is_mng_flag, false);
 	}
 
+    /*
+     * 社員マスタ一覧　PDF出力
+     */
+    public function action_pdf() {
+        
+        //ini_set('memory_limit', '256M'); //実行時にメモリ不足になるなら、左記のコメントを削除して有効にする。
+//        $html = file_get_contents(Uri::base(false)
+//                .'employee');
+        
+        
+        // ストリームを作成します
+$opts = array(
+		'http'=>array(
+				'method' => 'GET',
+				'header' => "Accept-language: en\r\n"
+							. "Referer: http://php.net/file_get_contents\r\n"
+							. "Cookie: LAST_LANG=ja\r\n"
+			)
+	);
+$context = stream_context_create($opts);
+$response = file_get_contents('http://www.php.net/stream_context_create', false, $context);
+        
+        //mPDFはFuelPFPのフレームワークを意識したつくりになっていないため、BootstrapのAutoLoaderを使用しないでインクルードする。
+        require_once(APPPATH.'../packages/mpdf/mpdf.php');
+        $mpdf = new mPDF('ja', 'A4');
+        $mpdf->WriteHTML($html);
+        $mpdf->Output('社員マスタ一覧.pdf', 'I');
+    }    
+        
 }

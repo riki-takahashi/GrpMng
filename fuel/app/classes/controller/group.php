@@ -21,7 +21,7 @@ class Controller_Group extends Controller_Mybase{
          */
 	public function action_view($id = null)
 	{
-		is_null($id) and Response::redirect('group');
+		is_null($id) and Response::redirect('group/index/');
 
 		$this->template->title = "グループマスタ";
 		$this->template->content = ViewModel::forge('group/view')->set('id', $id);
@@ -50,7 +50,7 @@ class Controller_Group extends Controller_Mybase{
 				{
 					Session::set_flash('success', 'グループを追加しました。 #'.$group->id.'.');
 
-					Response::redirect('group');
+					Response::redirect('group/index/');
 				}
 
 				else
@@ -81,12 +81,12 @@ class Controller_Group extends Controller_Mybase{
          */
 	public function action_edit($id = null)
 	{
-		is_null($id) and Response::redirect('group');
+		is_null($id) and Response::redirect('group/index/');
 
 		if ( ! $group = Model_Group::find($id))
 		{
 			Session::set_flash('error', '該当のグループが見つかりません。#'.$id);
-			Response::redirect('group');
+			Response::redirect('group/index/');
 		}
 
 		$val = Model_Group::validate('edit');
@@ -102,7 +102,7 @@ class Controller_Group extends Controller_Mybase{
 			{
 				Session::set_flash('success', 'グループを更新しました。 #' . $id);
 
-				Response::redirect('group');
+				Response::redirect('group/index/');
 			}
 
 			else

@@ -56,7 +56,10 @@
 			});
 		});
     </script>
-    
+
+<p>
+	<?php echo Html::anchor('project/pdf', 'PDF出力', array('target'=>'_blank')); ?>
+</p>
 <?php else: ?>
 <p>データがありません</p>
 <?php endif;

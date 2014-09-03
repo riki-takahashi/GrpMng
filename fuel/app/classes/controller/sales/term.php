@@ -23,12 +23,12 @@ class Controller_Sales_Term extends Controller_Template{
          */
 	public function action_view($term_id = null)
 	{
-		is_null($term_id) and Response::redirect('sales/term');
+		is_null($term_id) and Response::redirect('sales/term/index/');
 
 		if ( ! $data['sales_term'] = Model_Sales_Term::find($term_id))
 		{
 			Session::set_flash('error', '該当の売上期間が見つかりません。 #'.$term_id);
-			Response::redirect('sales/term');
+			Response::redirect('sales/term/index/');
 		}
 
 		$this->template->title = "Sales_term";
@@ -58,7 +58,7 @@ class Controller_Sales_Term extends Controller_Template{
 				{
 					Session::set_flash('success', '売上期間を追加しました。 #'.$sales_term->id.'.');
 
-					Response::redirect('sales/term');
+					Response::redirect('sales/term/index/');
 				}
 
 				else
@@ -83,12 +83,12 @@ class Controller_Sales_Term extends Controller_Template{
          */
 	public function action_edit($term_id = null)
 	{
-		is_null($term_id) and Response::redirect('sales/term');
+		is_null($term_id) and Response::redirect('sales/term/index/');
 
 		if ( ! $sales_term = Model_Sales_Term::find($term_id))
 		{
 			Session::set_flash('error', '該当の売上期間が見つかりません。 #'.$term_id);
-			Response::redirect('sales/term');
+			Response::redirect('sales/term/index/');
 		}
 
 		$val = Model_Sales_Term::validate('edit');
@@ -105,7 +105,7 @@ class Controller_Sales_Term extends Controller_Template{
 			{
 				Session::set_flash('success', '売上期間を更新しました。 #' . $term_id);
 
-				Response::redirect('sales/term');
+				Response::redirect('sales/term/index/');
 			}
 
 			else

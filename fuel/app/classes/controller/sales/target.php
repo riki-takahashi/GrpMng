@@ -109,7 +109,7 @@ class Controller_Sales_target extends Controller_Template {
         Session::set($this::GROUP_ID, $group_id);
         Session::set($this::SALES_TERM_ID, $sales_term_id);
 
-        Response::redirect('sales/target/index');
+        Response::redirect('sales/target/index/');
     }
 
     /**

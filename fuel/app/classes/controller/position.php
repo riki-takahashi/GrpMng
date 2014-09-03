@@ -25,12 +25,12 @@ class Controller_Position extends Controller_Mybase{
          */
 	public function action_view($id = null)
 	{
-		is_null($id) and Response::redirect('position');
+		is_null($id) and Response::redirect('position/index/');
 
 		if ( ! $data['position'] = Model_Position::find($id))
 		{
 			Session::set_flash('error', '該当の役職が見つかりません。 #'.$id);
-			Response::redirect('position');
+			Response::redirect('position/index/');
 		}
 
 		$this->template->title = "役職マスタ";
@@ -58,7 +58,7 @@ class Controller_Position extends Controller_Mybase{
 				{
 					Session::set_flash('success', '役職マスタを追加しました。 #'.$position->id.'.');
 
-					Response::redirect('position');
+					Response::redirect('position/index/');
 				}
 
 				else
@@ -83,12 +83,12 @@ class Controller_Position extends Controller_Mybase{
          */
 	public function action_edit($id = null)
 	{
-		is_null($id) and Response::redirect('position');
+		is_null($id) and Response::redirect('position/index/');
 
 		if ( ! $position = Model_Position::find($id))
 		{
 			Session::set_flash('error', '該当の役職が見つかりません。 #'.$id);
-			Response::redirect('position');
+			Response::redirect('position/index/');
 		}
 
 		$val = Model_Position::validate('edit');
@@ -102,7 +102,7 @@ class Controller_Position extends Controller_Mybase{
 			{
 				Session::set_flash('success', '役職マスタを更新しました。 #' . $id);
 
-				Response::redirect('position');
+				Response::redirect('position/index/');
 			}
 
 			else
@@ -135,7 +135,7 @@ class Controller_Position extends Controller_Mybase{
          */
 	public function action_delete($id = null)
 	{
-		is_null($id) and Response::redirect('position');
+		is_null($id) and Response::redirect('position/index/');
 
 		if ($position = Model_Position::find($id))
 		{
@@ -149,7 +149,7 @@ class Controller_Position extends Controller_Mybase{
 			Session::set_flash('error', '役職マスタの削除に失敗しました。 #'.$id);
 		}
 
-		Response::redirect('position');
+		Response::redirect('position/index/');
 
 	}
 }

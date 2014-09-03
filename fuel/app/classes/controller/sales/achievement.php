@@ -371,7 +371,7 @@ class Controller_Sales_Achievement extends Controller_Template {
     /*
      * 売上集計結果PDF出力
      */
-    public function action_assign_pdf() {
+    public function action_pdf() {
         
         //GET取得
         $aggregate_unit_id = Input::get($this::AGGREGATE_UNIT_ID); //集計単位ID
