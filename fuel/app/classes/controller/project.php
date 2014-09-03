@@ -95,7 +95,8 @@ class Controller_Project extends Controller_Mybase {
 
         //案件一覧データ取得（ページネーション）
         $data['projects'] = $query
-                ->order_by(array($this::GROUP_ID => 'asc', $this::EMP_ID => 'asc', 'id' => 'asc'))
+                //並び順：　開始日の降順、終了日の降順、案件IDの降順
+                ->order_by(array('start_date' => 'desc', 'end_date' => 'desc', 'id' => 'desc'))
                 ->limit(Pagination::get('per_page'))
                 ->offset(Pagination::get('offset'))
                 ->get();
