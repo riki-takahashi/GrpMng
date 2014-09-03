@@ -16,7 +16,7 @@
 <body>
 	<div id="wrapper">
 		<h1>システム内で問題発生</h1>
-		<p class="intro">売上管理システム内で想定外のエラーが発生しました。<br>システム管理者にご連絡ください。</p>
+		<p class="intro">指定されたURLは、売上管理システム内に見つかりません。<br>システム管理者にご連絡ください。</p>
 		<p class="intro">１５秒後にログイン画面またはメニュー画面に戻ります。</p>
                 <p style="text-align:center">画面が戻らない時は下記リンクをクリックしてください。</p>
                 <p style="text-align:center"><a href="/GrpMng/">戻る</a></p>                
