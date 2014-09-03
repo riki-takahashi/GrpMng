@@ -6,6 +6,8 @@
 	<title><?php echo $title; ?></title>
 	<?php echo Asset::css(array('bootstrap.css', 'datepicker.css')); ?>
 	<?php echo Asset::js(array('jquery-1.8.3.js', 'bootstrap-datepicker.js', 'bootstrap-datepicker.ja.js')); ?>
+	<?php echo html_tag('link', array( 'rel' => 'shortcut icon', 'type' => 'image/x-icon', 'href' => Asset::get_file('favicon.ico', 'img'), ) ); ?>
+	<?php echo html_tag('link', array( 'rel' => 'icon', 'type' => 'image/x-icon', 'href' => Asset::get_file('favicon.ico', 'img'), ) ); ?>
         <!-- 画面固有の追加分 -->
         <?php echo Asset::render('css_for_chart');?>        
 	<?php echo Asset::render('js_for_chart'); ?>
