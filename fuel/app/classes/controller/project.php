@@ -56,16 +56,19 @@ class Controller_Project extends Controller_Mybase {
         //条件が指定されていなければ全件抽出
         $query = Model_Project::query();
         
-        $query = Util::addAndCondition($query, $this::PROJECT_NAME, '%'.$projectsearch->project_name.'%', 'like'); //案件名
-        $query = Util::addAndCondition($query, $this::GROUP_ID, $projectsearch->group_id); //グループ
-        $query = Util::addAndCondition($query, $this::EMP_ID, $projectsearch->emp_id); //担当者
-        $query = Util::addAndDateCondition($query, $this::START_DATE,  $projectsearch->start_date_from, $projectsearch->start_date_to); //開始日の範囲
-        $query = Util::addAndDateCondition($query, $this::END_DATE, $projectsearch->end_date_from, $projectsearch->end_date_to); //終了日の範囲
-        $query = Util::addAndDateCondition($query, $this::DELIVERY_DATE, $projectsearch->delivery_date_from, $projectsearch->delivery_date_to); //納品日の範囲
-        $query = Util::addAndDateCondition($query, $this::SALES_DATE, $projectsearch->sales_date_from, $projectsearch->sales_date_to); //売上日の範囲
-        $query = Util::addAndCondition($query, $this::END_USER, '%'.$projectsearch->end_user.'%', 'like'); //エンドユーザー
-        $query = Util::addAndCondition($query, $this::ORDER_USER, '%'.$projectsearch->order_user.'%', 'like'); //受注元
-        $query = Util::addAndCondition($query, $this::NOTE, '%'.$projectsearch->note.'%', 'like'); //備考
+        //一度も検索していない場合にはセッションに検索条件がまだ無いのでエラーが出てしまいましたがそれを回避します。
+        if ($projectsearch) {
+            $query = Util::addAndCondition($query, $this::PROJECT_NAME, '%'.$projectsearch->project_name.'%', 'like'); //案件名
+            $query = Util::addAndCondition($query, $this::GROUP_ID, $projectsearch->group_id); //グループ
+            $query = Util::addAndCondition($query, $this::EMP_ID, $projectsearch->emp_id); //担当者
+            $query = Util::addAndDateCondition($query, $this::START_DATE,  $projectsearch->start_date_from, $projectsearch->start_date_to); //開始日の範囲
+            $query = Util::addAndDateCondition($query, $this::END_DATE, $projectsearch->end_date_from, $projectsearch->end_date_to); //終了日の範囲
+            $query = Util::addAndDateCondition($query, $this::DELIVERY_DATE, $projectsearch->delivery_date_from, $projectsearch->delivery_date_to); //納品日の範囲
+            $query = Util::addAndDateCondition($query, $this::SALES_DATE, $projectsearch->sales_date_from, $projectsearch->sales_date_to); //売上日の範囲
+            $query = Util::addAndCondition($query, $this::END_USER, '%'.$projectsearch->end_user.'%', 'like'); //エンドユーザー
+            $query = Util::addAndCondition($query, $this::ORDER_USER, '%'.$projectsearch->order_user.'%', 'like'); //受注元
+            $query = Util::addAndCondition($query, $this::NOTE, '%'.$projectsearch->note.'%', 'like'); //備考
+        }
         
         //データ件数の取得
         $count = $query->count();
@@ -111,14 +114,11 @@ class Controller_Project extends Controller_Mybase {
         //ドロップダウン項目の設定
         $this->setDropDownList(true);
 
-        //SESSION取得
-        $projectsearch = Session::get($this::PROJECTSEARCH);
-
-        //Fieldsetの定義
-        $fieldset = Fieldset::forge();
-        
         //SESSION取得フラグ true:SESSIONから引継ぎ検索条件取得済
         $flg = false;
+
+        //直前の検索条件を取得するため、まずSESSIONを取得する
+        $projectsearch = Session::get($this::PROJECTSEARCH);
 
         //初期値設定
         if ($projectsearch) {
@@ -127,6 +127,9 @@ class Controller_Project extends Controller_Mybase {
             $projectsearch = Model_Projectsearch::forge();
         }
 
+        //Fieldsetの定義
+        $fieldset = Fieldset::forge();
+        
         //フォームの各項目にモデルの内容を設定
         $fieldset->add_model($projectsearch);
 
@@ -334,7 +337,8 @@ class Controller_Project extends Controller_Mybase {
             $val = Model_Projectmember::validate('edit');
 
             if ($val->run()) {
-                if ($member = Model_Projectmember::find($member_id)) {
+                $member = Model_Projectmember::find($member_id);
+                if ($member) {
                     //更新処理
                     $member->start_date = Input::post('start_date');
                     $member->end_date = Input::post('end_date');
@@ -549,6 +553,23 @@ class Controller_Project extends Controller_Mybase {
         $this->template->set_global($this::PAGE, Input::get($this::PAGE));
 
         $this->template->title = "社員アサイン状況";
-        $this->template->content = View::forge('project/ganttchart/index');
+        $this->template1->content = View::forge('project/ganttchart/index');
     }
+    
+    /*
+     * 社員アサイン状況（ガントチャート）PDF出力
+     */
+    public function action_pdf() {
+        
+        //ini_set('memory_limit', '256M'); //実行時にメモリ不足になるなら、左記のコメントを削除して有効にする。
+        $html = file_get_contents(Uri::base(false)
+                .'project/assign');
+        
+        //mPDFはFuelPFPのフレームワークを意識したつくりになっていないため、BootstrapのAutoLoaderを使用しないでインクルードする。
+        require_once(APPPATH.'../packages/mpdf/mpdf.php');
+        $mpdf = new mPDF('ja', 'A4');
+        $mpdf->WriteHTML($html);
+        $mpdf->Output('社員アサイン状況.pdf', 'I');
+    }    
+    
 }
