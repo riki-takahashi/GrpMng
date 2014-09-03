@@ -1,5 +1,5 @@
 /fuel/app/logs/
-/fuel/app/config/db.php
+/fuel/app/config/development/db.php
 /fuel/core/
 /fuel/packages/auth
 /fuel/packages/email
