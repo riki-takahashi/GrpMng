@@ -4,7 +4,7 @@
  * Copyright 2014 Riki System Co.,Ltd.
  * @author i-suzuki
  */
-class Controller_Sales_Result extends Controller_Template{
+class Controller_Sales_Result extends Controller_Mybase{
 
         /**
          * 初期表示

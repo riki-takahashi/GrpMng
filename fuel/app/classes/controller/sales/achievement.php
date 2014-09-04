@@ -4,18 +4,11 @@
  * Copyright 2014 Riki System Co.,Ltd.
  * @author i-suzuki
  */
-class Controller_Sales_Achievement extends Controller_Template {
+class Controller_Sales_Achievement extends Controller_Mybase {
 
     const AGGREGATE_UNIT_ID = 'aggregate_unit_id'; //集計単位ID
     const SALES_TERM_ID = 'sales_term_id'; //売上期間ID
     const PDF_OUT_FLG = 'pdf_out_flg'; //PDF出力フラグ
-
-    /**
-     * beforeメソッドはTemplateを使用するために必要
-     */
-    public function before() {
-        parent::before(); // この行がないと、テンプレートが動作しません!
-    }
 
     /**
      * $response をパラメータとして追加し、after() を Controller_Template 互換にする

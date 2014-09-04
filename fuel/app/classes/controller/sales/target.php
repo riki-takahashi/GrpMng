@@ -4,7 +4,7 @@
  * Copyright 2014 Riki System Co.,Ltd.
  * @author i-suzuki
  */
-class Controller_Sales_target extends Controller_Template {
+class Controller_Sales_target extends Controller_Mybase {
 
     const LINE_PER_PAGE = 25; //ページネーション設定：１ページあたりの行数
     const PAGE = 'page';
@@ -12,13 +12,6 @@ class Controller_Sales_target extends Controller_Template {
     const ID = 'id';
     const GROUP_ID = 'group_id';
     const SALES_TERM_ID = 'sales_term_id';
-
-    /**
-     * beforeメソッドはTemplateを使用するために必要
-     */
-    public function before() {
-        parent::before(); // この行がないと、テンプレートが動作しません!
-    }
 
     /**
      * $response をパラメータとして追加し、after() を Controller_Template 互換にする

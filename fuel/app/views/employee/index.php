@@ -33,10 +33,6 @@
 </tbody>
 </table>
 
-<p>
-	<?php echo Html::anchor('employee/pdf', 'PDF出力', array('target'=>'_blank')); ?>
-</p>
-
 <?php else: ?>
 <p>データがありません</p>
 

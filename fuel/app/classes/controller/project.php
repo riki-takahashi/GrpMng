@@ -29,13 +29,6 @@ class Controller_Project extends Controller_Mybase {
     const TEMP_ID = 99999;
 
     /**
-     * beforeメソッドはTemplateを使用するために必要
-     */
-    public function before() {
-        parent::before(); // この行がないと、テンプレートが動作しません!
-    }
-
-    /**
      * テンプレート使用のための後処理
      * $response をパラメータとして追加し、after() を Controller_Template 互換にする
      * @param type $response
@@ -557,21 +550,4 @@ class Controller_Project extends Controller_Mybase {
         $this->template->title = "社員アサイン状況";
         $this->template->content = View::forge('project/ganttchart/index');
     }
-    
-    /*
-     * 社員アサイン状況（ガントチャート）PDF出力
-     */
-    public function action_pdf() {
-        
-        //ini_set('memory_limit', '256M'); //実行時にメモリ不足になるなら、左記のコメントを削除して有効にする。
-        $html = file_get_contents(Uri::base(false)
-                .'project/assign');
-        
-        //mPDFはFuelPFPのフレームワークを意識したつくりになっていないため、BootstrapのAutoLoaderを使用しないでインクルードする。
-        require_once(APPPATH.'../packages/mpdf/mpdf.php');
-        $mpdf = new mPDF('ja', 'A4');
-        $mpdf->WriteHTML($html);
-        $mpdf->Output('社員アサイン状況.pdf', 'I');
-    }    
-    
 }
