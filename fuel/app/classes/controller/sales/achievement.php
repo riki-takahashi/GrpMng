@@ -82,112 +82,156 @@ class Controller_Sales_Achievement extends Controller_Template {
      */
     private function make_sum_for_all($sales_term_id = null) {
 
-        //結果の初期化
-        $sales_total = array('row_title' => '全体', 'target_amount_sum' => '', 'sales_amount_sum' => '', 'order_amount_sum' => '', 'min_amount_sum' => '');
+        //グループ毎の集計
+        $query = DB::select(DB::expr("
+            '全体' as row_title, T1.target_amount_sum, T2.sales_amount_sum, T3.order_amount_sum, T1.min_amount_sum
+            from (
+                    SELECT 
+                            Z.id as id, 
+                            sum(Z.target_amount) as target_amount_sum, /*　１．売上目標金額　*/
+                            sum(Z.min_amount) as min_amount_sum, /*　４．売上最低金額　*/
+                            Z.start_date,
+                            Z.end_date
+                    from (
+                            select
+                                    A.id, 
+                                    A.start_date,
+                                    A.end_date,
+                                    B.target_amount, 
+                                    B.min_amount
+                            from sales_terms as A
+                            left outer join sales_targets as B
+                            on (B.sales_term_id = A.id)
+                            where 
+                            A.id = ".$sales_term_id."
+                    ) AS Z
+            ) T1
 
-        //対象期間を取得
-        $queryA = DB::select('id', 'start_date', 'end_date')
-                ->from('sales_terms')
-                ->where('id', $sales_term_id);
+            left outer join (
+                    select A.id,
+                    sum(R.sales_amount_sum) as sales_amount_sum /* ２．売上実績金額 */
+                    from (
+                            select *
+                            from sales_terms
+                            where id = ".$sales_term_id."
+                    ) as A
+                    cross join (
+                            select project_id,
+                            sales_date,
+                            sum(sales_amount) as sales_amount_sum
+                            from sales_results
+                            group by project_id
+                    ) R
+                    left outer join projects P
+                    on P.id = R.project_id
+                    where (R.sales_date between A.start_date and A.end_date) 
+            ) T2
+            on T2.id = T1.id
 
-        $sales_terms = $queryA
+            left outer join (
+                    select A.id,
+                    sum(P.order_amount) as order_amount_sum /* ３．売上見込金額 */
+                    from (
+                            select *
+                            from sales_terms
+                            where id = ".$sales_term_id."
+                    ) as A
+                    cross join projects P /* 案件情報 */
+                    where (P.sales_date between A.start_date and A.end_date) 
+            ) T3
+            on T3.id = T1.id;
+        "));
+
+        //Session::set_flash('success', 'クエリー内容: '.$query->__toString());        
+
+        $sales_total = $query
                 ->execute()
                 ->as_array();
 
-        //指定されたIDで目標金額と最低金額を集計する。　また、対象期間で、実績金額と見込金額を集計する
-        foreach ($sales_terms as $sales_term) {
-
-            //目標金額
-            $queryB = DB::select(
-                            array(DB::expr('sum(target_amount)'), 'target_amount_sum'), array(DB::expr('sum(min_amount)'), 'min_amount_sum')
-                    )
-                    ->from('sales_targets')
-                    ->where('sales_term_id', $sales_term['id']);
-
-            $sales_targets = $queryB
-                    ->execute()
-                    ->as_array();
-
-            //１件あれば反映する
-            foreach ($sales_targets as $sales_target) {
-                $sales_total['target_amount_sum'] = $sales_target['target_amount_sum'];
-                $sales_total['min_amount_sum'] = $sales_target['min_amount_sum'];
-            }
-
-            //実績金額
-            $queryC = DB::select(array(DB::expr('sum(sales_amount)'), 'sales_amount_sum'))
-                    ->from('sales_results')
-                    ->where('sales_date', 'BETWEEN', array($sales_term['start_date'].' 00:00:00', $sales_term['end_date'].' 23:59:59'));
-
-            $sales_results = $queryC
-                    ->execute()
-                    ->as_array();
-
-            //１件あれば反映する
-            foreach ($sales_results as $sales_result) {
-                $sales_total['sales_amount_sum'] = $sales_result['sales_amount_sum'];
-            }
-
-            //見込金額
-            $queryD = DB::select(array(DB::expr('sum(order_amount)'), 'order_amount_sum'))
-                    ->from('projects')
-                    ->where('sales_date', 'BETWEEN', array($sales_term['start_date'].' 00:00:00', $sales_term['end_date'].' 23:59:59'));
-
-            $projects = $queryD
-                    ->execute()
-                    ->as_array();
-
-            //１件あれば反映する
-            foreach ($projects as $project) {
-                $sales_total['order_amount_sum'] = $project['order_amount_sum'];
-            }
-        }
-
-        return array('0' => $sales_total);
+        return $sales_total;
     }
 
     /**
      * 集計結果取得（グループ別）
      * @param int $sales_term_id 対象期間ID
      */
-    private function make_sum_for_group($sales_term_id = null) {
+    private function make_sum_for_group($sales_term_id = '0') {
 
-        //グループ毎の売上目標
-        $queryT1 = DB::select(DB::expr('A.start_date, A.end_date, C.group_id, C.id, C.emp_id, H.group_name AS row_title, sum(B.target_amount) AS target_amount_sum, sum(B.min_amount) AS min_amount_sum'))
-                ->from(array('sales_terms', 'A'))
-                //売上目標情報
-                ->join(array('sales_targets', 'B'), 'INNER')
-                ->on('A.id', '=', 'B.sales_term_id')
-                //案件情報
-                ->join(array('projects', 'C'), 'LEFT OUTER')
-                ->on('C.id', '=', 'B.group_id')
-                //グループマスタ
-                ->join(array('groups', 'H'), 'LEFT OUTER')
-                ->on('H.id', '=', 'C.group_id')
-                ->where('A.id', $sales_term_id)
-                ->group_by('C.id', 'C.group_id');
+        //グループ毎の集計
+        $query = DB::select(DB::expr("
+               T4.group_name as row_title, 
+               T1.target_amount_sum, 
+               ifnull(T2.sales_amount_sum,0) as sales_amount_sum, 
+               ifnull(T3.order_amount_sum,0) as order_amount_sum, 
+               T1.min_amount_sum
+            from (
+                    SELECT 
+                            Z.id as id, 
+                            Z.group_id as group_id, 
+                            sum(ifnull(Z.target_amount,0)) as target_amount_sum, /*　１．売上目標金額　*/
+                            sum(ifnull(Z.min_amount,0)) as min_amount_sum, /*　４．売上最低金額　*/
+                            Z.start_date,
+                            Z.end_date
+                    from (
+                            select
+                                    A.id, 
+                                    A.start_date,
+                                    A.end_date,
+                                    B.target_amount, 
+                                    B.min_amount, 
+                                    B.group_id
+                            from sales_terms as A
+                            left outer join sales_targets as B
+                            on (B.sales_term_id = A.id)
+                            where 
+                            A.id = ".$sales_term_id."
+                    ) AS Z
+                    group by Z.group_id
+            ) T1
 
-        //売上実績情報
-        $queryD = DB::select(DB::expr('project_id, max(sales_date) as sales_date_max, sum(sales_amount) as sales_amount_sum'))
-                ->from('sales_results')
-                ->group_by('project_id');
+            left outer join (
+                    select P.group_id,
+                    sum(ifnull(R.sales_amount_sum,0)) as sales_amount_sum /* ２．売上実績金額 */
+                    from (
+                            select *
+                            from sales_terms
+                            where id = ".$sales_term_id."
+                    ) as A
+                    cross join (
+                            select project_id,
+                            sales_date,
+                            sum(ifnull(sales_amount,0)) as sales_amount_sum
+                            from sales_results
+                            group by project_id
+                    ) R
+                    left outer join projects P
+                    on P.id = R.project_id
+                    where (R.sales_date between A.start_date and A.end_date) 
+                    group by P.group_id
+            ) T2
+            on T2.group_id = T1.group_id
 
-        //担当社員別集計
-        $query = DB::select(DB::expr('T1.group_id, T1.emp_id, T1.row_title, T1.target_amount_sum, D.sales_amount_sum, sum(K.order_amount) AS order_amount_sum, T1.min_amount_sum'))
-                //売上対象期間情報
-                ->from(array($queryT1, 'T1'))
-                //売上実績情報（実績金額 集計のため、売上金額を抽出）
-                ->join(array($queryD, 'D'), 'LEFT OUTER')
-                ->on('D.project_id', '=', 'T1.id')
-                //案件情報（見込金額 集計のため、受注金額を抽出）
-                ->join(array('projects', 'K'), 'LEFT OUTER')
-                ->on('K.group_id', '=', 'T1.group_id')
-                ->and_on('K.emp_id', '=', 'T1.emp_id')
-                ->where(DB::expr('(D.sales_date_max BETWEEN T1.start_date AND T1.end_date)'))
-                ->and_where(DB::expr('(K.sales_date BETWEEN T1.start_date AND T1.end_date)'))
-                ->group_by('T1.group_id')
-                ->order_by('T1.id', 'asc')
-                ->order_by('T1.group_id', 'asc');
+            left outer join (
+                    select P.group_id,
+                    sum(ifnull(P.order_amount,0)) as order_amount_sum /* ３．売上見込金額 */
+                    from (
+                            select *
+                            from sales_terms
+                            where id = ".$sales_term_id."
+                    ) as A
+                    cross join projects P /* 案件情報 */
+                    where (P.sales_date between A.start_date and A.end_date) 
+                    group by P.group_id
+            ) T3
+            on T3.group_id = T1.group_id
+
+            left outer join groups T4
+            on T4.id = T1.group_id
+
+            order by T1.group_id asc;
+        "));
+
+        //Session::set_flash('success', 'クエリー内容: '.$query->__toString());        
 
         $sales_total = $query
                 ->execute()
@@ -213,53 +257,106 @@ class Controller_Sales_Achievement extends Controller_Template {
     private function make_sum_for_employee($sales_term_id = null) {
 
         //全グループを取得
-        $query = DB::select('id', 'group_name')
+        $queryGroup = DB::select('id', 'group_name')
                 ->from('groups');
 
-        $groups = $query
+        $groups = $queryGroup
                 ->execute()
                 ->as_array();
 
         //指定された対象期間で、グループ毎に集計する
         foreach ($groups as $group) {
 
-            $queryT1 = DB::select(DB::expr('A.start_date, A.end_date, C.group_id, C.id, C.emp_id, H.emp_name AS row_title, sum(B.target_amount) AS target_amount_sum, sum(B.min_amount) AS min_amount_sum'))
-                    ->from(array('sales_terms', 'A'))
-                    //売上目標情報
-                    ->join(array('sales_targets', 'B'), 'INNER')
-                    ->on('A.id', '=', 'B.sales_term_id')
-                    //案件情報
-                    ->join(array('projects', 'C'), 'LEFT OUTER')
-                    ->on('C.id', '=', 'B.group_id')
-                    //社員マスタ
-                    ->join(array('employees', 'H'), 'LEFT OUTER')
-                    ->on('H.id', '=', 'C.emp_id')
-                    ->where('A.id', $sales_term_id)
-                    ->group_by('C.id');
+            $query = DB::select(DB::expr("
+                T4.emp_name as row_title, T1.target_amount_sum, T2.sales_amount_sum, T3.order_amount_sum, T1.min_amount_sum
+                from (
+                        SELECT 
+                                Z.id as id, 
+                                Z.group_id as group_id, 
+                                sum(ifnull(Z.target_amount,0)) as target_amount_sum, /*　１．売上目標金額　*/
+                                sum(ifnull(Z.min_amount,0)) as min_amount_sum, /*　４．売上最低金額　*/
+                                Z.start_date,
+                                Z.end_date
+                        from (
+                                select
+                                        A.id, 
+                                        A.start_date,
+                                        A.end_date,
+                                        B.target_amount, 
+                                        B.min_amount, 
+                                        B.group_id
+                                from sales_terms as A
+                                left outer join sales_targets as B
+                                on (B.sales_term_id = A.id)
+                                where A.id = ".$sales_term_id."
+                                and B.group_id = ".$group['id']."
+                        ) AS Z
+                        group by Z.group_id
+                ) T1
 
-            //売上実績情報
-            $queryD = DB::select(DB::expr('project_id, max(sales_date) as sales_date_max, sum(sales_amount) as sales_amount_sum'))
-                    ->from('sales_results')
-                    ->group_by('project_id');
+                left outer join (
+                        select
+                        W.group_id,
+                        W.emp_id,
+                        sum(ifnull(W.sales_amount_sum,0)) as sales_amount_sum /* ２．売上実績金額 */
 
-            //担当社員別集計
-            $query = DB::select(DB::expr('T1.group_id, T1.emp_id, T1.row_title, T1.target_amount_sum, D.sales_amount_sum, sum(K.order_amount) AS order_amount_sum, T1.min_amount_sum'))
+                        from (
+                                select *
+                                from sales_terms
+                                where id = ".$sales_term_id."
+                        ) as A
 
-                    //売上対象期間情報
-                    ->from(array($queryT1, 'T1'))
-                    //売上実績情報（実績金額 集計のため、売上金額を抽出）
-                    ->join(array($queryD, 'D'), 'LEFT OUTER')
-                    ->on('D.project_id', '=', 'T1.id')
-                    //案件情報（見込金額 集計のため、受注金額を抽出）
-                    ->join(array('projects', 'K'), 'LEFT OUTER')
-                    ->on('K.group_id', '=', 'T1.group_id')
-                    ->and_on('K.emp_id', '=', 'T1.emp_id')
-                    ->where(DB::expr('(D.sales_date_max BETWEEN T1.start_date AND T1.end_date)'))
-                    ->and_where(DB::expr('(K.sales_date BETWEEN T1.start_date AND T1.end_date)'))
-                    ->and_where('T1.group_id', $group['id'])
-                    ->group_by('T1.id', 'T1.group_id')
-                    ->order_by('T1.id', 'asc')
-                    ->order_by('T1.group_id', 'asc');
+                        cross join (
+                                select *
+                                from (	
+                                        select 
+                                        P.group_id,
+                                        P.emp_id,
+                                        sum(ifnull(R.sales_amount_sum,0)) as sales_amount_sum,
+                                        R.sales_date
+                                        from
+                                        (
+                                                select
+                                                project_id,
+                                                sales_date,
+                                                sum(ifnull(sales_amount,0)) as sales_amount_sum
+                                                from sales_results
+                                                group by project_id
+                                        ) R
+                                        left outer join projects P
+                                        on P.id = R.project_id
+
+                                ) X
+                        ) W
+
+                        where (W.sales_date between A.start_date and A.end_date) 
+                        and W.group_id = ".$group['id']."
+                        group by W.group_id, W.emp_id
+
+                ) T2
+                on T2.group_id = T1.group_id
+
+                left outer join (
+                        select P.group_id,
+                        P.emp_id,
+                        sum(ifnull(P.order_amount,0)) as order_amount_sum /* ３．売上見込金額 */
+                        from (
+                                select *
+                                from sales_terms
+                                where id = ".$sales_term_id."
+                        ) as A
+                        cross join projects P /* 案件情報 */
+                        where (P.sales_date between A.start_date and A.end_date) 
+                        and P.group_id = ".$group['id']."
+                        group by P.group_id, P.emp_id
+                ) T3
+                on T3.group_id = T1.group_id
+
+                left outer join employees T4
+                on T4.id = T3.emp_id
+
+                order by T3.emp_id asc;
+            "));
 
             //Session::set_flash('success', 'クエリー内容: '.$queryT1->__toString());        
             
@@ -270,10 +367,10 @@ class Controller_Sales_Achievement extends Controller_Template {
             //小計行追加
             $row_sum = array('row_title' => '小計', 'target_amount_sum' => 0, 'sales_amount_sum' => 0, 'order_amount_sum' => 0, 'min_amount_sum' => 0);
             foreach($tabledata as $each_row){
-                $row_sum['target_amount_sum'] += $each_row['target_amount_sum'];
+                $row_sum['target_amount_sum'] = $each_row['target_amount_sum']; // 売上目標金額は重複するため積み上げません
                 $row_sum['sales_amount_sum'] += $each_row['sales_amount_sum'];
                 $row_sum['order_amount_sum'] += $each_row['order_amount_sum'];
-                $row_sum['min_amount_sum'] += $each_row['min_amount_sum'];
+                $row_sum['min_amount_sum'] = $each_row['min_amount_sum']; // 売上最低金額は重複するため積み上げません
             }
             $tabledata[] = $row_sum;
             
