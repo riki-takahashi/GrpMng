@@ -26,6 +26,7 @@
 		</div>
 		<div class="form-group">
                     <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
+			<?php echo Form::hidden('id', isset($sales_target->id) ? $sales_target->id : ''); ?>
 			<label class='control-label'>&nbsp;</label>
 			<?php echo Form::submit('submit', '保存', array('class' => 'btn btn-primary')); ?>
                     </div>
