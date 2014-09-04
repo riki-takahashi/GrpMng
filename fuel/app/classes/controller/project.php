@@ -6,7 +6,7 @@
  */
 class Controller_Project extends Controller_Mybase {
 
-    const LINE_PER_PAGE = 5; //ページネーション設定：１ページあたりの行数
+    const LINE_PER_PAGE = 25; //ページネーション設定：１ページあたりの行数
     const PAGE = 'page'; //現在のページ
     
     const PROJECT = 'project'; //案件情報のモデル

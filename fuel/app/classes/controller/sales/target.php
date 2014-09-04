@@ -6,10 +6,12 @@
  */
 class Controller_Sales_target extends Controller_Template {
 
+    const LINE_PER_PAGE = 25; //ページネーション設定：１ページあたりの行数
+    const PAGE = 'page';
+
     const ID = 'id';
     const GROUP_ID = 'group_id';
     const SALES_TERM_ID = 'sales_term_id';
-    const PAGE = 'page';
 
     /**
      * beforeメソッドはTemplateを使用するために必要
@@ -48,7 +50,7 @@ class Controller_Sales_target extends Controller_Template {
             'pagination_url' => './',
             'uri_segment' => $this::PAGE,
             'num_links' => 2,
-            'per_page' => 4,
+            'per_page' => $this::LINE_PER_PAGE,
             'total_items' => $count,
             'show_first' => true,
             'show_last' => true,
