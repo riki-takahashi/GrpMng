@@ -202,7 +202,7 @@ class Controller_Sales_target extends Controller_Mybase {
         $id = Input::post($this::ID);
         $group_id = Input::post($this::GROUP_ID);
         $sales_term_id = Input::post($this::SALES_TERM_ID);
-        $page = Input::post($this::PAGE);        
+        $page = Input::post($this::PAGE);
         
         if (!$sales_target = Model_Sales_Target::find($id)) {
             Session::set_flash('error', '該当の売上目標が見つかりません。 #'.$id);
@@ -216,8 +216,8 @@ class Controller_Sales_target extends Controller_Mybase {
         $val = Model_Sales_Target::validate('edit');
 
         if ($val->run()) {
-            $sales_target->group_id = Input::post($this::GROUP_ID);
-            $sales_target->sales_term_id = Input::post($this::SALES_TERM_ID);
+            $sales_target->group_id = $group_id;
+            $sales_target->sales_term_id = $sales_term_id;
             $sales_target->target_amount = Input::post('target_amount');
             $sales_target->min_amount = Input::post('min_amount');
 
@@ -253,71 +253,6 @@ class Controller_Sales_target extends Controller_Mybase {
         $this->template->title = "売上目標情報";
         $this->template->content = View::forge('sales/target/edit');
         
-    }
-    
-    /**
-     * 編集
-     */    
-    public function qq_action_edit() {
-
-        //GET処理
-        $sales_target_id = Input::get($this::ID);
-        $group_id = Input::get($this::GROUP_ID);
-        $sales_term_id = Input::get($this::SALES_TERM_ID);
-        $page = Input::get($this::PAGE);
-
-        is_null($sales_target_id) and Response::redirect('sales/target/index'
-                        .'?'.$this::GROUP_ID.'='.$group_id
-                        .'&'.$this::SALES_TERM_ID.'='.$sales_term_id
-                        .'&'.$this::PAGE.'='.$page);
-
-        if (!$sales_target = Model_Sales_Target::find($sales_target_id)) {
-            Session::set_flash('error', '該当の売上目標が見つかりません。 #'.$sales_target_id);
-            Response::redirect('sales/target/index'
-                    .'?'.$this::GROUP_ID.'='.$group_id
-                    .'&'.$this::SALES_TERM_ID.'='.$sales_term_id
-                    .'&'.$this::PAGE.'='.$page);
-        }
-
-        $val = Model_Sales_Target::validate('edit');
-
-        if ($val->run()) {
-            $sales_target->group_id = Input::post($this::GROUP_ID);
-            $sales_target->sales_term_id = Input::post($this::SALES_TERM_ID);
-            $sales_target->target_amount = Input::post('target_amount');
-            $sales_target->min_amount = Input::post('min_amount');
-
-            if ($sales_target->save()) {
-                Session::set_flash('success', '売上目標を更新しました。 #'.$sales_target_id);
-
-                Response::redirect('sales/target/index'
-                        .'?'.$this::GROUP_ID.'='.$group_id
-                        .'&'.$this::SALES_TERM_ID.'='.$sales_term_id
-                        .'&'.$this::PAGE.'='.$page);
-            } else {
-                Session::set_flash('error', '売上目標の更新に失敗しました。 #'.$sales_target_id);
-            }
-        } else {
-            if (Input::method() == 'POST') {
-                $sales_target->id = $val->validated('id');
-                $sales_target->group_id = $val->validated($this::GROUP_ID);
-                $sales_target->sales_term_id = $val->validated($this::SALES_TERM_ID);
-                $sales_target->target_amount = $val->validated('target_amount');
-                $sales_target->min_amount = $val->validated('min_amount');
-
-                Session::set_flash('error', $val->error());
-            }
-
-            $this->template->set_global('sales_target', $sales_target, false);
-        }
-        //ドロップダウン項目の設定
-        $this->setDropDownList();
-
-        $this->template->set_global($this::GROUP_ID, $group_id);
-        $this->template->set_global($this::SALES_TERM_ID, $sales_term_id);
-        $this->template->set_global($this::PAGE, $page);
-        $this->template->title = "売上目標情報";
-        $this->template->content = View::forge('sales/target/edit');
     }
 
     /**

@@ -26,8 +26,8 @@
 				<?php echo Html::anchor('project/sales/'.$item->id, '<span class="glyphicon glyphicon-thumbs-up"></span> 売上実績', array('class' => 'btn btn-sm btn-primary')); ?>
 			</td>
 			<td><?php echo $item->project_name; ?></td>
-			<td class="hidden-xs hidden-sm"><?php echo $item->group->group_name; ?></td>
-			<td class="hidden-xs hidden-sm"><?php echo $item->employee->emp_name; ?></td>
+			<td class="hidden-xs hidden-sm"><?php echo isset($item->group->group_name) ? $item->group->group_name : ''; ?></td>
+			<td class="hidden-xs hidden-sm"><?php echo isset($item->employee->emp_name) ? $item->employee->emp_name: ''; ?></td>
 			<td class="hidden-xs hidden-sm"><?php echo str_replace('-', '/', $item->start_date); ?></td>
 			<td class="hidden-xs hidden-sm"><?php echo str_replace('-', '/', $item->end_date); ?></td>
 			<td class="hidden-xs"><?php echo $item->end_user; ?></td>

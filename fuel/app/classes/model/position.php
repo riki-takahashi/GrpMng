@@ -55,11 +55,23 @@ class Model_Position extends Model
          */
 	public static function validate($factory)
 	{
-		$val = Validation::forge($factory);
-		$val->add_field('position_name', '役職名', 'required');
-		$val->add_field('order_no', '並び順', 'required|valid_string[numeric]');
+            $val = Validation::forge($factory);
+            $val->add_callable('ExtraValidationRule');
+            
+            switch($factory)
+            {
+                case 'create':
+                case 'edit':
+                    $val->add_field('position_name', '役職名', 'required');
+                    $val->add_field('order_no', '並び順', 'required|valid_string[numeric]');
+                    break;
+                case 'delete':
+                    $val->add_field('id', '役職', 'required')
+                        ->add_rule('isexists', 'employees', 'position_id', '社員マスタ'); //社員マスタと参照整合性チェック
+                    break;
+            }
 
-		return $val;
+            return $val;
 	}
 
 }

@@ -135,21 +135,28 @@ class Controller_Position extends Controller_Mybase{
          */
 	public function action_delete($id = null)
 	{
-		is_null($id) and Response::redirect('position/index/');
-
+            //バリデーションチェックのメッセージはバリデーションクラス内に定義してあるためここではメッセージ不要。
+            $val = Model_Position::validate('delete');
+            if ($val->run(array('id' => $id)))
+            {
 		if ($position = Model_Position::find($id))
 		{
 			$position->delete();
 
 			Session::set_flash('success', '役職マスタを削除しました。 #'.$id);
 		}
-
 		else
 		{
 			Session::set_flash('error', '役職マスタの削除に失敗しました。 #'.$id);
 		}
+            }
+            else
+            {
+                //バリデーションチェックNGの場合
+                Session::set_flash('error', $val->error());
+            }
 
-		Response::redirect('position/index/');
-
+            //初期表示
+            $this -> action_index();
 	}
 }

@@ -174,8 +174,10 @@ class Controller_Employee extends Controller_Mybase{
          */
 	public function action_delete($id = null)
 	{
-		is_null($id) and Response::redirect('employee/index/');
-
+            //バリデーションチェックのメッセージはバリデーションクラス内に定義してあるためここではメッセージ不要。
+            $val = Model_Employee::validate('delete');
+            if ($val->run(array('id' => $id)))
+            {
 		if ($employee = Model_Employee::find($id))
 		{
 			unset($employee->position); //リレーションの一時解除（削除に失敗するため）
@@ -187,9 +189,15 @@ class Controller_Employee extends Controller_Mybase{
 		{
 			Session::set_flash('error', '社員マスタの削除に失敗しました。 #'.$id);
 		}
+            }
+            else
+            {
+                //バリデーションチェックNGの場合
+                Session::set_flash('error', $val->error());
+            }
 
-		Response::redirect('employee');
-
+            //初期表示
+            $this -> action_index();
 	}
 
         /**

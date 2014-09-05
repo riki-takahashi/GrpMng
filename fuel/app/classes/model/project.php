@@ -245,7 +245,8 @@ class Model_Project extends Model
                     break;
                 case 'delete':
                     $val->add_field('id', '案件', 'required')
-                        ->add_rule('isexists', 'sales_results', 'project_id', '売上実績情報'); //売上実績情報と参照整合性チェック
+                        ->add_rule('isexists', 'sales_results', 'project_id', '売上実績情報') //売上実績情報と参照整合性チェック
+                        ->add_rule('isexists', 'projectmembers', 'project_id', '案件メンバー情報'); //案件メンバー情報と参照整合性チェック
                     break;
             }
 

@@ -33,8 +33,8 @@
                                         , '<span class="glyphicon glyphicon-remove"></span> 削除'
                                         , array('class' => 'btn btn-sm btn-danger', 'onclick' => "return confirm('削除してもよろしいですか？')")); ?>
 			</td>
-                        <td class="hidden-xs"><?php echo $item->group->group_name; ?></td>
-                        <td><?php echo $item->sales_term->term_name; ?></td>
+                        <td class="hidden-xs"><?php echo isset($item->group->group_name) ? $item->group->group_name : ''; ?></td>
+                        <td><?php echo isset($item->sales_term->term_name) ? $item->sales_term->term_name : ''; ?></td>
                         <td class="text-right hidden-xs hidden-sm"><?php echo number_format($item->target_amount); ?></td>
                         <td class="text-right hidden-xs hidden-sm"><?php echo number_format($item->min_amount); ?></td>
                 </tr>

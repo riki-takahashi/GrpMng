@@ -21,10 +21,10 @@
 			</td>
 			<td><?php echo $item->emp_name; ?></td>
 			<td><?php echo $item->emp_kana; ?></td>
-			<td><?php echo $item->position->position_name; ?></td>
+			<td><?php echo isset($item->position->position_name) ? $item->position->position_name : ''; ?></td>
 			<td>
 				<?php foreach ($item->groups as $group) : ?>
-					<?php echo $group->group_name; ?>&nbsp;
+					<?php echo isset($group->group_name) ? $group->group_name : ''; ?>&nbsp;
 				<?php endforeach; ?>
 			</td>
 			<td><?php echo $item->mail_address; ?></td>

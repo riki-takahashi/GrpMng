@@ -19,7 +19,7 @@
 				<?php echo Html::anchor('group/delete/'.$item->id, '<span class="glyphicon glyphicon-remove"></span> 削除', array('class' => 'btn btn-sm btn-danger', 'onclick' => "return confirm('削除してもよろしいですか？')")); ?>
 			</td>
 			<td><?php echo $item->group_name; ?></td>
-			<td><?php echo $item->employee->emp_name; ?></td>
+			<td><?php echo isset($item->employee->emp_name) ? $item->employee->emp_name : ''; ?></td>
 			<td><?php echo $invalid_label($item->invalid_flag); ?></td>
 		</tr>
 <?php endforeach; ?>	</tbody>

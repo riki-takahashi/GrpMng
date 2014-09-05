@@ -76,15 +76,30 @@ class Model_Employee extends Model
          */
 	public static function validate($factory)
 	{
-		$val = Validation::forge($factory);
-		$val->add_field('emp_name', '社員名', 'required');
-		$val->add_field('emp_kana', '社員名カナ', 'required');
-		$val->add_field('position_id', '役職', 'required|valid_string[numeric]');
-		$val->add_field('mail_address', 'メールアドレス', 'required|valid_email');
-		$val->add_field('invalid_flag', '無効フラグ', 'required|max_length[1]');
-		$val->add_field('is_mng_flag', '物件担当権限', 'required|max_length[1]');
+            $val = Validation::forge($factory);
+            $val->add_callable('ExtraValidationRule');
+            
+            switch($factory)
+            {
+                case 'create':
+                case 'edit':
+                    $val->add_field('emp_name', '社員名', 'required');
+                    $val->add_field('emp_kana', '社員名カナ', 'required');
+                    $val->add_field('position_id', '役職', 'required|valid_string[numeric]');
+                    $val->add_field('mail_address', 'メールアドレス', 'required|valid_email');
+                    $val->add_field('invalid_flag', '無効フラグ', 'required|max_length[1]');
+                    $val->add_field('is_mng_flag', '物件担当権限', 'required|max_length[1]');
+                    break;
+                case 'delete':
+                    $val->add_field('id', '社員', 'required')
+                        ->add_rule('isexists', 'projectmembers', 'emp_id', '案件メンバー情報') //案件メンバー情報と参照整合性チェック
+                        ->add_rule('isexists', 'groups', 'main_emp_id', 'グループマスタ') //グループマスタと参照整合性チェック
+                        ->add_rule('isexists', 'group_employee', 'emp_id', 'グループ所属社員マスタ') //グループ所属社員マスタと参照整合性チェック
+                        ->add_rule('isexists', 'projects', 'emp_id', '案件情報'); //案件情報と参照整合性チェック
+                    break;
+            }
 
-		return $val;
+            return $val;
 	}
 
 }
