@@ -52,7 +52,6 @@ class Controller_Sales_Result extends Controller_Mybase{
 					'sales_result_name' => Input::post('sales_result_name'),
 					'sales_date' => Input::post('sales_date'),
 					'sales_amount' => Input::post('sales_amount'),
-					'tax' => Input::post('tax'),
 					'note' => Input::post('note'),
 				));
 
@@ -109,7 +108,6 @@ class Controller_Sales_Result extends Controller_Mybase{
 			$sales_result->sales_result_name = Input::post('sales_result_name');
 			$sales_result->sales_date = Input::post('sales_date');
 			$sales_result->sales_amount = Input::post('sales_amount');
-			$sales_result->tax = Input::post('tax');
 			$sales_result->note = Input::post('note');
 
 			if ($sales_result->save())
@@ -134,7 +132,6 @@ class Controller_Sales_Result extends Controller_Mybase{
 				$sales_result->sales_result_name = $val->validated('sales_result_name');
 				$sales_result->sales_date = $val->validated('sales_date');
 				$sales_result->sales_amount = $val->validated('sales_amount');
-				$sales_result->tax = $val->validated('tax');
 				$sales_result->note = $val->validated('note');
 
 				Session::set_flash('error', $val->error());

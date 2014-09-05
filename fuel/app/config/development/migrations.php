@@ -21,6 +21,8 @@ return array(
 				12 => '013_change_field_auto_increment_in_sales_targets',
 				13 => '014_change_field_auto_increment_in_sales_results',
 				14 => '015_create_users',
+				15 => '016_delete_tax_from_sales_results',
+				16 => '017_add_est_amount_to_projects',
 			),
 		),
 		'module' => 

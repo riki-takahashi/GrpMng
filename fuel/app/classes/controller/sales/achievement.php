@@ -4,11 +4,12 @@
  * Copyright 2014 Riki System Co.,Ltd.
  * @author i-suzuki
  */
-class Controller_Sales_Achievement extends Controller_Mybase {
+class Controller_Sales_Achievement extends Controller_Template {
 
     const AGGREGATE_UNIT_ID = 'aggregate_unit_id'; //集計単位ID
     const SALES_TERM_ID = 'sales_term_id'; //売上期間ID
     const PDF_OUT_FLG = 'pdf_out_flg'; //PDF出力フラグ
+    const TARGET_OUT_FLG = 'taget_out_flg'; //目標金額、最低金額の表示フラグ
 
     /**
      * $response をパラメータとして追加し、after() を Controller_Template 互換にする
@@ -46,14 +47,17 @@ class Controller_Sales_Achievement extends Controller_Mybase {
         //集計単位毎に処理を分けています
         if ($aggregate_unit_id == '1') {
             $sales_total['1'] = Array('title' => '', 'list' => $this->make_sum_for_all($sales_term_id));
+            $this->template->set_global($this::TARGET_OUT_FLG, 'true'); //目標金額、最低金額の表示フラグ
         }
 
         if ($aggregate_unit_id == '2') {
             $sales_total['1'] = Array('title' => '', 'list' => $this->make_sum_for_group($sales_term_id));
+            $this->template->set_global($this::TARGET_OUT_FLG, 'true'); //目標金額、最低金額の表示フラグ
         }
 
         if ($aggregate_unit_id == '3') {
             $sales_total = $this->make_sum_for_employee($sales_term_id);
+            $this->template->set_global($this::TARGET_OUT_FLG, null); //目標金額、最低金額の表示フラグ
         }
 
         //ビューに渡す配列の初期化
@@ -368,7 +372,7 @@ class Controller_Sales_Achievement extends Controller_Mybase {
             $tabledata[] = $row_sum;
             
             //グループ毎にデータを取得、設定
-            $sales_total[$group['id']] = Array('title' => $group["group_name"], 'list' => $tabledata);
+            $sales_total[$group['id']] = Array('title' => $group["group_name"].'　　目標金額：'.number_format($row_sum["target_amount_sum"]/1000).'　　最低金額：'.number_format($row_sum['min_amount_sum']/1000), 'list' => $tabledata);
         }
 
         return $sales_total;
@@ -477,7 +481,7 @@ class Controller_Sales_Achievement extends Controller_Mybase {
         
         //mPDFはFuelPFPのフレームワークを意識したつくりになっていないため、BootstrapのAutoLoaderを使用しないでインクルードする。
         require_once(APPPATH.'../packages/mpdf/mpdf.php');
-        $mpdf = new mPDF('ja', 'A4');
+        $mpdf = new mPDF('ja', 'A4-L');
         $mpdf->WriteHTML($html);
         $mpdf->Output('売上集計結果.pdf', 'I');
     }

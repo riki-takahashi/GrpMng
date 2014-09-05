@@ -10,7 +10,6 @@
 			<th class="text-center">売上実績名</th>
 			<th class="text-center">売上日</th>
 			<th class="text-center">売上金額</th>
-			<th class="text-center">消費税</th>
 			<th class="text-center">備考</th>
 		</tr>
 	</thead>
@@ -25,7 +24,6 @@
 			<td><?php echo $item->sales_result_name; ?></td>
 			<td><?php echo $item->sales_date; ?></td>
 			<td><?php echo $item->sales_amount; ?></td>
-			<td><?php echo $item->tax; ?></td>
 			<td><?php echo $item->note; ?></td>
 		</tr>
 <?php endforeach; ?>	</tbody>

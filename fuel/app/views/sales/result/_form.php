@@ -26,12 +26,6 @@
 		</div>
 		<div class="form-group">
                     <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
-			<?php echo Form::label('消費税', 'tax', array('class'=>'control-label')); ?>
-			<?php echo Form::input('tax', Input::post('tax', isset($sales_result) ? $sales_result->tax : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'消費税')); ?>
-                    </div>
-		</div>
-		<div class="form-group">
-                    <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
 			<?php echo Form::label('備考', 'note', array('class'=>'control-label')); ?>
 			<?php echo Form::textarea('note', Input::post('note', isset($sales_result) ? $sales_result->note : ''), array('class' => 'col-md-8 form-control', 'rows' => 8, 'placeholder'=>'備考')); ?>
                     </div>

@@ -16,7 +16,6 @@ class Test_Model_Sales_Result extends TestCase {
             'sales_result_name' => "てすとうりあげじっせきめい１",
             'sales_date' => "2014-07-25",
             'sales_amount' => 1000000,
-            'tax' => 100,
             'note' => "備考１",
       ));
 

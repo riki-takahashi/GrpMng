@@ -16,9 +16,6 @@
 	<strong>Sales amount:</strong>
 	<?php echo $sales_result->sales_amount; ?></p>
 <p>
-	<strong>Tax:</strong>
-	<?php echo $sales_result->tax; ?></p>
-<p>
 	<strong>Note:</strong>
 	<?php echo $sales_result->note; ?></p>
 
