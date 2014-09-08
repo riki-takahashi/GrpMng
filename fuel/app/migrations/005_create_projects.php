@@ -13,14 +13,15 @@ class Create_projects
 			'emp_id' => array('constraint' => 11, 'type' => 'int'),
 			'start_date' => array('type' => 'date'),
 			'end_date' => array('type' => 'date'),
-			'order_amount' => array('constraint' => 11, 'type' => 'int', 'null' => true),
-			'delivery_date' => array('type' => 'date', 'null' => true),
-			'sales_date' => array('type' => 'date', 'null' => true),
-			'end_user' => array('type' => 'text', 'null' => true),
-			'order_user' => array('type' => 'text', 'null' => true),
-			'note' => array('type' => 'text', 'null' => true),
-			'created_at' => array('type' => 'timestamp', 'null' => true),
-			'updated_at' => array('type' => 'timestamp', 'null' => true),
+			'est_amount' => array('constraint' => 11, 'type' => 'int'),
+			'order_amount' => array('constraint' => 11, 'type' => 'int'),
+			'delivery_date' => array('type' => 'date'),
+			'sales_date' => array('type' => 'date'),
+			'end_user' => array('type' => 'text'),
+			'order_user' => array('type' => 'text'),
+			'note' => array('type' => 'text'),
+			'created_at' => array('type' => 'date', 'null' => true),
+			'updated_at' => array('type' => 'date', 'null' => true),
 
 		), array('id'));
 	}

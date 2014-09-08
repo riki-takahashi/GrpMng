@@ -77,6 +77,19 @@ class Model_Project extends Model
                                 'placeholder' => '終了日',
                             ),
                 ),
+		'est_amount' => array(
+                    'data_type' => 'varchar',
+                    'label' => array(
+                                'label' => '見積金額',
+                                'class' => 'control-label',
+                                'for' => 'form_order_amount',
+                            ),
+                    'form' => array(
+                                'type' => 'text',
+                                'class' => 'form-control',
+                                'placeholder' => '見積金額',
+                            ),
+                ),
 		'order_amount' => array(
                     'data_type' => 'varchar',
                     'label' => array(
@@ -241,6 +254,7 @@ class Model_Project extends Model
                     $val->add_field('start_date', '開始日', 'required');
                     $val->add_field('end_date', '終了日', 'required')
                         ->add_rule('enddaterule', 'start_date');
+                    $val->add_field('est_amount', '見積金額', 'valid_string[numeric]');
                     $val->add_field('order_amount', '受注金額', 'valid_string[numeric]');
                     break;
                 case 'delete':

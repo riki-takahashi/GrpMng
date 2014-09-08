@@ -74,6 +74,7 @@ class Controller_Sales_Result extends Controller_Mybase{
 		}
 
                 $data['project_name'] = $project->project_name;
+                $data['sales_amount'] = $project->order_amount;
 		$this->template->title = "売上実績登録";
 		$this->template->content = View::forge('sales/result/create', $data);
 
@@ -116,13 +117,11 @@ class Controller_Sales_Result extends Controller_Mybase{
 
 				Response::redirect('project/sales/'.$project_id);
 			}
-
 			else
 			{
 				Session::set_flash('error', '売上実績の更新に失敗しました。 #'.$result_id);
 			}
 		}
-
 		else
 		{
 			if (Input::method() == 'POST')
@@ -154,7 +153,8 @@ class Controller_Sales_Result extends Controller_Mybase{
 	{
 		is_null($result_id) and Response::redirect('sales/result/');
 
-		if ($sales_result = Model_Sales_Result::find($result_id))
+                $sales_result = Model_Sales_Result::find($result_id);
+		if ($sales_result)
 		{
 			$sales_result->delete();
 

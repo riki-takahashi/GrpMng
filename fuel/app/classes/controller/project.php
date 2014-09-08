@@ -206,6 +206,7 @@ class Controller_Project extends Controller_Mybase {
                             'emp_id' => Input::post('emp_id'),
                             'start_date' => Input::post('start_date'),
                             'end_date' => Input::post('end_date'),
+                            'est_amount' => Util::empty_to_null(Input::post('est_amount')),
                             'order_amount' => Util::empty_to_null(Input::post('order_amount')),
                             'delivery_date' => Util::empty_to_null(Input::post('delivery_date')),
                             'sales_date' => Util::empty_to_null(Input::post('sales_date')),
@@ -252,6 +253,7 @@ class Controller_Project extends Controller_Mybase {
             $project->emp_id = Input::post('emp_id');
             $project->start_date = Input::post('start_date');
             $project->end_date = Input::post('end_date');
+            $project->est_amount = Util::empty_to_null(Input::post('est_amount'));
             $project->order_amount = Util::empty_to_null(Input::post('order_amount'));
             $project->delivery_date = Util::empty_to_null(Input::post('delivery_date'));
             $project->sales_date = Util::empty_to_null(Input::post('sales_date'));
@@ -273,6 +275,7 @@ class Controller_Project extends Controller_Mybase {
                 $project->emp_id = $val->validated('emp_id');
                 $project->start_date = $val->validated('start_date');
                 $project->end_date = $val->validated('end_date');
+                $project->est_amount = $val->validated('est_amount');
                 $project->order_amount = $val->validated('order_amount');
                 $project->delivery_date = $val->validated('delivery_date');
                 $project->sales_date = $val->validated('sales_date');

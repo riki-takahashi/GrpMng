@@ -32,6 +32,12 @@
 		</div>
 		<div class="form-group">
                     <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
+			<?php echo Form::label('見積金額', 'est_amount', array('class'=>'control-label')); ?>
+			<?php echo Form::input('est_amount', Input::post('est_amount', isset($project) ? $project->est_amount : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'見積金額')); ?>
+                    </div>
+		</div>
+		<div class="form-group">
+                    <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
 			<?php echo Form::label('受注金額', 'order_amount', array('class'=>'control-label')); ?>
 			<?php echo Form::input('order_amount', Input::post('order_amount', isset($project) ? $project->order_amount : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'受注金額')); ?>
                     </div>
