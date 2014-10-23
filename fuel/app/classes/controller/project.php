@@ -50,8 +50,9 @@ class Controller_Project extends Controller_Mybase {
         //条件が指定されていなければ全件抽出
         $query = Model_Project::query();
         
-        //一度も検索していない場合にはセッションに検索条件がまだ無いのでエラーが出てしまいましたがそれを回避します。
+        //一度も検索していない場合にはセッションに検索条件がまだ無いのでエラーが出てしまいましたがそれをif文で回避します。
         if ($projectsearch) {
+            //$query = Util::addAndCondition($query, $this::PROJECT_STATUS, '%'.$projectsearch->project_name.'%', 'like'); //案件名
             $query = Util::addAndCondition($query, $this::PROJECT_NAME, '%'.$projectsearch->project_name.'%', 'like'); //案件名
             $query = Util::addAndCondition($query, $this::GROUP_ID, $projectsearch->group_id); //グループ
             $query = Util::addAndCondition($query, $this::EMP_ID, $projectsearch->emp_id); //担当者

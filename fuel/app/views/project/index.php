@@ -11,6 +11,9 @@
 	<thead>
 		<tr class="info">
 			<th>&nbsp;</th>
+<!--
+			<th class="text-center">状態</th>
+-->
 			<th class="text-center">案件名</th>
 			<th class="text-center hidden-xs hidden-sm">担当グループ</th>
 			<th class="text-center hidden-xs hidden-sm">担当者</th>
@@ -33,6 +36,9 @@
                                 <?php echo Html::anchor('project/sales/'.$item->id, '<span class="glyphicon glyphicon-thumbs-up"></span>'
                                         , array('class' => 'btn btn-sm btn-primary tipSales', 'data-toggle' => 'tooltip', 'title' => '売上実績')); ?>
 			</td>
+<!--
+			<td><?pphp echo $item->project_status; ?></td>
+-->
 			<td><?php echo $item->project_name; ?></td>
 			<td class="hidden-xs hidden-sm"><?php echo isset($item->group->group_name) ? $item->group->group_name : ''; ?></td>
 			<td class="hidden-xs hidden-sm"><?php echo isset($item->employee->emp_name) ? $item->employee->emp_name: ''; ?></td>
