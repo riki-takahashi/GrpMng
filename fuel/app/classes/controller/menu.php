@@ -40,7 +40,7 @@ class Controller_Menu extends Controller_Mybase{
 		
 		$this->template->is_menu = true;
 		$this->template->is_login = true;
-                $this->template->title = "ログイン";
+		$this->template->title = "ログイン";
 		$this->template->content = View::forge('menu/login');
 	}
 	
