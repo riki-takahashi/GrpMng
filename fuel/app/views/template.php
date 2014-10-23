@@ -11,8 +11,6 @@
         <!-- 画面固有の追加分 -->
         <?php echo Asset::render('css_for_chart');?>
 	<?php echo Asset::render('js_for_chart'); ?>
-        <?php echo Asset::render('css_for_toolchip');?>
-        <?php echo Asset::render('js_for_toolchip');?>
         
 	<style>
 		body { margin: 20px; }
@@ -23,7 +21,7 @@
 				format: 'yyyy/mm/dd',
 				language: 'ja',
 				autoclose: 'true'
-			})
+			});
 		})
 	</script>
 

@@ -97,10 +97,6 @@ class Controller_Project extends Controller_Mybase {
         //テンプレートファイルにデータの引き渡し
         $this->template->set_global($this::PAGE, Input::get($this::PAGE));
 
-        //ツールチップ描画のために必要なコンポーネントをこのタイミングで追加する
-        Asset::css(array('grumble.css'), array(), 'css_for_toolchip', false);
-        Asset::js(array('jquery.grumble.min.js'), array(), 'js_for_toolchip', false);
-        
         $this->template->title = "案件一覧";
         $this->template->content = View::forge('project/index', $data);
     }
@@ -427,7 +423,8 @@ class Controller_Project extends Controller_Mybase {
     public function action_mdelete($project_id = null, $member_id = null) {
         is_null($member_id) and Response::redirect('project/index/');
 
-        if ($member = Model_Projectmember::find($member_id)) {
+        $member = Model_Projectmember::find($member_id);
+        if ($member) {
             $member->delete();
 
             Session::set_flash('success', '案件メンバー情報を削除しました。 #'.$member_id);
@@ -487,6 +484,10 @@ class Controller_Project extends Controller_Mybase {
 
         //物件担当一覧
         $this->template->set_global('employees', $this->getEmployees($add_blank), false);
+        
+        //状態
+        $status = Config::get('arrays.status');
+        $this->template->set_global('status', $status, false);
     }
 
     /**
@@ -532,7 +533,8 @@ class Controller_Project extends Controller_Mybase {
     public function action_sdelete($project_id = null, $result_id = null) {
         is_null($project_id) and Response::redirect('project/index/');
 
-        if ($project = Model_Sales_Result::find($result_id)) {
+        $project = Model_Sales_Result::find($result_id);
+        if ($project) {
             $project->delete();
 
             Session::set_flash('success', '売上実績情報を削除しました。 #'.$result_id);
