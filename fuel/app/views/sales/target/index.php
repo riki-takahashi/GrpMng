@@ -23,15 +23,16 @@
                                         . '&'.Controller_Sales_target::GROUP_ID.'='.$group_id
                                         . '&'.Controller_Sales_target::SALES_TERM_ID.'='.$sales_term_id
                                         . '&'.Controller_Sales_target::PAGE.'='.$page
-                                        , '<span class="glyphicon glyphicon-pencil"></span> 編集'
-                                        , array('class' => 'btn btn-sm btn-primary')); ?>
+                                        , '<span class="glyphicon glyphicon-pencil"></span>'
+                                        , array('class' => 'btn btn-sm btn-primary', 'data-toggle' => 'tooltip', 'title' => '編集')); ?>
                             
                                 <?php echo Html::anchor('sales/target/delete'
                                         . '?'.Controller_Sales_target::ID.'='.$item->id
                                         . '&'.Controller_Sales_target::GROUP_ID.'='.$group_id
                                         . '&'.Controller_Sales_target::SALES_TERM_ID.'='.$sales_term_id
-                                        , '<span class="glyphicon glyphicon-remove"></span> 削除'
-                                        , array('class' => 'btn btn-sm btn-danger', 'onclick' => "return confirm('削除してもよろしいですか？')")); ?>
+                                        , '<span class="glyphicon glyphicon-remove"></span>'
+                                        , array('class' => 'btn btn-sm btn-danger', 'data-toggle' => 'tooltip', 'title' => '削除'
+                                            , 'onclick' => "return confirm('削除してもよろしいですか？')")); ?>
 			</td>
                         <td class="hidden-xs"><?php echo isset($item->group->group_name) ? $item->group->group_name : ''; ?></td>
                         <td><?php echo isset($item->sales_term->term_name) ? $item->sales_term->term_name : ''; ?></td>

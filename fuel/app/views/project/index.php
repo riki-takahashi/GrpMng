@@ -11,7 +11,7 @@
 	<thead>
 		<tr class="info">
 			<th>&nbsp;</th>
-<!--
+<!--　TODO: 未実装
 			<th class="text-center">状態</th>
 -->
 			<th class="text-center">案件名</th>
@@ -27,16 +27,16 @@
 		<tr>
 			<td>
                                 <?php echo Html::anchor('project/edit/'.$item->id, '<span class="glyphicon glyphicon-pencil"></span>'
-                                        , array('class' => 'btn btn-sm btn-primary tipEdit', 'data-toggle' => 'tooltip', 'title' => '編集')); ?>
+                                        , array('class' => 'btn btn-sm btn-primary tipEdit', 'data-toggle' => 'tooltip', 'title' => '案件編集')); ?>
 				<?php echo Html::anchor('project/delete/'.$item->id, '<span class="glyphicon glyphicon-remove"></span>'
                                         , array('class' => 'btn btn-sm btn-danger tipDelete', 'data-toggle' => 'tooltip', 'title' => '削除'
                                             , 'onclick' => "return confirm('削除してもよろしいですか？')")); ?>
 				<?php echo Html::anchor('project/member/'.$item->id, '<span class="glyphicon glyphicon-user"></span>'
-                                        , array('class' => 'btn btn-sm btn-primary tipMember', 'data-toggle' => 'tooltip', 'title' => 'メンバー')); ?>
+                                        , array('class' => 'btn btn-sm btn-primary tipMember', 'data-toggle' => 'tooltip', 'title' => '案件メンバー登録')); ?>
                                 <?php echo Html::anchor('project/sales/'.$item->id, '<span class="glyphicon glyphicon-thumbs-up"></span>'
                                         , array('class' => 'btn btn-sm btn-primary tipSales', 'data-toggle' => 'tooltip', 'title' => '売上実績')); ?>
 			</td>
-<!--
+<!--　TODO: 未実装
 			<td><?pphp echo $item->project_status; ?></td>
 -->
 			<td><?php echo $item->project_name; ?></td>

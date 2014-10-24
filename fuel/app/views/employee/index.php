@@ -16,8 +16,11 @@
 	<tbody>
 <?php foreach ($employees as $item): ?>		<tr>
 			<td>
-				<?php echo Html::anchor('employee/edit/'.$item->id, '<span class="glyphicon glyphicon-pencil"></span> 編集', array('class' => 'btn btn-sm btn-primary')); ?>	
-				<?php echo Html::anchor('employee/delete/'.$item->id, '<span class="glyphicon glyphicon-remove"></span> 削除', array('class' => 'btn btn-sm btn-danger', 'onclick' => "return confirm('削除してもよろしいですか？')")); ?>
+				<?php echo Html::anchor('employee/edit/'.$item->id, '<span class="glyphicon glyphicon-pencil"></span>'
+                                        , array('class' => 'btn btn-sm btn-primary', 'data-toggle' => 'tooltip', 'title' => '編集')); ?>	
+				<?php echo Html::anchor('employee/delete/'.$item->id, '<span class="glyphicon glyphicon-remove"></span>'
+                                        , array('class' => 'btn btn-sm btn-danger', 'data-toggle' => 'tooltip', 'title' => '削除'
+                                            , 'onclick' => "return confirm('削除してもよろしいですか？')")); ?>
 			</td>
 			<td><?php echo $item->emp_name; ?></td>
 			<td><?php echo $item->emp_kana; ?></td>

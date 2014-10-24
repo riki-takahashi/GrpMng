@@ -38,13 +38,16 @@
 			<?php if ($member->id != $member_id) : ?>
 				<tr>
 					<td>
-						<?php echo Html::anchor('project/member/'.$project->id.'/'.$member->id, '<span class="glyphicon glyphicon-pencil"></span> 編集', array('class' => 'btn btn-sm btn-primary')); ?>
-						<?php echo Html::anchor('project/mdelete/'.$project->id.'/'.$member->id, '<span class="glyphicon glyphicon-remove"></span> 削除', array('class' => 'btn btn-sm btn-danger', 'onclick' => "return confirm('削除してもよろしいですか？')")); ?>
+						<?php echo Html::anchor('project/member/'.$project->id.'/'.$member->id, '<span class="glyphicon glyphicon-pencil"></span>'
+                                                        , array('class' => 'btn btn-sm btn-primary', 'data-toggle' => 'tooltip', 'title' => '編集')); ?>
+						<?php echo Html::anchor('project/mdelete/'.$project->id.'/'.$member->id, '<span class="glyphicon glyphicon-remove"></span>'
+                                                        , array('class' => 'btn btn-sm btn-danger', 'data-toggle' => 'tooltip', 'title' => '削除'
+                                                            , 'onclick' => "return confirm('削除してもよろしいですか？')")); ?>
 					</td>
-					<td><?php echo $member->employee->emp_name; ?></td>
-					<td><?php echo str_replace('-', '/', $member->start_date); ?></td>
-					<td><?php echo str_replace('-', '/', $member->end_date); ?></td>
-					<td><?php echo $member->note; ?></td>
+					<td><?php echo isset($member->employee->emp_name) ? $member->employee->emp_name : ''; ?></td>
+					<td><?php echo isset($member->start_date) ? str_replace('-', '/', $member->start_date) : ''; ?></td>
+					<td><?php echo isset($member->end_date) ? str_replace('-', '/', $member->end_date) : ''; ?></td>
+                                        <td><?php echo isset($member->note) ? $member->note : ''; ?></td>
 				</tr>
 			<?php else : ?>
 				<tr>
@@ -55,16 +58,19 @@
 					<?php if ($member->id == $temp_id) : ?>
 						<td><?php echo Form::select('emp_id', null, $employees, array('class' => 'col-md-4 form-control')); ?></td>
 					<?php else : ?>
-						<td><?php echo $member->employee->emp_name; ?></td>
+						<td><?php echo isset($member->employee->emp_name) ? $member->employee->emp_name : ''; ?></td>
 					<?php endif; ?>
 					<td>
-						<?php echo Form::input('start_date', Input::post('start_date', isset($member) ? str_replace('-', '/', $member->start_date) : ''), array('class' => 'col-md-4 form-control dp', 'placeholder'=>'開始日')); ?>
+						<?php echo Form::input('start_date', Input::post('start_date', isset($member) ? str_replace('-', '/', $member->start_date) : '')
+                                                    , array('class' => 'col-md-4 form-control dp', 'placeholder'=>'開始日')); ?>
 					</td>
 					<td>
-						<?php echo Form::input('end_date', Input::post('end_date', isset($member) ? str_replace('-', '/', $member->end_date) : ''), array('class' => 'col-md-4 form-control dp', 'placeholder'=>'終了日')); ?>
+						<?php echo Form::input('end_date', Input::post('end_date', isset($member) ? str_replace('-', '/', $member->end_date) : '')
+                                                    , array('class' => 'col-md-4 form-control dp', 'placeholder'=>'終了日')); ?>
 					</td>
 					<td>
-						<?php echo Form::input('note', Input::post('note', isset($member) ? $member->note : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'備考')); ?>
+						<?php echo Form::input('note', Input::post('note', isset($member) ? $member->note : '')
+                                                    , array('class' => 'col-md-4 form-control', 'placeholder'=>'備考')); ?>
 					</td>
 				</tr>
 			<?php endif; ?>

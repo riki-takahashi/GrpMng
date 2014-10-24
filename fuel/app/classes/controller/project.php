@@ -52,6 +52,7 @@ class Controller_Project extends Controller_Mybase {
         
         //一度も検索していない場合にはセッションに検索条件がまだ無いのでエラーが出てしまいましたがそれをif文で回避します。
         if ($projectsearch) {
+            // TODO: 未実装
             //$query = Util::addAndCondition($query, $this::PROJECT_STATUS, '%'.$projectsearch->project_name.'%', 'like'); //案件名
             $query = Util::addAndCondition($query, $this::PROJECT_NAME, '%'.$projectsearch->project_name.'%', 'like'); //案件名
             $query = Util::addAndCondition($query, $this::GROUP_ID, $projectsearch->group_id); //グループ
@@ -67,8 +68,6 @@ class Controller_Project extends Controller_Mybase {
         
         //データ件数の取得
         $count = $query->count();
-        
-//Session::set_flash('success', 'データ件数とクエリー内容: '.$count.'件　　　'.$query->get_query()->__toString());        
         
         //Paginationの環境設定
         $config = array(

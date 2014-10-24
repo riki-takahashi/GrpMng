@@ -4,7 +4,7 @@
 <?php if ($sales_terms): ?>
 <table class="table table-striped table-bordered table-hover table-condensed">
 	<thead>
-		<tr>
+		<tr class="info">
 			<th>&nbsp;</th>
 			<th class="text-center">売上期間名</th>
 			<th class="text-center">開始日</th>
@@ -16,8 +16,11 @@
 <?php foreach ($sales_terms as $item): ?>		<tr>
 
 			<td>
-                                <?php echo Html::anchor('sales/term/edit/'.$item->id, '<span class="glyphicon glyphicon-pencil"></span> 編集', array('class' => 'btn btn-sm btn-primary')); ?>
-                                <?php echo Html::anchor('sales/term/delete/'.$item->id, '<span class="glyphicon glyphicon-remove"></span> 削除', array('class' => 'btn btn-sm btn-danger', 'onclick' => "return confirm('削除してもよろしいですか？')")); ?>
+                                <?php echo Html::anchor('sales/term/edit/'.$item->id, '<span class="glyphicon glyphicon-pencil"></span>'
+                                        , array('class' => 'btn btn-sm btn-primary', 'data-toggle' => 'tooltip', 'title' => '編集')); ?>
+                                <?php echo Html::anchor('sales/term/delete/'.$item->id, '<span class="glyphicon glyphicon-remove"></span>'
+                                        , array('class' => 'btn btn-sm btn-danger', 'data-toggle' => 'tooltip', 'title' => '削除'
+                                            , 'onclick' => "return confirm('削除してもよろしいですか？')")); ?>
 			</td>
 			<td><?php echo $item->term_name; ?></td>
                         <td><?php echo str_replace('-', '/', $item->start_date); ?></td>
