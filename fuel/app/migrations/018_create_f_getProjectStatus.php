@@ -7,10 +7,16 @@ class Create_f_getprojectstatus
 	public function up()
 	{
 		\DB::expr(preg_replace("/\s+/", " ",
-'
+"
 DELIMITER //;
 
-CREATE FUNCTION f_getProjectStatus (paramProjectId int(11)) RETURNS int(11)
+CREATE DEFINER=`root`@`localhost` FUNCTION `f_getProjectStatus`(`paramProjectId` INT)
+	RETURNS int(11)
+	LANGUAGE SQL
+	NOT DETERMINISTIC
+	CONTAINS SQL
+	SQL SECURITY DEFINER
+	COMMENT ''
 BEGIN
 		-- 指定されたプロジェクトIDの状態取得
 	
@@ -51,10 +57,10 @@ BEGIN
 		return 0;
 
 	END
-        
+
 DELIMITER ;//
 
-'
+"
                     )
 		);
 	}
