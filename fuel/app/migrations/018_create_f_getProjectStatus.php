@@ -10,7 +10,7 @@ class Create_f_getprojectstatus
 "
 DELIMITER //;
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `f_getProjectStatus`(`paramProjectId` INT)
+CREATE FUNCTION `f_getProjectStatus`(`paramProjectId` INT)
 	RETURNS int(11)
 	LANGUAGE SQL
 	NOT DETERMINISTIC
@@ -67,6 +67,6 @@ DELIMITER ;//
 
 	public function down()
 	{
-		\DB::expr('CREATE FUNCTION f_getProjectStatus');
+		\DB::expr('DROP FUNCTION f_getProjectStatus;');
 	}
 }
