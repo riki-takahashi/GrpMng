@@ -6,7 +6,7 @@ class Create_f_getprojectstatus
 {
 	public function up()
 	{
-		\DB::expr(
+		\DB::expr(preg_replace("/\s+/", " ",
 '
 DELIMITER //;
 
@@ -55,6 +55,7 @@ BEGIN
 DELIMITER ;//
 
 '
+                    )
 		);
 	}
 
