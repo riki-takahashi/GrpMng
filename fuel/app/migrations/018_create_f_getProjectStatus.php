@@ -8,6 +8,8 @@ class Create_f_getprojectstatus
 	{
 		\DB::expr(
 '
+DELIMITER //;
+
 CREATE FUNCTION f_getProjectStatus (paramProjectId int(11)) RETURNS int(11)
 BEGIN
 		-- 指定されたプロジェクトIDの状態取得
@@ -49,6 +51,9 @@ BEGIN
 		return 0;
 
 	END
+        
+DELIMITER ;//
+
 '
 		);
 	}
