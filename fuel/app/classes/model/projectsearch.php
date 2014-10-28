@@ -14,6 +14,18 @@ class Model_Projectsearch extends Model
          */
 	protected static $_properties = array(
 		'id',
+		'project_status' => array(
+                    'data_type' => 'varchar',
+                    'label' => array(
+                                'label' => '状態',
+                                'class' => 'control-label',
+                                'for' => 'form_project_status',
+                            ),
+                    'form' => array(
+                                'type' => 'select',
+                                'class' => 'form-control',
+                            ),
+                ),            
 		'project_name' => array(
                     'data_type' => 'varchar',
                     'label' => array(

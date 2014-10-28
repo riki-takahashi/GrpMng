@@ -12,6 +12,7 @@ class Controller_Project extends Controller_Mybase {
     const PROJECT = 'project'; //案件情報のモデル
     const PROJECTSEARCH = 'projectsearch'; //検索条件のためのモデル
     
+    const PROJECT_STATUS = 'project_status';
     const PROJECT_NAME = 'project_name';
     const GROUP_ID = 'group_id';
     const EMP_ID = 'emp_id';
@@ -43,17 +44,20 @@ class Controller_Project extends Controller_Mybase {
      * 初期表示（案件一覧）
      */
     public function action_index() {
+        // デバッグモードで例外が発生しないように最初に設定しておく
+        $this->template->is_menu = true;
+        $this->template->is_login = true;
+        
         //SESSION取得
         $projectsearch = Session::get($this::PROJECTSEARCH);
         
         //検索条件構築
         //条件が指定されていなければ全件抽出
-        $query = Model_Project::query();
+        $query = $this->get_project_index();
         
         //一度も検索していない場合にはセッションに検索条件がまだ無いのでエラーが出てしまいましたがそれをif文で回避します。
         if ($projectsearch) {
-            // TODO: 未実装
-            //$query = Util::addAndCondition($query, $this::PROJECT_STATUS, '%'.$projectsearch->project_name.'%', 'like'); //案件名
+            $query = Util::addAndConditionDirect($query, "f_getProjectStatus(A.id) = '".$projectsearch->project_status."'"); //状態
             $query = Util::addAndCondition($query, $this::PROJECT_NAME, '%'.$projectsearch->project_name.'%', 'like'); //案件名
             $query = Util::addAndCondition($query, $this::GROUP_ID, $projectsearch->group_id); //グループ
             $query = Util::addAndCondition($query, $this::EMP_ID, $projectsearch->emp_id); //担当者
@@ -65,9 +69,9 @@ class Controller_Project extends Controller_Mybase {
             $query = Util::addAndCondition($query, $this::ORDER_USER, '%'.$projectsearch->order_user.'%', 'like'); //受注元
             $query = Util::addAndCondition($query, $this::NOTE, '%'.$projectsearch->note.'%', 'like'); //備考
         }
-        
+
         //データ件数の取得
-        $count = $query->count();
+        $count = count($query->execute());
         
         //Paginationの環境設定
         $config = array(
@@ -88,12 +92,15 @@ class Controller_Project extends Controller_Mybase {
 
         //案件一覧データ取得（ページネーション）
         $data['projects'] = $query
-                //並び順：　開始日の降順、終了日の降順、案件IDの降順
-                ->order_by(array('start_date' => 'desc', 'end_date' => 'desc', 'id' => 'desc'))
+                // 並び順：　開始日の降順、終了日の降順、案件IDの降順
+                ->order_by('start_date','desc')
+                ->order_by('end_date','desc')
+                ->order_by('id','desc')
                 ->limit(Pagination::get('per_page'))
                 ->offset(Pagination::get('offset'))
-                ->get();
-
+                ->execute()
+                ->as_array(); // セキュリティ上、サニタイジングの必要があるためオブジェクトそのままの形ではビューに渡せない。（配列に変換する）
+        
         //テンプレートファイルにデータの引き渡し
         $this->template->set_global($this::PAGE, Input::get($this::PAGE));
 
@@ -128,6 +135,9 @@ class Controller_Project extends Controller_Mybase {
         //フォームの各項目にモデルの内容を設定
         $fieldset->add_model($projectsearch);
 
+        //状態ドロップダウン設定（Configから読み取り）
+        $fieldset->field('project_status')->set_options($this->getProjectStatus(true));
+
         //担当グループドロップダウン設定（データベースから読み取り）
         $fieldset->field('group_id')->set_options($this->getGroups(true));
 
@@ -152,6 +162,8 @@ class Controller_Project extends Controller_Mybase {
 
         $projectsearch = Model_Projectsearch::forge();
         
+        $projectsearch->project_status = Input::post($this::PROJECT_STATUS);
+
         $projectsearch->project_name = Input::post($this::PROJECT_NAME);
         
         $projectsearch->group_id = Input::post($this::GROUP_ID);
@@ -436,6 +448,23 @@ class Controller_Project extends Controller_Mybase {
     }
 
     /**
+     * ドロップダウンリスト用の状態一覧データ取得
+     * @param type $add_blank
+     * @return type $groups
+     */
+    private function getProjectStatus($add_blank = false) {
+        Config::load('arrays', true);
+        $status = Config::get('arrays.status');
+        if ($add_blank == true) {
+            //先頭にキーが0の空白行を追加する。
+            //PHPでは連想配列のキーが数値の場合に、勝手に通常の配列に変換されてしまうため対策しました。
+            $status['0'] = '';
+            ksort($status);
+        }
+        return $status;
+    }
+
+    /**
      * ドロップダウンリスト用のグループ一覧データ取得
      * @param type $add_blank
      * @return type $groups
@@ -484,10 +513,6 @@ class Controller_Project extends Controller_Mybase {
 
         //物件担当一覧
         $this->template->set_global('employees', $this->getEmployees($add_blank), false);
-        
-        //状態
-        $status = Config::get('arrays.status');
-        $this->template->set_global('status', $status, false);
     }
 
     /**
@@ -575,4 +600,43 @@ class Controller_Project extends Controller_Mybase {
         $mpdf->WriteHTML($html);
         $mpdf->Output('社員アサイン状況.pdf', 'I');
     }    
+    
+
+    /**
+     * 項目名：プロジェクト一覧 状態も取得
+     */
+    private function get_project_index() {
+        $query = DB::select(DB::expr("
+                A.id,
+                f_getProjectStatus(A.id) as project_status,
+                A.project_name,
+                A.group_id,
+                B.group_name,
+                A.emp_id,
+                C.emp_name,
+                A.start_date,
+                A.end_date,
+                A.est_amount,
+                A.order_amount,
+                A.delivery_date,
+                A.sales_date,
+                A.end_user,
+                A.order_user,
+                A.note,
+                A.created_at,
+                A.updated_at
+            from projects A
+            
+            left outer join groups B
+            on B.id = A.group_id
+            
+            left outer join employees C
+            on C.id = A.emp_id
+
+        "));
+        
+        return $query;
+    }
+    
+    
 }

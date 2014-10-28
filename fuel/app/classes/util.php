@@ -33,6 +33,25 @@ class Util {
         $query = $query->where($key, $condition, $value);
         return $query;
     }
+    
+    /**
+     * Where条件文の構築（ANDでイコール条件追加）
+     * @param type $query Where条件を追加するクエリーは、予め用意してください。
+     * @param type $key 検索する項目名
+     * @param type $value 検索する値
+     * @param type $condition あいまい検索する場合にはここに'like'を指定してください。
+     * @return type $query 与えられたクエリーに検索条件を追加してクエリーを返します。
+     */
+    public static function addAndConditionDirect($query = null, $condition = null) {
+        //指定された項目名と値でWHERE文を組み立て返します。
+        //$valueに %foo% が入った場合に 0と等価と判定されてしまったため、厳密な比較をすることにしました。
+        if ($query == null or $condition == null) {
+            return $query;
+        }
+        $query = $query->where(DB::expr($condition));
+        return $query;
+    }
+    
 
     /**
      * Where条件文の構築（ANDで日付期間条件追加）

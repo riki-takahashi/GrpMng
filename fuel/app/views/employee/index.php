@@ -27,7 +27,7 @@
 			<td><?php echo isset($item->position->position_name) ? $item->position->position_name : ''; ?></td>
 			<td>
 				<?php foreach ($item->groups as $group) : ?>
-					<?php echo isset($group->group_name) ? $group->group_name : ''; ?>&nbsp;
+					<?php echo isset($group->group_name) ? $group->group_name : ''; ?><br>
 				<?php endforeach; ?>
 			</td>
 			<td><?php echo $item->mail_address; ?></td>

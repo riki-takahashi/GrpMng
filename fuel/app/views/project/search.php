@@ -6,6 +6,12 @@
 	<fieldset>
             <div class="form-group">
                 <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
+                    <?php echo $fieldset->field('project_status')->set_template('{label}'); ?>
+                    <?php echo $fieldset->field('project_status')->set_template('{field}'); ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
                     <?php echo $fieldset->field('project_name')->set_template('{label}'); ?>
                     <?php echo $fieldset->field('project_name')->set_template('{field}'); ?>
                 </div>
