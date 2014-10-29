@@ -11,20 +11,11 @@ return array(
 		0 => 'なし',
 		1 => 'あり',
 	),
-	//状態
+	//状態　（ID、名称、cssスタイルクラス名、背景色）
 	'status' => array(
-		0 => '',
-		1 => '引合',
-		2 => '見積',
-		3 => '受注',
-		4 => '売上',
-	),
-	//状態のcssスタイルクラス名
-	'style_status' => array(
-		0 => '',
-		1 => 'hikiai',
-		2 => 'mitsumori',
-		3 => 'juchu',
-		4 => 'uriage',
+		array('id' => 1, 'name' => '引合', 'style' => 'hikiai', 'background-color' => '#000000'),
+		array('id' => 2, 'name' => '見積', 'style' => 'mitsumori', 'background-color' => '#18bc9c'),
+		array('id' => 3, 'name' => '受注', 'style' => 'juchu', 'background-color' => '#f39c12'),
+		array('id' => 4, 'name' => '売上', 'style' => 'uriage', 'background-color' => '#428bca'),
 	),
 );

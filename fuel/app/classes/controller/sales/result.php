@@ -126,7 +126,7 @@ class Controller_Sales_Result extends Controller_Mybase{
 		{
 			if (Input::method() == 'POST')
 			{
-				$sales_result->id = $val->validated('id');
+				//編集時、売上実績データのidを更新しない
 				$sales_result->project_id = $val->validated('project_id');
 				$sales_result->sales_result_name = $val->validated('sales_result_name');
 				$sales_result->sales_date = $val->validated('sales_date');

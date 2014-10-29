@@ -1,32 +1,21 @@
-
+<?php Config::load("arrays", true); ?>
 <style type="text/css">
+<?php
+$confStatus = Config::get('arrays.status');
+$statusStyle = Arr::assoc_to_keyval($confStatus, 'id', 'style');
+$statusName = Arr::assoc_to_keyval($confStatus, 'id', 'name');
+$statusBackgroundColor = Arr::assoc_to_keyval($confStatus, 'id', 'background-color');
 
-.table-striped>tbody>tr:nth-child(odd)>td.hikiai,
-.table-striped>tbody>tr:nth-child(even)>td.hikiai{
-    background-color: #000000;
+foreach ($statusStyle as $item=>$value): 
+?>
+.table-striped>tbody>tr:nth-child(odd)>td.<?php echo $value; ?>,
+.table-striped>tbody>tr:nth-child(even)>td.<?php echo $value; ?> {
+    background-color: <?php echo $statusBackgroundColor[$item]; ?>;
     color: #ffffff;
 }
 
-.table-striped>tbody>tr:nth-child(odd)>td.mitsumori,
-.table-striped>tbody>tr:nth-child(even)>td.mitsumori{
-    background-color: #18bc9c;
-    color: #ffffff;
-}
-
-.table-striped>tbody>tr:nth-child(odd)>td.juchu,
-.table-striped>tbody>tr:nth-child(even)>td.juchu{
-    background-color: #f39c12;
-    color: #ffffff;
-}
-
-.table-striped>tbody>tr:nth-child(odd)>td.uriage,
-.table-striped>tbody>tr:nth-child(even)>td.uriage{
-    background-color: #428bca;
-    color: #ffffff;
-}
-
+<?php endforeach; ?>
 </style>
-
 
 <p  class="pull-right">
 	<?php echo Html::anchor('project/create', '<span class="glyphicon glyphicon-plus"></span> 新規登録', array('class' => 'btn btn-primary')); ?>
@@ -51,7 +40,6 @@
 		</tr>
 	</thead>
 	<tbody>
-<?php Config::load("arrays", true); ?>
 <?php foreach ($projects as $item): ?>
 		<tr>
 			<td>
@@ -65,7 +53,7 @@
                                 <?php echo Html::anchor('project/sales/'.$item["id"], '<span class="glyphicon glyphicon-thumbs-up"></span>'
                                         , array('class' => 'btn btn-sm btn-primary tipSales', 'data-toggle' => 'tooltip', 'title' => '売上実績')); ?>
 			</td>
-                        <td class="text-center <?php echo Config::get("arrays.style_status.".$item["project_status"]); ?>"><?php echo Config::get("arrays.status.".$item["project_status"]); ?></td>
+                        <td class="text-center <?php echo $statusStyle[$item["project_status"]]; ?>"><?php echo $statusName[$item["project_status"]]; ?></td>
                         <td><?php echo $item["project_name"]; ?></td>
 			<td class="hidden-xs hidden-sm"><?php echo $item["group_name"]; ?></td>
 			<td class="hidden-xs hidden-sm"><?php echo $item["emp_name"]; ?></td>

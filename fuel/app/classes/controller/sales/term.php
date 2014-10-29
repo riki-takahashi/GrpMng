@@ -18,25 +18,6 @@ class Controller_Sales_Term extends Controller_Mybase{
 	}
 
         /**
-         * ビュー表示（使用していません）
-         * @param type $term_id
-         */
-	public function action_view($term_id = null)
-	{
-		is_null($term_id) and Response::redirect('sales/term/index/');
-
-		if ( ! $data['sales_term'] = Model_Sales_Term::find($term_id))
-		{
-			Session::set_flash('error', '該当の売上期間が見つかりません。 #'.$term_id);
-			Response::redirect('sales/term/index/');
-		}
-
-		$this->template->title = "Sales_term";
-		$this->template->content = View::forge('sales/term/view', $data);
-
-	}
-
-        /**
          * 新規作成
          */
 	public function action_create()

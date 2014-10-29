@@ -37,9 +37,7 @@ class Util {
     /**
      * Where条件文の構築（ANDでイコール条件追加）
      * @param type $query Where条件を追加するクエリーは、予め用意してください。
-     * @param type $key 検索する項目名
-     * @param type $value 検索する値
-     * @param type $condition あいまい検索する場合にはここに'like'を指定してください。
+     * @param type $condition 検索条件文
      * @return type $query 与えられたクエリーに検索条件を追加してクエリーを返します。
      */
     public static function addAndConditionDirect($query = null, $condition = null) {
@@ -51,7 +49,6 @@ class Util {
         $query = $query->where(DB::expr($condition));
         return $query;
     }
-    
 
     /**
      * Where条件文の構築（ANDで日付期間条件追加）

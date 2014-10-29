@@ -44,10 +44,6 @@ class Controller_Project extends Controller_Mybase {
      * 初期表示（案件一覧）
      */
     public function action_index() {
-        // デバッグモードで例外が発生しないように最初に設定しておく
-        $this->template->is_menu = true;
-        $this->template->is_login = true;
-        
         //SESSION取得
         $projectsearch = Session::get($this::PROJECTSEARCH);
         
@@ -57,7 +53,9 @@ class Controller_Project extends Controller_Mybase {
         
         //一度も検索していない場合にはセッションに検索条件がまだ無いのでエラーが出てしまいましたがそれをif文で回避します。
         if ($projectsearch) {
-            $query = Util::addAndConditionDirect($query, "f_getProjectStatus(A.id) = '".$projectsearch->project_status."'"); //状態
+            if ($projectsearch->project_status != ''){
+                $query = Util::addAndConditionDirect($query, "f_getProjectStatus(A.id) = '".$projectsearch->project_status."'"); //状態
+            }
             $query = Util::addAndCondition($query, $this::PROJECT_NAME, '%'.$projectsearch->project_name.'%', 'like'); //案件名
             $query = Util::addAndCondition($query, $this::GROUP_ID, $projectsearch->group_id); //グループ
             $query = Util::addAndCondition($query, $this::EMP_ID, $projectsearch->emp_id); //担当者
@@ -112,7 +110,6 @@ class Controller_Project extends Controller_Mybase {
      * 案件検索（GET取得処理）
      */
     public function get_search() {
-
         //ドロップダウン項目の設定
         $this->setDropDownList(true);
 
@@ -453,12 +450,13 @@ class Controller_Project extends Controller_Mybase {
      * @return type $groups
      */
     private function getProjectStatus($add_blank = false) {
+        $status = null;
         Config::load('arrays', true);
-        $status = Config::get('arrays.status');
+        $confStatus = Config::get('arrays.status');
         if ($add_blank == true) {
-            //先頭にキーが0の空白行を追加する。
-            //PHPでは連想配列のキーが数値の場合に、勝手に通常の配列に変換されてしまうため対策しました。
-            $status['0'] = '';
+            //先頭にキーが空白の行を追加する。
+            array_push ($confStatus, array('id'=>'', 'name'=>''));
+            $status = Arr::assoc_to_keyval($confStatus, 'id', 'name');
             ksort($status);
         }
         return $status;
