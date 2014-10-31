@@ -249,7 +249,7 @@ class Model_Project extends Model
          * @param type $factory
          * @return type
          */
-	public static function validateExtra($factory, $msg1)
+	public static function validateExtra($factory, $msg)
 	{
             $val = Validation::forge($factory);
             $val->add_callable('ExtraValidationRule');
@@ -269,7 +269,7 @@ class Model_Project extends Model
                     break;
                 case 'delete':
                     $val->add_field('id', '案件', 'required')
-                        ->add_rule('isexists', 'sales_results', 'project_id', '売上実績情報', $msg1) //売上実績情報と参照整合性チェック
+                        ->add_rule('isexists', 'sales_results', 'project_id', '売上実績情報', $msg) //売上実績情報と参照整合性チェック
                         ->add_rule('isexists', 'projectmembers', 'project_id', '案件メンバー情報'); //案件メンバー情報と参照整合性チェック
                     break;
             }

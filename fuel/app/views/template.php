@@ -21,6 +21,7 @@
                 }                
 	</style>
         <script type="text/javascript">
+            <!--
                 $(function(){
                     $('.dp').datepicker({
                         format: 'yyyy/mm/dd',
@@ -28,6 +29,17 @@
                         autoclose: 'true'
                     });
                 })
+                
+                flg = false;
+                function onece() {
+                    if (flg) {
+                        return false;
+                    }
+                    flg = true;
+                    return true;
+                }
+                
+            // -->
         </script>
 
 </head>

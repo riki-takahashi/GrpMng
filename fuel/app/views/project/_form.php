@@ -75,7 +75,7 @@
 		<div class="form-group">
                     <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
 			<label class='control-label'>&nbsp;</label>
-			<?php echo Form::button('submit', '<span class="glyphicon glyphicon-save"></span> 保存', array('class' => 'btn btn-primary', 'onclick' => 'this.disabled=true;')); ?>
+			<?php echo Form::button('submit', '<span class="glyphicon glyphicon-save"></span> 保存', array('class' => 'btn btn-primary', 'onclick' => 'return onece();')); ?>
                     </div>
 		</div>
 	</fieldset>

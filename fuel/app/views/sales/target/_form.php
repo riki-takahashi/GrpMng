@@ -28,7 +28,7 @@
                     <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
 			<?php echo Form::hidden('id', isset($sales_target->id) ? $sales_target->id : ''); ?>
 			<label class='control-label'>&nbsp;</label>
-			<?php echo Form::button('submit', '保存', array('class' => 'btn btn-primary', 'onclick' => 'this.disabled=true;')); ?>
+			<?php echo Form::button('submit', '保存', array('class' => 'btn btn-primary', 'onclick' => 'return onece();')); ?>
                     </div>
                 </div>
 	</fieldset>
