@@ -15,7 +15,7 @@
 <table class="table table-striped table-bordered table-hover table-condensed">
 	<thead>
 		<tr class="info">
-			<th class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center"></th>
+			<th class="col-xs-3 col-sm-3 col-md-3 col-lg-3 text-center"><?php echo isset($group_title) ? $group_title : ''; ?></th>
                         <?php if (isset($taget_out_flg)): ?>
 			<th class="text-center">目標金額</th>
 			<th class="text-center hidden-xs hidden-sm">最低金額</th>

@@ -11,10 +11,11 @@ class Controller_Sales_Term extends Controller_Mybase{
          */
 	public function action_index()
 	{
-		$data['sales_terms'] = Model_Sales_Term::find('all');
-		$this->template->title = "売上期間";
-		$this->template->content = View::forge('sales/term/index', $data);
-
+            $data['sales_terms'] = Model_Sales_Term::find('all');
+            $this->template->is_menu = false;
+            $this->template->is_login = false;
+            $this->template->title = "売上期間";
+            $this->template->content = View::forge('sales/term/index', $data);
 	}
 
         /**

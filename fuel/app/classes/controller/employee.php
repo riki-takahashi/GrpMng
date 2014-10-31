@@ -11,12 +11,14 @@ class Controller_Employee extends Controller_Mybase{
          */
 	public function action_index()
 	{
-		$this->template->title = "社員マスタ";
-		$this->template->content = ViewModel::forge('employee/index');
+            $this->template->is_menu = false;
+            $this->template->is_login = false;
+            $this->template->title = "社員マスタ";
+            $this->template->content = ViewModel::forge('employee/index');
 	}
         
         /**
-         * ビュー表示（使用していません）
+         * ビュー表示
          * @param type $id
          */
 	public function action_view($id = null)

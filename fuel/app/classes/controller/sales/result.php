@@ -1,4 +1,5 @@
 <?php
+
 /**
  * 売上実績コントローラクラス
  * Copyright 2014 Riki System Co.,Ltd.
@@ -14,18 +15,6 @@ class Controller_Sales_Result extends Controller_Mybase{
 		$data['sales_results'] = Model_Sales_Result::find('all');
 		$this->template->title = "売上実績情報";
 		$this->template->content = View::forge('sales/result/index', $data);
-	}
-
-        /**
-         * ビュー表示（使用していない）
-         * @param type $result_id
-         */
-	public function action_view($result_id = null)
-	{
-		is_null($result_id) and Response::redirect('sales/result/index');
-
-		$this->template->title = "売上一覧";
-		$this->template->content = ViewModel::forge('sales/result/view')->set('id', $result_id);
 	}
         
         /**
@@ -47,12 +36,12 @@ class Controller_Sales_Result extends Controller_Mybase{
 			if ($val->run())
 			{
 				$sales_result = Model_Sales_Result::forge(array(
-					'id' => Input::post('id'),
-					'project_id' => $project_id,
-					'sales_result_name' => Input::post('sales_result_name'),
-					'sales_date' => Input::post('sales_date'),
-					'sales_amount' => Input::post('sales_amount'),
-					'note' => Input::post('note'),
+					'id' => Util::empty_to_null(Input::post('id')),
+					'project_id' => Util::empty_to_null($project_id),
+					'sales_result_name' => Util::empty_to_null(Input::post('sales_result_name')),
+					'sales_date' => Util::empty_to_null(Input::post('sales_date')),
+					'sales_amount' => Util::empty_to_null(Util::remove_comma(Input::post('sales_amount'))),
+					'note' => Util::empty_to_space(Input::post('note')), // DB側でNull許可されていないため、入力が空なら長さ０の空文字で登録
 				));
 
 				if ($sales_result and $sales_result->save())
@@ -74,7 +63,7 @@ class Controller_Sales_Result extends Controller_Mybase{
 		}
 
                 $data['project_name'] = $project->project_name;
-                $data['sales_amount'] = $project->order_amount;
+                $data['order_amount'] = $project->order_amount;
 		$this->template->title = "売上実績登録";
 		$this->template->content = View::forge('sales/result/create', $data);
 
@@ -106,10 +95,10 @@ class Controller_Sales_Result extends Controller_Mybase{
 		if ($val->run())
 		{
 			$sales_result->project_id = $project_id;
-			$sales_result->sales_result_name = Input::post('sales_result_name');
-			$sales_result->sales_date = Input::post('sales_date');
-			$sales_result->sales_amount = Input::post('sales_amount');
-			$sales_result->note = Input::post('note');
+			$sales_result->sales_result_name = Util::empty_to_null(Input::post('sales_result_name'));
+			$sales_result->sales_date = Util::empty_to_null(Input::post('sales_date'));
+			$sales_result->sales_amount = Util::empty_to_null(Util::remove_comma(Input::post('sales_amount')));
+			$sales_result->note = Util::empty_to_space(Input::post('note')); // DB側でNull許可されていないため、入力が空なら長さ０の空文字で登録
 
 			if ($sales_result->save())
 			{

@@ -1,3 +1,9 @@
+<style>
+td.minimum-width {
+    width: 10px;
+    white-space: nowrap;
+}
+</style>
 <p>
 	<strong>案件名:</strong>
 	<?php echo $project->project_name; ?></p>
@@ -13,6 +19,9 @@
 <p>
 	<strong>終了日:</strong>
 	<?php echo str_replace('-', '/', $project->end_date); ?></p>
+<p>
+	<strong>受注金額:</strong>
+	<?php echo '&nbsp;&nbsp;'.number_format(intval($order_amount)).' 円'; ?></p>
 <p>
 	<strong>備考:</strong>
 	<?php echo $project->note; ?></p>
@@ -37,7 +46,7 @@
 			<tbody>
 		<?php foreach ($project->results as $result): ?>
                             <tr>
-                                    <td>
+                                    <td class="minimum-width">
                                         <?php echo Html::anchor('sales/result/edit/'.$project->id.'/'.$result->id, '<span class="glyphicon glyphicon-pencil"></span>'
                                                 , array('class' => 'btn btn-sm btn-primary', 'data-toggle' => 'tooltip', 'title' => '編集')); ?>
                                         <?php echo Html::anchor('project/sdelete/'.$project->id.'/'.$result->id, '<span class="glyphicon glyphicon-remove"></span>'

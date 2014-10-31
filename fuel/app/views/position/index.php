@@ -13,7 +13,7 @@
 	<tbody>
 <?php foreach ($positions as $item): ?>		<tr>
 
-			<td>
+			<td class="minimum-width">
                             <?php echo Html::anchor('position/edit/'.$item->id, '<span class="glyphicon glyphicon-pencil"></span>'
                                     , array('class' => 'btn btn-sm btn-primary', 'data-toggle' => 'tooltip', 'title' => '編集')); ?>					
                             <?php echo Html::anchor('position/delete/'.$item->id, '<span class="glyphicon glyphicon-remove"></span>'

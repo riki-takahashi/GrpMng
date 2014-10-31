@@ -233,13 +233,23 @@ class Model_Project extends Model
 			'mysql_timestamp' => true,
 		),
 	);
-
+        
         /**
          * バリデーションチェックルール設定
          * @param type $factory
          * @return type
          */
 	public static function validate($factory)
+	{
+            return Model_Project::validateExtra($factory, '');
+        }        
+        
+        /**
+         * バリデーションチェックルール設定
+         * @param type $factory
+         * @return type
+         */
+	public static function validateExtra($factory, $msg1)
 	{
             $val = Validation::forge($factory);
             $val->add_callable('ExtraValidationRule');
@@ -254,12 +264,12 @@ class Model_Project extends Model
                     $val->add_field('start_date', '開始日', 'required');
                     $val->add_field('end_date', '終了日', 'required')
                         ->add_rule('enddaterule', 'start_date');
-                    $val->add_field('est_amount', '見積金額', 'valid_string[numeric]');
-                    $val->add_field('order_amount', '受注金額', 'valid_string[numeric]');
+                    $val->add_field('est_amount', '見積金額', 'numericcomma');
+                    $val->add_field('order_amount', '受注金額', 'numericcomma');
                     break;
                 case 'delete':
                     $val->add_field('id', '案件', 'required')
-                        ->add_rule('isexists', 'sales_results', 'project_id', '売上実績情報') //売上実績情報と参照整合性チェック
+                        ->add_rule('isexists', 'sales_results', 'project_id', '売上実績情報', $msg1) //売上実績情報と参照整合性チェック
                         ->add_rule('isexists', 'projectmembers', 'project_id', '案件メンバー情報'); //案件メンバー情報と参照整合性チェック
                     break;
             }

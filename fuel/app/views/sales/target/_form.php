@@ -15,20 +15,20 @@
 		<div class="form-group">
                     <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
 			<?php echo Form::label('目標売上金額', 'target_amount', array('class'=>'control-label')); ?>
-			<?php echo Form::input('target_amount', Input::post('target_amount', isset($sales_target) ? $sales_target->target_amount : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'目標売上金額')); ?>
+			<?php echo Form::input('target_amount', Input::post('target_amount', isset($sales_target) ? number_format(intval($sales_target->target_amount)) : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'目標売上金額')); ?>
                     </div>
 		</div>
 		<div class="form-group">
                     <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
 			<?php echo Form::label('最低売上金額', 'min_amount', array('class'=>'control-label')); ?>
-			<?php echo Form::input('min_amount', Input::post('min_amount', isset($sales_target) ? $sales_target->min_amount : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'最低売上金額')); ?>
+			<?php echo Form::input('min_amount', Input::post('min_amount', isset($sales_target) ? number_format(intval($sales_target->min_amount)) : ''), array('class' => 'col-md-4 form-control', 'placeholder'=>'最低売上金額')); ?>
                     </div>
 		</div>
 		<div class="form-group">
                     <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
 			<?php echo Form::hidden('id', isset($sales_target->id) ? $sales_target->id : ''); ?>
 			<label class='control-label'>&nbsp;</label>
-			<?php echo Form::submit('submit', '保存', array('class' => 'btn btn-primary')); ?>
+			<?php echo Form::button('submit', '保存', array('class' => 'btn btn-primary', 'onclick' => 'this.disabled=true;')); ?>
                     </div>
                 </div>
 	</fieldset>

@@ -66,6 +66,8 @@ class Controller_Sales_target extends Controller_Mybase {
         $this->template->set_global($this::GROUP_ID, $group_id);
         $this->template->set_global($this::SALES_TERM_ID, $sales_term_id);
         $this->template->set_global($this::PAGE, Input::get($this::PAGE));
+        $this->template->is_menu = false;
+        $this->template->is_login = false;
         $this->template->title = "売上目標一覧";
         $this->template->content = View::forge('sales/target/index', $data);
     }
@@ -120,10 +122,10 @@ class Controller_Sales_target extends Controller_Mybase {
 
             if ($val->run()) {
                 $sales_target = Model_Sales_Target::forge(array(
-                              $this::GROUP_ID => Input::post($this::GROUP_ID)
-                            , $this::SALES_TERM_ID => Input::post($this::SALES_TERM_ID)
-                            , 'target_amount' => Input::post('target_amount')
-                            , 'min_amount' => Input::post('min_amount')
+                              $this::GROUP_ID => Util::empty_to_null(Input::post($this::GROUP_ID))
+                            , $this::SALES_TERM_ID => Util::empty_to_null(Input::post($this::SALES_TERM_ID))
+                            , 'target_amount' => Util::empty_to_zero(Util::remove_comma(Input::post('target_amount')))
+                            , 'min_amount' => Util::empty_to_zero(Util::remove_comma(Input::post('min_amount')))
                 ));
 
                 if ($sales_target and $sales_target->save()) {
@@ -189,6 +191,8 @@ class Controller_Sales_target extends Controller_Mybase {
         $this->template->set_global($this::GROUP_ID, $group_id);
         $this->template->set_global($this::SALES_TERM_ID, $sales_term_id);
         $this->template->set_global($this::PAGE, $page);
+        $this->template->is_menu = false;
+        $this->template->is_login = false;
         $this->template->title = "売上目標情報";
         $this->template->content = View::forge('sales/target/edit');
     }
@@ -197,6 +201,8 @@ class Controller_Sales_target extends Controller_Mybase {
      * 編集（POST取得処理）
      */
     public function post_edit() {    
+        $this->template->is_menu = false;
+        $this->template->is_login = false;
         
         //POST処理
         $id = Input::post($this::ID);
@@ -216,10 +222,10 @@ class Controller_Sales_target extends Controller_Mybase {
         $val = Model_Sales_Target::validate('edit');
 
         if ($val->run()) {
-            $sales_target->group_id = $group_id;
+            //編集時、売上目標データのidを更新しない
             $sales_target->sales_term_id = $sales_term_id;
-            $sales_target->target_amount = Input::post('target_amount');
-            $sales_target->min_amount = Input::post('min_amount');
+            $sales_target->target_amount = Util::empty_to_null(Util::remove_comma(Input::post('target_amount')));
+            $sales_target->min_amount = Util::empty_to_null(Util::remove_comma(Input::post('min_amount')));
 
             if ($sales_target->save()) {
                 Session::set_flash('success', '売上目標を更新しました。 #'.$id);
@@ -233,7 +239,7 @@ class Controller_Sales_target extends Controller_Mybase {
             }
         } else {
             if (Input::method() == 'POST') {
-                $sales_target->id = $val->validated('id');
+                //編集時、売上目標データのidを更新しない
                 $sales_target->group_id = $val->validated($this::GROUP_ID);
                 $sales_target->sales_term_id = $val->validated($this::SALES_TERM_ID);
                 $sales_target->target_amount = $val->validated('target_amount');
@@ -269,7 +275,8 @@ class Controller_Sales_target extends Controller_Mybase {
                         .'?'.$this::GROUP_ID.'='.$group_id
                         .'&'.$this::SALES_TERM_ID.'='.$sales_term_id);
 
-        if ($sales_target = Model_Sales_Target::find($sales_target_id)) {
+        $sales_target = Model_Sales_Target::find($sales_target_id);
+        if ($sales_target) {
             $sales_target->delete();
 
             Session::set_flash('success', '売上目標を削除しました。 #'.$sales_target_id);

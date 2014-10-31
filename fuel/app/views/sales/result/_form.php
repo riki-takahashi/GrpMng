@@ -21,7 +21,7 @@
 		<div class="form-group">
                     <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
 			<?php echo Form::label('売上金額', 'sales_amount', array('class'=>'control-label')); ?>
-			<?php echo Form::input('sales_amount', Input::post('sales_amount', isset($sales_result) ? $sales_result->sales_amount : $sales_amount), array('class' => 'col-md-4 form-control', 'placeholder'=>'売上金額')); ?>
+			<?php echo Form::input('sales_amount', Input::post('sales_amount', isset($sales_result) ? number_format(intval($sales_result->sales_amount)) : number_format(intval($order_amount))), array('class' => 'col-md-4 form-control', 'placeholder'=>'売上金額')); ?>
                     </div>
 		</div>
 		<div class="form-group">
@@ -33,7 +33,7 @@
 		<div class="form-group">
                     <div class="col-xs-10 col-sm-5 col-md-4 col-lg-4">
 			<label class='control-label'>&nbsp;</label>
-			<?php echo Form::submit('submit', '保存', array('class' => 'btn btn-primary')); ?>
+			<?php echo Form::button('submit', '保存', array('class' => 'btn btn-primary', 'onclick' => 'this.disabled=true;')); ?>
                     </div>
                 </div>
 	</fieldset>

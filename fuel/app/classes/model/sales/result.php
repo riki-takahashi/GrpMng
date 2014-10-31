@@ -62,8 +62,8 @@ class Model_Sales_Result extends Model
 		$val = Validation::forge($factory);
 		$val->add_field('sales_result_name', '売上実績名', 'required');
 		$val->add_field('sales_date', '売上日', 'required');
-		$val->add_field('sales_amount', '売上金額', 'required|valid_string[numeric]');
-
+		$val->add_field('sales_amount', '売上金額', 'required')
+                        ->add_rule('numericcomma', true); // マイナス値許容
 		return $val;
 	}
 }

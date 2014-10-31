@@ -15,7 +15,46 @@ class Util {
             return $var;
         }
     }
-
+    
+    /**
+     * 引数が空だった場合、長さ０の空文字に変換
+     * @param type $var
+     * @return ''
+     */
+    public static function empty_to_space($var) {
+        if (empty($var)) {
+            return '';
+        } else {
+            return $var;
+        }
+    }
+    
+    /**
+     * 引数が空だった場合、0に変換
+     * @param type $var
+     * @return 0
+     */
+    public static function empty_to_zero($var) {
+        if (empty($var)) {
+            return 0;
+        } else {
+            return $var;
+        }
+    }
+        
+    /**
+     * 半角スペースとカンマを除いて返す
+     * @param type $var
+     * @return null
+     */
+    public static function remove_comma($var) {
+        if (!empty($var)) {
+            return str_replace(" ", "", str_replace(",", "", $var));
+        }
+        
+        return $var;
+    }
+    
     /**
      * Where条件文の構築（ANDでイコール条件追加）
      * @param type $query Where条件を追加するクエリーは、予め用意してください。

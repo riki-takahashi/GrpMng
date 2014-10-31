@@ -5,7 +5,6 @@ $confStatus = Config::get('arrays.status');
 $statusStyle = Arr::assoc_to_keyval($confStatus, 'id', 'style');
 $statusName = Arr::assoc_to_keyval($confStatus, 'id', 'name');
 $statusBackgroundColor = Arr::assoc_to_keyval($confStatus, 'id', 'background-color');
-
 foreach ($statusStyle as $item=>$value): 
 ?>
 .table-striped>tbody>tr:nth-child(odd)>td.<?php echo $value; ?>,
@@ -15,6 +14,11 @@ foreach ($statusStyle as $item=>$value):
 }
 
 <?php endforeach; ?>
+
+td.minimum-width {
+    width: 10px;
+    white-space: nowrap;
+}
 </style>
 
 <p  class="pull-right">
@@ -42,7 +46,7 @@ foreach ($statusStyle as $item=>$value):
 	<tbody>
 <?php foreach ($projects as $item): ?>
 		<tr>
-			<td>
+			<td class="minimum-width">
                                 <?php echo Html::anchor('project/edit/'.$item["id"], '<span class="glyphicon glyphicon-pencil"></span>'
                                         , array('class' => 'btn btn-sm btn-primary tipEdit', 'data-toggle' => 'tooltip', 'title' => '案件編集')); ?>
 				<?php echo Html::anchor('project/delete/'.$item["id"], '<span class="glyphicon glyphicon-remove"></span>'

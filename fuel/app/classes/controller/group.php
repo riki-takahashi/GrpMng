@@ -11,21 +11,10 @@ class Controller_Group extends Controller_Mybase{
          */
 	public function action_index()
 	{
-		$this->template->title = "グループマスタ";
-		$this->template->content = ViewModel::forge('group/index');
-	}
-
-        /**
-         * ビュー表示（使用していない）
-         * @param type $id
-         */
-	public function action_view($id = null)
-	{
-		is_null($id) and Response::redirect('group/index/');
-
-		$this->template->title = "グループマスタ";
-		$this->template->content = ViewModel::forge('group/view')->set('id', $id);
-
+            $this->template->is_menu = false;
+            $this->template->is_login = false;
+            $this->template->title = "グループマスタ";
+            $this->template->content = ViewModel::forge('group/index');
 	}
 
         /**

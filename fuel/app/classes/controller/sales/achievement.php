@@ -45,17 +45,20 @@ class Controller_Sales_Achievement extends Controller_Template {
         $sales_total = array();
 
         //集計単位毎に処理を分けています
-        if ($aggregate_unit_id == '1') {
+        if ($aggregate_unit_id == '1') { // 全体
+            $this->template->set_global('group_title', 'グループ'); //集計グループ列名
             $sales_total['1'] = Array('title' => '', 'list' => $this->make_sum_for_all($sales_term_id));
             $this->template->set_global($this::TARGET_OUT_FLG, 'true'); //目標金額、最低金額の表示フラグ
         }
 
-        if ($aggregate_unit_id == '2') {
+        if ($aggregate_unit_id == '2') { // グループ別
+            $this->template->set_global('group_title', 'グループ'); //集計グループ列名
             $sales_total['1'] = Array('title' => '', 'list' => $this->make_sum_for_group($sales_term_id));
             $this->template->set_global($this::TARGET_OUT_FLG, 'true'); //目標金額、最低金額の表示フラグ
         }
 
-        if ($aggregate_unit_id == '3') {
+        if ($aggregate_unit_id == '3') { // 担当社員別
+            $this->template->set_global('group_title', '担当者'); //集計グループ列名
             $sales_total = $this->make_sum_for_employee($sales_term_id);
             $this->template->set_global($this::TARGET_OUT_FLG, null); //目標金額、最低金額の表示フラグ
         }
@@ -68,6 +71,8 @@ class Controller_Sales_Achievement extends Controller_Template {
         $this->template->set_global($this::SALES_TERM_ID, $sales_term_id); //売上期間ID
         $this->template->set_global('term_name', $sales_term->term_name); //売上期間名
         $this->template->set_global($this::PDF_OUT_FLG, $pdf_out_flg); //PDF出力フラグ
+        $this->template->is_menu = false;
+        $this->template->is_login = false;
         $this->template->title = "売上集計";
         $this->template->content = View::forge('sales/achievement/index', $data); //ビュー生成
     }
@@ -372,7 +377,7 @@ class Controller_Sales_Achievement extends Controller_Template {
             $tabledata[] = $row_sum;
             
             //グループ毎にデータを取得、設定
-            $sales_total[$group['id']] = Array('title' => $group["group_name"].'　　目標金額：'.number_format($row_sum["target_amount_sum"]/1000).'　　最低金額：'.number_format($row_sum['min_amount_sum']/1000), 'list' => $tabledata);
+            $sales_total[$group['id']] = Array('title' => $group["group_name"].'　　目標金額：'.number_format($row_sum["target_amount_sum"]/1000).' [千円]　　最低金額：'.number_format($row_sum['min_amount_sum']/1000).' [千円]', 'list' => $tabledata);
         }
 
         return $sales_total;

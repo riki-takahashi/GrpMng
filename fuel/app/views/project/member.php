@@ -52,7 +52,7 @@
 			<?php else : ?>
 				<tr>
 					<td>
-						<?php echo Form::button('submit', '<span class="glyphicon glyphicon-save"></span> 更新', array('class' => 'btn btn-sm btn-primary')); ?>
+						<?php echo Form::button('submit', '<span class="glyphicon glyphicon-save"></span> 更新', array('class' => 'btn btn-sm btn-primary', 'onclick' => 'this.disabled=true;')); ?>
 						<?php echo Html::anchor('project/member/'.$project->id, '<span class="glyphicon glyphicon-refresh"></span> ｷｬﾝｾﾙ', array('class' => 'btn btn-sm btn-warning')); ?>
 					</td>
 					<?php if ($member->id == $temp_id) : ?>

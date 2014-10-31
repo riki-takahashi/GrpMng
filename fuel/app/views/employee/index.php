@@ -1,3 +1,9 @@
+<style>
+td.minimum-width {
+    width: 10px;
+    white-space: nowrap;
+}
+</style>
 <p  class="text-right">
 	<?php echo Html::anchor('employee/create', '<span class="glyphicon glyphicon-plus"></span> 新規登録', array('class' => 'btn btn-primary')); ?>
 </p>
@@ -15,7 +21,7 @@
 	</thead>
 	<tbody>
 <?php foreach ($employees as $item): ?>		<tr>
-			<td>
+			<td class="minimum-width">
 				<?php echo Html::anchor('employee/edit/'.$item->id, '<span class="glyphicon glyphicon-pencil"></span>'
                                         , array('class' => 'btn btn-sm btn-primary', 'data-toggle' => 'tooltip', 'title' => '編集')); ?>	
 				<?php echo Html::anchor('employee/delete/'.$item->id, '<span class="glyphicon glyphicon-remove"></span>'

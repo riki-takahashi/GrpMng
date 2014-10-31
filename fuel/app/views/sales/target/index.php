@@ -1,3 +1,9 @@
+<style>
+td.minimum-width {
+    width: 10px;
+    white-space: nowrap;
+}
+</style>
 <p class="text-right">
     <?php echo Html::anchor('sales/target/create/'.$group_id.'/'.$sales_term_id, '<span class="glyphicon glyphicon-plus"></span> 新規登録', array('class' => 'btn btn-primary')); ?>
 </p>
@@ -17,7 +23,7 @@
 	<tbody>
 <?php foreach ($sales_targets as $item): ?>
                 <tr>
-			<td>
+			<td class="minimum-width">
                                 <?php echo Html::anchor('sales/target/edit'
                                         . '?'.Controller_Sales_target::ID.'='.$item->id
                                         . '&'.Controller_Sales_target::GROUP_ID.'='.$group_id

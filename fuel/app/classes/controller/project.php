@@ -102,6 +102,8 @@ class Controller_Project extends Controller_Mybase {
         //テンプレートファイルにデータの引き渡し
         $this->template->set_global($this::PAGE, Input::get($this::PAGE));
 
+        $this->template->is_menu = false;
+        $this->template->is_login = false;
         $this->template->title = "案件一覧";
         $this->template->content = View::forge('project/index', $data);
     }
@@ -148,6 +150,8 @@ class Controller_Project extends Controller_Mybase {
         $this->template->set_global('fieldset', $fieldset, false);
 
         //テンプレートファイルにデータの引き渡し
+        $this->template->is_menu = false;
+        $this->template->is_login = false;
         $this->template->title = "案件検索";
         $this->template->content = View::forge('project/search');
     }
@@ -211,8 +215,8 @@ class Controller_Project extends Controller_Mybase {
                             'emp_id' => Input::post('emp_id'),
                             'start_date' => Input::post('start_date'),
                             'end_date' => Input::post('end_date'),
-                            'est_amount' => Util::empty_to_null(Input::post('est_amount')),
-                            'order_amount' => Util::empty_to_null(Input::post('order_amount')),
+                            'est_amount' => Util::empty_to_null(Util::remove_comma(Input::post('est_amount'))),
+                            'order_amount' => Util::empty_to_null(Util::remove_comma(Input::post('order_amount'))),
                             'delivery_date' => Util::empty_to_null(Input::post('delivery_date')),
                             'sales_date' => Util::empty_to_null(Input::post('sales_date')),
                             'end_user' => Util::empty_to_null(Input::post('end_user')),
@@ -258,8 +262,8 @@ class Controller_Project extends Controller_Mybase {
             $project->emp_id = Input::post('emp_id');
             $project->start_date = Input::post('start_date');
             $project->end_date = Input::post('end_date');
-            $project->est_amount = Util::empty_to_null(Input::post('est_amount'));
-            $project->order_amount = Util::empty_to_null(Input::post('order_amount'));
+            $project->est_amount = Util::empty_to_null(Util::remove_comma(Input::post('est_amount')));
+            $project->order_amount = Util::empty_to_null(Util::remove_comma(Input::post('order_amount')));
             $project->delivery_date = Util::empty_to_null(Input::post('delivery_date'));
             $project->sales_date = Util::empty_to_null(Input::post('sales_date'));
             $project->end_user = Util::empty_to_null(Input::post('end_user'));
@@ -305,10 +309,13 @@ class Controller_Project extends Controller_Mybase {
      * @param type $project_id
      */
     public function action_delete($project_id = null) {
-        $val = Model_Project::validate('delete');
+        // バリデーションチェックのメッセージのためプロジェクト名を取得
+        $project = Model_Project::find($project_id);
+        $project_name = '案件名：'.$project->project_name;
+        
+        $val = Model_Project::validateExtra('delete', $project_name);
         if ($val->run(array('id' => $project_id)))
         {
-            $project = Model_Project::find($project_id);
             if ($project) {
                 $project->delete();
                 Session::set_flash('success', '案件情報を削除しました。 #'.$project_id);
@@ -532,6 +539,9 @@ class Controller_Project extends Controller_Mybase {
      * @param type $project_id
      */
     public function action_sales($project_id = null) {
+        $this->template->is_menu = false;
+        $this->template->is_login = false;
+        
         is_null($project_id) and Response::redirect('project/index/');
 
         //案件データ
@@ -543,6 +553,7 @@ class Controller_Project extends Controller_Mybase {
         $data['project'] = $project;
         $data['project_id'] = $project_id;
         $data['temp_id'] = self::TEMP_ID;
+        $data['order_amount'] = $project->order_amount;
 
         $this->template->title = "売上実績";
         $this->template->content = View::forge('project/sales', $data);

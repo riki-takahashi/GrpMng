@@ -11,19 +11,24 @@
         <!-- 画面固有の追加分 -->
         <?php echo Asset::render('css_for_chart');?>
 	<?php echo Asset::render('js_for_chart'); ?>
-        
+
 	<style>
-		body { margin: 20px; }
+                body { margin: 20px; }
+
+                td.minimum-width {
+                    width: 10px;
+                    white-space: nowrap;
+                }                
 	</style>
-	<script type="text/javascript">
-		$(function(){
-			$('.dp').datepicker({
-				format: 'yyyy/mm/dd',
-				language: 'ja',
-				autoclose: 'true'
-			});
-		})
-	</script>
+        <script type="text/javascript">
+                $(function(){
+                    $('.dp').datepicker({
+                        format: 'yyyy/mm/dd',
+                        language: 'ja',
+                        autoclose: 'true'
+                    });
+                })
+        </script>
 
 </head>
 <body>
@@ -31,10 +36,10 @@
 	<nav class="navbar navbar-default">
 		<div class="col-md-12"  style="display:table;">
                     <span class="h3 navbar-text" style="text-align: left; vertical-align: middle;"><?php echo $title; ?></span>
-			<?php if (! isset($is_menu)) : ?>
+			<?php if (!isset($is_menu) || $is_menu != true) : ?>
 				<?php echo Html::anchor('menu', '<span class="glyphicon glyphicon-th"></span> メニュー', array('class' => 'btn btn-primary navbar-btn', 'style' => 'vertical-align: middle;')); ?>
 			<?php endif; ?>
-			<?php if (! isset($is_login)) : ?>
+			<?php if (!isset($is_login) || $is_login != true) : ?>
 				<?php echo Html::anchor('menu/logout', '<span class="glyphicon glyphicon-log-out"></span> ログアウト', array('class' => 'btn btn-primary navbar-btn', 'style' => 'vertical-align: middle;', 'onclick' => "return confirm('ログアウトしてもよろしいですか？')")); ?>
 			<?php endif; ?>
 		</div>

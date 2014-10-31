@@ -11,30 +11,13 @@ class Controller_Position extends Controller_Mybase{
          */
 	public function action_index()
 	{
-		$data['positions'] = Model_Position::find('all', array(
-			'order_by' => array('order_no' => 'desc', 'id' => 'asc'),
-		));
-		$this->template->title = "役職マスタ";
-		$this->template->content = View::forge('position/index', $data);
-
-	}
-
-        /**
-         * ビュー表示（使用していない）
-         * @param type $id
-         */
-	public function action_view($id = null)
-	{
-		is_null($id) and Response::redirect('position/index/');
-
-		if ( ! $data['position'] = Model_Position::find($id))
-		{
-			Session::set_flash('error', '該当の役職が見つかりません。 #'.$id);
-			Response::redirect('position/index/');
-		}
-
-		$this->template->title = "役職マスタ";
-		$this->template->content = View::forge('position/view', $data);
+            $data['positions'] = Model_Position::find('all', array(
+                    'order_by' => array('order_no' => 'asc', 'id' => 'asc'),
+            ));
+            $this->template->is_menu = false;
+            $this->template->is_login = false;
+            $this->template->title = "役職マスタ";
+            $this->template->content = View::forge('position/index', $data);
 
 	}
 

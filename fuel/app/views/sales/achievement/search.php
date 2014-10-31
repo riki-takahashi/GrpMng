@@ -1,4 +1,7 @@
 <?php echo Form::open(array("class"=>"form-horizontal")); ?>
+<p class="text-right">
+    <?php echo Form::button('sales/achievement/search', '<span class="glyphicon glyphicon-search"></span> 検索開始', array('type' => 'submit', 'class' => 'btn btn-primary')); ?>
+</p>
 	<fieldset>
             <div class="form-group">
 		<div class="col-xs-12 col-sm-5 col-md-4 col-lg-4">
@@ -13,11 +16,4 @@
 		</div>
             </div>
 	</fieldset>
-<p class="text-left">
-    <?php echo Form::button('sales/achievement/search', '<span class="glyphicon glyphicon-search"></span> 検索開始', array('type' => 'submit', 'class' => 'btn btn-primary')); ?>
-</p>
-<br>
-<p>
-    <?php echo Html::anchor('menu', 'メニュー画面に戻る'); ?>
-</p>
 <?php echo Form::close(); ?>

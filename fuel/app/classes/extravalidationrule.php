@@ -26,11 +26,18 @@ class ExtraValidationRule {
      * @param type $value
      * @param type $table
      * @param type $field
+     * @param type $source1 指定されたテーブル名称 param:3
+     * @param type $source2 チェック値の内容 param:3
      * @return bool true:正常　false:異常
      */
-    public static function _validation_isexists($value, $table, $field, $aaa)
+    public static function _validation_isexists($value, $table, $field, $source1 = null, $source2 = null)
     {
-        Validation::active()->set_message('isexists', 'その :label は『 :param:3 』に登録されているため、削除できません。');
+        if ( ! isset($source2)) {
+            $msg = 'その :label は『 :param:3 』に登録されているため、削除できません。';
+        } else {
+            $msg = ':param:4　は『 :param:3 』に登録されているため、削除できません。';
+        }
+        Validation::active()->set_message('isexists', $msg);
         
         //入力パラメータで指定されたテーブルのフィールドに該当するデータを抽出
         $result = DB::select($field)
@@ -40,5 +47,27 @@ class ExtraValidationRule {
         //こうあるべきという条件判定を返す。
         return ! ($result->count() > 0);        
     }
-    
+
+    /**
+     * 半角スペースと数字とカンマを許容し、マイナス記号許容はオプションでチェックする。
+     * @param type $value
+     * @param type $minusflg true:マイナス記号許容する
+     * @return bool true:正常　false:異常
+     */
+    public static function _validation_numericcomma($value, $minusflg = false)
+    {
+        // チェック対象のデータが空なら正常を返す
+        if ( ! isset($value) || $value == '') {
+            return true;
+        }
+        
+        // マイナス値許容の場合
+        if ($minusflg == true) {
+            Validation::active()->set_message('numericcomma', ':label：「:value」数字またはカンマを入力してください。');
+            return (preg_match('/^[ 0-9,\-]+$/', $value) > 0);
+        }
+        
+        Validation::active()->set_message('numericcomma', ':label：「:value」数字またはカンマを入力してください。マイナス値は入力できません。');
+        return (preg_match('/^[ 0-9,]+$/', $value) > 0);
+    }    
 }

@@ -15,7 +15,7 @@
 	<br>
 	<div class="form-group">
 		<div class="col-sm-3">
-			<?php echo Form::button('submit', '<span class="glyphicon glyphicon-log-in"></span> ログイン', array('class' => 'btn btn-primary')); ?>
+			<?php echo Form::button('submit', '<span class="glyphicon glyphicon-log-in"></span> ログイン', array('class' => 'btn btn-primary', 'onclick' => 'this.disabled=true;')); ?>
 		</div>
 	</div>
 
